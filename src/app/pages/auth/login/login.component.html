@@ -1,0 +1,81 @@
+<div class="min-h-screen bg-[#F5F5F7] flex items-center justify-center px-4">
+
+  <div class="bg-white w-full max-w-md rounded-3xl shadow-sm px-10 py-12">
+
+    <!-- Título -->
+    <h1 class="text-5xl font-bold text-center text-[#1F090A] mb-4">
+      Iniciar Sesión
+    </h1>
+
+    <!-- Texto -->
+    <div class="text-center mb-10">
+      <span class="text-gray-400">
+        ¿Eres usuario nuevo?
+      </span>
+
+      <a
+        routerLink="/auth/register"
+        class="text-[#531E1E] ml-2 hover:underline"
+      >
+        Crear una cuenta
+      </a>
+    </div>
+
+    <!-- Formulario -->
+    <form class="space-y-6">
+
+      <!-- Usuario -->
+      <div>
+
+        <label class="block text-gray-400 mb-2 text-sm">
+          Correo electrónico
+        </label>
+
+        <input
+          type="text"
+          placeholder="Ingresa tu correo electrónico"
+          class="w-full border border-gray-200 rounded-md px-4 py-4 outline-none focus:border-[#531E1E]"
+        >
+
+      </div>
+
+      <!-- Contraseña -->
+      <div>
+
+        <label class="block text-gray-400 mb-2 text-sm">
+          Contraseña
+        </label>
+
+        <input
+          type="password"
+          placeholder="Ingresa tu contraseña"
+          class="w-full border border-gray-200 rounded-md px-4 py-4 outline-none focus:border-[#531E1E]"
+        >
+
+      </div>
+
+      <!-- Botón -->
+      <button
+        type="submit"
+        class="w-full bg-[#531E1E] hover:opacity-90 transition text-white py-4 rounded-md text-lg font-medium mt-4"
+      >
+        Ingresar
+      </button>
+
+    </form>
+
+    <!-- Recuperar contraseña -->
+    <div class="text-center mt-10">
+
+      <a
+        href="#"
+        class="text-[#531E1E] text-sm hover:underline"
+      >
+        ¿Olvidaste tu contraseña?
+      </a>
+
+    </div>
+
+  </div>
+
+</div>

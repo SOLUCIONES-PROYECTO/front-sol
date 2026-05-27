@@ -1,0 +1,197 @@
+<div class="w-64 h-screen bg-[#531E1E] text-white flex flex-col">
+
+  <!-- Menú -->
+  <div class="flex-1 px-3 py-6">
+
+    <!-- Items -->
+    <nav class="space-y-2">
+
+       <!-- Menú Principal -->
+      <a
+        routerLink="/menu-principal"
+        routerLinkActive="bg-white text-[#531E1E]"
+        class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-[#531E1E]"
+      >
+
+        <lucide-icon
+          name="house"
+          class="w-5 h-5"
+        ></lucide-icon>
+
+        <span class="text-sm font-medium">
+          Menú Principal
+        </span>
+
+      </a>
+
+      <!-- Ingresos -->
+      <a
+        routerLink="/ingresos"
+        routerLinkActive="bg-white text-[#531E1E]"
+        class="flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-[#531E1E]"
+      >
+
+        <div class="flex items-center gap-3">
+
+          <lucide-icon
+            name="list"
+            class="w-5 h-5"
+          ></lucide-icon>
+
+          <span class="text-sm font-medium">
+            Ingresos
+          </span>
+
+        </div>
+
+        <!-- Badge -->
+        <span class="bg-[#1F090A] text-white text-xs px-2 py-1 rounded-full">
+          16
+        </span>
+
+      </a>
+
+      <!-- Egresos -->
+      <a
+        routerLink="/egresos"
+        routerLinkActive="bg-white text-[#531E1E]"
+        class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-[#531E1E]"
+      >
+
+        <lucide-icon
+          name="list"
+          class="w-5 h-5"
+        ></lucide-icon>
+
+        <span class="text-sm font-medium">
+          Egresos
+        </span>
+
+      </a>
+
+      <!-- Productos -->
+      <a
+        routerLink="/productos"
+        routerLinkActive="bg-white text-[#531E1E]"
+        class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-[#531E1E]"
+      >
+
+        <lucide-icon
+          name="shopping-basket"
+          class="w-5 h-5"
+        ></lucide-icon>
+
+        <span class="text-sm font-medium">
+          Productos
+        </span>
+
+      </a>
+
+      <!-- Proveedores -->
+      <a
+        routerLink="/proveedores"
+        routerLinkActive="bg-white text-[#531E1E]"
+        class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-[#531E1E]"
+      >
+
+        <lucide-icon
+          name="users"
+          class="w-5 h-5"
+        ></lucide-icon>
+
+        <span class="text-sm font-medium">
+          Proveedores
+        </span>
+
+      </a>
+
+      <!-- Almacén -->
+      <a
+        routerLink="/almacen"
+        routerLinkActive="bg-white text-[#531E1E]"
+        class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-[#531E1E]"
+      >
+
+        <lucide-icon
+          name="package"
+          class="w-5 h-5"
+        ></lucide-icon>
+
+        <span class="text-sm font-medium">
+          Almacén
+        </span>
+
+      </a>
+
+      <!-- Orden de Compra -->
+      <a
+        routerLink="/orden-compra"
+        routerLinkActive="bg-white text-[#531E1E]"
+        class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-[#531E1E]"
+      >
+
+        <lucide-icon
+          name="clipboard-list"
+          class="w-5 h-5"
+        ></lucide-icon>
+
+        <span class="text-sm font-medium">
+          Orden de Compra
+        </span>
+
+      </a>
+
+    </nav>
+
+    <!-- Ajustes -->
+    <div class="mt-16">
+
+      <p class="text-xs uppercase text-gray-300 mb-4 px-3 tracking-wide">
+        Ajustes
+      </p>
+
+      <nav class="space-y-2">
+
+        <!-- Ajustes Personales -->
+        <a
+          routerLink="/perfil"
+          routerLinkActive="bg-white text-[#531E1E]"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-[#531E1E]"
+        >
+
+          <lucide-icon
+            name="user"
+            class="w-5 h-5"
+          ></lucide-icon>
+
+          <span class="text-sm font-medium">
+            Ajustes Personales
+          </span>
+
+        </a>
+
+        <!-- Ajustes Globales -->
+        <a
+          routerLink="/configuracion"
+          routerLinkActive="bg-white text-[#531E1E]"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-[#531E1E]"
+        >
+
+          <lucide-icon
+            name="settings"
+            class="w-5 h-5"
+          ></lucide-icon>
+
+          <span class="text-sm font-medium">
+            Ajustes Globales
+          </span>
+
+        </a>
+
+      </nav>
+
+    </div>
+
+  </div>
+
+</div>
