@@ -33,6 +33,13 @@ const routes: Routes = [
             (m) => m.EgresosModule
           ),
       }, 
+      {
+        path: 'productos',
+        loadChildren: () =>
+          import('./pages/productos/productos.module').then(
+            (m) => m.ProductosModule
+          ),
+      },
     ],
   },
   {
