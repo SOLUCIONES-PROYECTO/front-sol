@@ -24,6 +24,7 @@ import { LucideAngularModule,
 ChevronLeft,
 ChevronRight,
 Trash } from 'lucide-angular';
+import { ProductosComponent } from './pages/productos/productos.component';
 
 @NgModule({
   declarations: [
