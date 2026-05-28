@@ -1,11 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-crud-table.component',
+  selector: 'app-crud-table',
   standalone: false,
   templateUrl: './crud-table.component.html',
-  styleUrl: './crud-table.component.css',
+  styleUrls: ['./crud-table.component.css'],
 })
 export class CrudTableComponent {
+
+  @Input() title: string = '';
+
+  @Input() addButtonText: string = 'Agregar';
+
+  @Input() showExportButton: boolean = false;
+
+  @Input() columns: {
+    key: string;
+    label: string;
+    type?: string;
+  }[] = [];
+
+  @Input() data: any[] = [];
 
 }

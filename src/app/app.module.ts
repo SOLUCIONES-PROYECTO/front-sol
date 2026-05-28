@@ -3,11 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
-import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
 import { DashboardLayoutComponent } from './layout/dashboard-layout/dashboard-layout.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import {SharedModule} from './shared/shared.module';
 
 import { LucideAngularModule, 
           Menu, 
@@ -18,22 +16,25 @@ import { LucideAngularModule,
           ShoppingBasket,
           List,
           House,
-          ClipboardList, } from 'lucide-angular';
-import { CrudTableComponent } from './shared/components/crud-table/crud-table.component';
+          ClipboardList,
+        Plus,
+      Search,
+    Pencil,
+  Trash2,
+ChevronLeft,
+ChevronRight,
+Trash } from 'lucide-angular';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavBarComponent,
     FooterComponent,
-    SidebarComponent,
     DashboardLayoutComponent,
-    DashboardComponent,
-    CrudTableComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    SharedModule,
     LucideAngularModule.pick(
       { Menu, 
         Package, 
@@ -43,7 +44,15 @@ import { CrudTableComponent } from './shared/components/crud-table/crud-table.co
         ShoppingBasket,
         List,
         House,
-        ClipboardList }),
+        ClipboardList,
+        Plus,
+        Search,
+        Pencil,
+        Trash2,
+        ChevronLeft,
+        ChevronRight,
+        Trash
+       }),
   ],
   providers: [],
   bootstrap: [AppComponent]

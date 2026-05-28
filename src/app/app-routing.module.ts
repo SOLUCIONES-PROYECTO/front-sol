@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {DashboardLayoutComponent} from "../app/layout/dashboard-layout/dashboard-layout.component";
+import { DashboardLayoutComponent } from './layout/dashboard-layout/dashboard-layout.component';
+
 const routes: Routes = [
   {
     path: 'auth',
@@ -14,10 +15,24 @@ const routes: Routes = [
       {
         path: 'dashboard',
         loadChildren: () =>
-          import('../app/pages/dashboard/dashboard.module').then(
-            (m) => m.DASHBOARD_ROUTES
+          import('./pages/dashboard/dashboard.module').then(
+            (m) => m.DashboardModule
           ),
       },    
+      {
+        path: 'ingresos',
+        loadChildren: () =>
+          import('./pages/ingresos/ingresos.module').then(
+            (m) => m.IngresosModule
+          ),
+      }, 
+      {
+        path: 'egresos',
+        loadChildren: () =>
+          import('./pages/egresos/egresos.module').then(
+            (m) => m.EgresosModule
+          ),
+      }, 
     ],
   },
   {
