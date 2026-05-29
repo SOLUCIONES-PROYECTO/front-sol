@@ -8,12 +8,12 @@ import { Component } from '@angular/core';
 })
 export class EgresosComponent {
   columns = [
-    { key: 'lote', label: 'Lote' },
     { key: 'documento', label: 'N° Documento' },
-    { key: 'fecha', label: 'Fecha de ingreso' },
-    { key: 'proveedor', label: 'Proveedor' },
-    { key: 'estado', label: 'Estado', type: 'badge' },
-    { key: 'monto', label: 'Monto Pagado' },
+    { key: 'fecha', label: 'Fecha de egreso' },
+    { key: 'cliente', label: 'Cliente' },
+    { key: 'estadoPago', label: 'Estado de Pago', type: 'badge' },
+    { key: 'metodoPago', label: 'Método de Pago' },
+    { key: 'total', label: 'Total' },
   ];
 
   data = [];

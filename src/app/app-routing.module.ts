@@ -40,6 +40,27 @@ const routes: Routes = [
             (m) => m.ProductosModule
           ),
       },
+      {
+        path: 'almacen',
+        loadChildren: () =>
+          import('./pages/almacen/almacen.module').then(
+            (m) => m.AlmacenModule
+          ),
+      },
+      {
+        path: 'orden-compra',
+        loadChildren: () =>
+          import('./pages/orden-compra/orden-compra.module').then(
+            (m) => m.OrdenCompraModule
+          ),
+      },
+      {
+        path: 'proveedores',
+        loadChildren: () =>
+          import('./pages/proveedores/proveedores.module').then(
+            (m) => m.ProveedoresModule
+          ),
+      },
     ],
   },
   {

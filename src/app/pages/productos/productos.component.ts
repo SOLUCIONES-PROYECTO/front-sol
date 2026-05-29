@@ -8,12 +8,12 @@ import { Component } from '@angular/core';
 })
 export class ProductosComponent {
   columns = [
-    { key: 'lote', label: 'Lote' },
-    { key: 'documento', label: 'N° Documento' },
-    { key: 'fecha', label: 'Fecha de ingreso' },
-    { key: 'proveedor', label: 'Proveedor' },
+    { key: 'producto', label: 'Producto' },
+    { key: 'codigo', label: 'Código' },
+    { key: 'categoria', label: 'Categoria' },
+    { key: 'unidadMedida', label: 'Unidad de Medida' },
+    { key: 'precioVenta', label: 'Precio de Venta' },
     { key: 'estado', label: 'Estado', type: 'badge' },
-    { key: 'monto', label: 'Monto Pagado' },
   ];
 
   data = [];
