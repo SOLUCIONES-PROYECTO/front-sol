@@ -18,27 +18,6 @@ const routes: Routes = [
           import('./pages/dashboard/dashboard.module').then(
             (m) => m.DashboardModule
           ),
-      },    
-      {
-        path: 'ingresos',
-        loadChildren: () =>
-          import('./pages/ingresos/ingresos.module').then(
-            (m) => m.IngresosModule
-          ),
-      }, 
-      {
-        path: 'egresos',
-        loadChildren: () =>
-          import('./pages/egresos/egresos.module').then(
-            (m) => m.EgresosModule
-          ),
-      }, 
-      {
-        path: 'productos',
-        loadChildren: () =>
-          import('./pages/productos/productos.module').then(
-            (m) => m.ProductosModule
-          ),
       },
       {
         path: 'almacen',
@@ -48,10 +27,31 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'orden-compra',
+        path: 'ingresos',
         loadChildren: () =>
-          import('./pages/orden-compra/orden-compra.module').then(
-            (m) => m.OrdenCompraModule
+          import('./pages/ingresos/ingresos.module').then(
+            (m) => m.IngresosModule
+          ),
+      },
+      {
+        path: 'egresos',
+        loadChildren: () =>
+          import('./pages/egresos/egresos.module').then(
+            (m) => m.EgresosModule
+          ),
+      },
+      {
+        path: 'orden-de-compra',
+        loadChildren: () =>
+          import('./pages/orden-de-compra/orden-de-compra.module').then(
+            (m) => m.OrdenDeCompraModule
+          ),
+      },
+      {
+        path: 'productos',
+        loadChildren: () =>
+          import('./pages/productos/productos.module').then(
+            (m) => m.ProductosModule
           ),
       },
       {
@@ -59,6 +59,13 @@ const routes: Routes = [
         loadChildren: () =>
           import('./pages/proveedores/proveedores.module').then(
             (m) => m.ProveedoresModule
+          ),
+      },
+      {
+        path: 'orden-de-compra',
+        loadChildren: () =>
+          import('./pages/orden-de-compra/orden-de-compra.module').then(
+            (m) => m.OrdenDeCompraModule
           ),
       },
     ],

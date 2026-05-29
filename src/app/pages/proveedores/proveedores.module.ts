@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ProveedoresRoutingModule } from "./proveedores-routing.module";
+import { ProveedoresRoutingModule } from './proveedores-routing.module';
 import { ProveedoresComponent } from './proveedores.component';
 
-import { SharedModule } from "../../shared/shared.module";
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -16,4 +16,4 @@ import { SharedModule } from "../../shared/shared.module";
     SharedModule
   ]
 })
-export class ProveedoresModule {}
+export class ProveedoresModule { }

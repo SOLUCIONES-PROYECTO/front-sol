@@ -10,8 +10,9 @@ export class ProveedoresComponent {
   columns = [
     { key: 'nombre', label: 'Nombre' },
     { key: 'ruc', label: 'RUC' },
-    { key: 'sectorista', label: 'Sectorista Contacto' },
-    { key: 'ubicacion', label: 'Sectorista Ubicación' },
+    { key: 'sectorista', label: 'Sectorista' },
+    { key: 'contactoSectorista', label: 'Contacto Sectorista' },
+    { key: 'ubicacion', label: 'Ubicación' },
     { key: 'ordenes', label: 'Ordenes' },
     { key: 'gastado', label: 'Gastado' },
   ];
