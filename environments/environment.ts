@@ -1,5 +1,5 @@
 export const environment = {
   production:false,
-  URL_BACKEND: '',
+  URL_BACKEND: 'http://localhost:8080',
   URL_BACKEND_AUTH: ''
 };

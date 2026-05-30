@@ -9,8 +9,9 @@ export class Register extends AuthCredentials {
   fechaNacimiento: string;
   telefono: string;
   genero: string;
+  contraseña:string;
 
-  confirmarPassword: string;
+  confirmarContraseña: string;
 
   constructor(register: Partial<Register> = {}) {
 
@@ -23,8 +24,8 @@ export class Register extends AuthCredentials {
     this.fechaNacimiento = register.fechaNacimiento || '';
     this.telefono = register.telefono || '';
     this.genero = register.genero || '';
-
-    this.confirmarPassword = register.confirmarPassword || '';
+    this.contraseña = register.contraseña || '';
+    this.confirmarContraseña = register.confirmarContraseña || '';
 
   }
 
@@ -41,8 +42,9 @@ export class Register extends AuthCredentials {
       fechaNacimiento: casted['fechaNacimiento'] as string,
       telefono: casted['telefono'] as string,
       genero: casted['genero'] as string,
-
       email: casted['email'] as string,
+      contraseña: casted['contraseña'] as string,
+      confirmarContraseña: casted['confirmarContraseña'] as string,
 
     });
 
@@ -51,7 +53,6 @@ export class Register extends AuthCredentials {
   static toJson(register: Register): unknown {
 
     return {
-
       nombres: register.nombres,
       apellidos: register.apellidos,
       dni: register.dni,
@@ -59,11 +60,9 @@ export class Register extends AuthCredentials {
       fechaNacimiento: register.fechaNacimiento,
       telefono: register.telefono,
       genero: register.genero,
-
       email: register.email,
-      password: register.password,
-      confirmarPassword: register.confirmarPassword,
-
+      contraseña: register.contraseña,
+      confirmarContraseña: register.confirmarContraseña,
     };
 
   }

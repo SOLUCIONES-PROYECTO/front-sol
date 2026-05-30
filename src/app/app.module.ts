@@ -7,6 +7,8 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 import { DashboardLayoutComponent } from './layout/dashboard-layout/dashboard-layout.component';
 import {SharedModule} from './shared/shared.module';
 
+import { HttpClientModule } from '@angular/common/http';
+
 import { LucideAngularModule, 
           Menu, 
           Package, 
@@ -35,6 +37,7 @@ Trash } from 'lucide-angular';
     BrowserModule,
     AppRoutingModule,
     SharedModule,
+    HttpClientModule,
     LucideAngularModule.pick(
       { Menu, 
         Package, 
