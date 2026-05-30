@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ProductoService } from '../../core/services/producto.service';
 import { Producto } from '../../core/class/models/productos';
+import {Router} from "@angular/router";
 @Component({
   selector: 'app-productos',
   templateUrl: './productos.component.html',
@@ -21,7 +22,8 @@ export class ProductosComponent implements OnInit {
   data: any[] = [];
 
   constructor(private productoService: ProductoService, 
-              private cdr: ChangeDetectorRef) {}
+              private cdr: ChangeDetectorRef,
+              private router: Router) {}
 
   ngOnInit(): void {
     this.cargarProductos();
@@ -48,4 +50,8 @@ export class ProductosComponent implements OnInit {
     }
   });
 }
+
+  onAddProduct(): void {
+    this.router.navigate(['/productos/nuevo']);
+  }
 }

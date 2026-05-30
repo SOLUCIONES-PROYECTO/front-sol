@@ -5,10 +5,12 @@ import { ProductosRoutingModule } from './productos-routing.module';
 import { ProductosComponent } from './productos.component';
 
 import { SharedModule } from '../../shared/shared.module';
+import { ProductoFormComponent } from './producto-form/producto-form.component';
 
 @NgModule({
   declarations: [
-    ProductosComponent
+    ProductosComponent,
+    ProductoFormComponent
   ],
   imports: [
     ProductosRoutingModule,

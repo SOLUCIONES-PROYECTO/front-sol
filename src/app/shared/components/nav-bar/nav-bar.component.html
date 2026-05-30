@@ -1,20 +1,68 @@
 <nav class="bg-[#1F090A] w-full px-6 py-4 shadow-md">
   <div class="flex items-center justify-between">
 
-    <!-- Logo o nombre -->
-    <img 
-        src="/img/logo.png" 
-        alt="Logo Bodega Yessy"
-        class="h-12 w-auto"
-    >
+    <!-- Logo -->
+    <img src="/img/logo.png" alt="Logo Bodega Yessy" class="h-12 w-auto cursor-pointer" routerLink="/home">
 
     <!-- Botón -->
-    <button
-    routerLink="/auth/login"
-      class="bg-white text-[#1E0909] font-semibold px-5 py-2 rounded-lg hover:opacity-90 transition"
-    >
+    @if (!usuario) {
+
+    <button routerLink="/auth/login"
+      class="bg-white text-[#1E0909] font-semibold px-5 py-2 rounded-lg hover:opacity-90 transition">
       Iniciar sesión
     </button>
+
+    }
+
+    @if (usuario) {
+
+    <div class="relative">
+
+      <button (click)="toggleMenu()" class="flex items-center gap-3 text-white px-4 py-2 rounded-xl transition">
+
+        <div class="w-9 h-9 rounded-full bg-white text-[#1F090A] flex items-center justify-center font-bold">
+          {{ usuario.nombre.charAt(0) }}
+        </div>
+
+        <div class="text-left">
+          <p class="font-medium text-sm">
+            {{ usuario.nombre }} {{ usuario.apellido }}
+          </p>
+        </div>
+
+        <span class="text-xs">▼</span>
+
+      </button>
+
+      @if (menuAbierto) {
+
+      <div class="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border overflow-hidden z-50">
+
+        <div class="px-4 py-3 bg-gray-50">
+
+          <p class="font-semibold text-gray-800">
+            {{ usuario.nombre }} {{ usuario.apellido }}
+          </p>
+
+          <p class="text-sm text-gray-500">
+            {{ usuario.correo }}
+          </p>
+
+        </div>
+
+        <button (click)="logout()" class="w-full text-left px-4 py-3 hover:bg-red-50 text-red-600 transition">
+
+          Cerrar sesión
+
+        </button>
+
+      </div>
+
+      }
+
+    </div>
+
+    }
 
   </div>
 </nav>

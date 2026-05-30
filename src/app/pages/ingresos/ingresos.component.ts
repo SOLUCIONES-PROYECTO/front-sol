@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import {DocEntrada} from "../../core/class/models/docentrada";
+import {IngresosService} from "../../core/services/ingresos.service";
 
 @Component({
   selector: 'app-ingresos',

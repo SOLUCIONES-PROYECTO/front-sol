@@ -1,65 +1,89 @@
-<main class="animacion-bienvenida max-w-6xl mx-auto w-full px-12 py-16 flex flex-col items-center justify-center">
-  <div class="flex flex-col md:flex-row items-center justify-center gap-x-12 gap-y-8 mb-8 w-full">
-    <div class="border-t-[6px] border-b-[6px] border-[#B91C1C] py-4 md:w-1/2 flex justify-center md:justify-end">
-      <h1 class="text-4xl md:text-5xl font-black text-black tracking-wider text-center md:text-right">BIENVENIDOS A</h1>
+<main class="bg-[#F5F5F7] min-h-screen">
+  <!-- HERO -->
+  <section class="max-w-6xl mx-auto px-6 py-20">
+    <div class="grid md:grid-cols-2 gap-10 items-center">
+
+      <!-- Texto -->
+      <div>
+        <span class="text-[#B91C1C] font-semibold tracking-widest uppercase">
+          Bienvenidos
+        </span>
+
+        <h1 class="text-5xl md:text-6xl font-bold text-[#3B1511] mt-3">
+          Bodega Yessy
+        </h1>
+
+        <p class="text-gray-600 mt-6 text-lg leading-relaxed">
+          Gestionamos eficientemente nuestro inventario para garantizar el
+          abastecimiento constante de productos esenciales para nuestros
+          clientes.
+        </p>
+
+        <div class="flex flex-wrap gap-4 mt-8">
+          <button
+            routerLink="/auth/login"
+            class="bg-[#3B1511] hover:bg-[#2A0E0B] text-white px-8 py-3 rounded-lg font-medium transition">
+            Ingresar
+          </button>
+
+          <button
+            routerLink="/auth/register"
+            class="border-2 border-[#3B1511] text-[#3B1511] hover:bg-[#3B1511] hover:text-white px-8 py-3 rounded-lg font-medium transition">
+            Crear Cuenta
+          </button>
+        </div>
+      </div>
+
+      <!-- Imagen -->
+      <div class="flex justify-center">
+        <img
+          src="/img/logo.png"
+          alt="Bodega Yessy"
+          class="w-72 md:w-96 drop-shadow-lg">
+      </div>
+
     </div>
-    <div class="md:w-1/2">
-      <h2 class="text-5xl md:text-6xl font-normal text-black tracking-wide font-serif">Bodega</h2>
-      <p class="text-2xl font-medium text-[#B91C1C] mt-2 tracking-wide font-serif">Yessy</p>
+  </section>
+
+  <!-- INFORMACIÓN -->
+  <section class="max-w-6xl mx-auto px-6 pb-20">
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <div class="bg-white p-6 rounded-xl shadow-sm border">
+        <h3 class="text-[#3B1511] font-bold text-lg mb-4">
+          Nuestra Empresa
+        </h3>
+
+        <p class="text-gray-600 text-sm leading-relaxed text-justify">
+          Bodega Yessy, ubicada en San Martín de Porres, ofrece una amplia
+          variedad de productos de primera necesidad. Contamos con procesos
+          tecnológicos que optimizan la gestión del inventario.
+        </p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-sm border">
+        <h3 class="text-[#3B1511] font-bold text-lg mb-4">
+          Nuestra Visión
+        </h3>
+
+        <p class="text-gray-600 text-sm leading-relaxed text-justify">
+          Ser la bodega líder en San Martín de Porres por nuestra eficiencia
+          operativa y excelencia en la gestión de inventarios.
+        </p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-sm border">
+        <h3 class="text-[#3B1511] font-bold text-lg mb-4">
+          Nuestra Misión
+        </h3>
+
+        <p class="text-gray-600 text-sm leading-relaxed text-justify">
+          Garantizar el abastecimiento constante de productos de consumo
+          diario, optimizando nuestra operatividad y la satisfacción del
+          cliente.
+        </p>
+      </div>
+
     </div>
-  </div>
-  
-  <div class="flex gap-4 mt-8">
-    <button class="bg-[#93786E] hover:bg-[#80645B] text-white text-sm px-6 py-2 rounded-lg shadow-sm font-medium transition-all active:scale-95 duration-150">
-      Ingresar
-    </button>
-    <button class="bg-[#3B1511] hover:bg-[#2A0E0B] text-white text-sm px-6 py-2 rounded-lg shadow-sm font-medium transition-all active:scale-95 duration-150">
-      Crear Cuenta
-    </button>
-  </div>
+  </section>
 </main>
-
-<section class="max-w-6xl mx-auto w-full px-12 py-12 grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-gray-200">
-  <div class="flex flex-col pr-4">
-    <h3 class="font-bold text-xs tracking-wider text-gray-700 uppercase mb-3 font-sans">NUESTRA EMPRESA</h3>
-    <p class="text-sm text-gray-600 leading-relaxed text-justify font-light">
-      Bodega Yessy, ubicada en San Martín de Porres, ofrece una amplia variedad de productos de primera necesidad. Contamos con un equipo especializado en ventas y control de almacén, enfocados en optimizar la gestión de nuestro inventario mediante procesos tecnológicos que garantizan un abastecimiento eficiente.
-    </p>
-  </div>
-  <div class="md:border-l md:border-gray-300 md:pl-12 flex flex-col gap-8">
-    <div>
-      <h3 class="font-bold text-xs tracking-wider text-gray-700 uppercase mb-2 font-sans">NUESTRA VISIÓN</h3>
-      <p class="text-sm text-gray-600 leading-relaxed text-justify font-light">Ser la bodega líder en San Martín de Porres por nuestra eficiencia operativa y excelencia en la gestión de inventarios.</p>
-    </div>
-    <div>
-      <h3 class="font-bold text-xs tracking-wider text-gray-700 uppercase mb-2 font-sans">NUESTRA MISIÓN</h3>
-      <p class="text-sm text-gray-600 leading-relaxed text-justify font-light">Garantizar el abastecimiento constante de productos de consumo diario, optimizando nuestra operatividad y la satisfacción del cliente.</p>
-    </div>
-  </div>
-</section>
-
-<footer class="bg-[#1A1A1A] text-white py-12 mt-16 w-full">
-  <div class="max-w-6xl mx-auto px-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-    <div>
-      <h4 class="font-bold text-lg mb-4 text-[#B91C1C]">Bodega Yessy</h4>
-      <p class="text-gray-400 text-sm">Tu aliado de confianza en San Martín de Porres.</p>
-    </div>
-    <div>
-      <h4 class="font-bold text-lg mb-4">Menú</h4>
-      <ul class="text-gray-400 text-sm space-y-2">
-        <li><a href="#" class="hover:text-white transition-colors">Inicio</a></li>
-        <li><a href="#" class="hover:text-white transition-colors">Productos</a></li>
-        <li><a href="#" class="hover:text-white transition-colors">Mi Cuenta</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4 class="font-bold text-lg mb-4">Contacto</h4>
-      <a href="https://wa.me/51991589177" target="_blank" class="inline-block bg-[#25D366] hover:bg-[#128C7E] text-white px-4 py-2 rounded-full font-medium transition-all active:scale-95">
-        💬 Escríbenos al WhatsApp
-      </a>
-    </div>
-  </div>
-  <div class="text-center mt-8 text-gray-600 text-xs border-t border-gray-800 pt-8">
-    © 2026 Bodega Yessy. Todos los derechos reservados.
-  </div>
-</footer>

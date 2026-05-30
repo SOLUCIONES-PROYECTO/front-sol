@@ -9,6 +9,11 @@ const routes: Routes = [
       import('./pages/auth/auth.module').then((m) => m.AuthModule),
   },
   {
+    path: 'home',
+    loadChildren: () =>
+      import('./pages/home/home.module').then((m) => m.HomeComponentModule),
+  },
+  {
     path: '',
     component: DashboardLayoutComponent,
     children: [

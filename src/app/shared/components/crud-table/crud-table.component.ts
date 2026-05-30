@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-crud-table',
@@ -22,4 +22,5 @@ export class CrudTableComponent {
 
   @Input() data: any[] = [];
 
+  @Output() onAdd = new EventEmitter<void>();
 }

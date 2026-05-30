@@ -21,6 +21,11 @@ export class LoginFacade {
 
       next: () => {
 
+        this.authService.setUser({
+    nombre: 'Angie',
+    apellido: 'Pérez',
+    correo: credentials.email
+  });
         this.authService.login();
         this.router.navigate(['/']);
       },
