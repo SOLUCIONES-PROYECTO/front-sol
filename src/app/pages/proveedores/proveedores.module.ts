@@ -5,10 +5,12 @@ import { ProveedoresRoutingModule } from './proveedores-routing.module';
 import { ProveedoresComponent } from './proveedores.component';
 
 import { SharedModule } from '../../shared/shared.module';
+import { ProveedoresFormComponent } from './proveedores-form.component/proveedores-form.component';
 
 @NgModule({
   declarations: [
-    ProveedoresComponent
+    ProveedoresComponent,
+    ProveedoresFormComponent
   ],
   imports: [
     ProveedoresRoutingModule,
