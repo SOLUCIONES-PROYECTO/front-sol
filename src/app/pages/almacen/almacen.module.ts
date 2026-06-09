@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { AlmacenRoutingModule } from './almacen-routing.module';
 import { AlmacenComponent } from './almacen.component';
-
-import { SharedModule } from '../../shared/shared.module';
+import {SharedModule} from "../../shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -16,4 +15,4 @@ import { SharedModule } from '../../shared/shared.module';
     SharedModule
   ]
 })
-export class AlmacenModule { }
+export class AlmacenModule {}

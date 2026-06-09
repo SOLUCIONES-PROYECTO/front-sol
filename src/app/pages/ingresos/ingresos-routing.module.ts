@@ -2,11 +2,16 @@ import { Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { IngresosComponent } from './ingresos.component';
+import { IngresosFormComponent } from './ingresos-form/ingresos-form.component';
 export const INGRESOS_ROUTES: Routes = [
   {
     path: '',
     component: IngresosComponent,
   },
+  {
+    path: 'nuevo',
+    component: IngresosFormComponent,
+  }
 ];
 
 @NgModule({

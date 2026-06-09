@@ -1,0 +1,173 @@
+<app-form-layout title="Registrar Egreso" (onBack)="Regresar()">
+
+  <!-- CONTENIDO PRINCIPAL (IZQUIERDA) -->
+  <div general class="space-y-6">
+    
+    <!-- Información General -->
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Información general</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-500">N° Documento</label>
+          <input type="text" placeholder="#007" class="w-full bg-white border border-gray-200 p-2.5 rounded-lg focus:ring-2 focus:ring-brown-500" />
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-500">Fecha de egreso</label>
+          <input type="date" class="w-full bg-white border border-gray-200 p-2.5 rounded-lg" />
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-500">Registrado por</label>
+          <select class="w-full bg-white border border-gray-200 p-2.5 rounded-lg appearance-none">
+            <option>Selecciona</option>
+          </select>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-500">Tipo de egreso</label>
+          <select class="w-full bg-white border border-gray-200 p-2.5 rounded-lg appearance-none">
+            <option>Selecciona</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Productos -->
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-bold text-[#1F090A]">Productos</h3>
+        <div class="flex gap-2">
+          <div class="relative">
+            <input type="text" placeholder="Buscar producto por código o nombre" class="pl-10 pr-4 py-2 border border-gray-200 rounded-lg w-64 text-sm" />
+          </div>
+          <button class="bg-[#531E1E] text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90">
+            + Agregar Producto
+          </button>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-gray-50 text-gray-500 font-semibold border-b border-gray-100">
+              <th class="px-4 py-3">Producto</th>
+              <th class="px-4 py-3">Código</th>
+              <th class="px-4 py-3">Categoría</th>
+              <th class="px-4 py-3">Cantidad</th>
+              <th class="px-4 py-3">Precio Unitario</th>
+              <th class="px-4 py-3">Total</th>
+              <th class="px-4 py-3"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-50 text-gray-600">
+            <!-- Fila de ejemplo 1 -->
+            <tr>
+              <td class="px-4 py-4">
+                <p class="font-medium text-gray-800">Galleta Oreo 154 g</p>
+                <span class="text-xs text-gray-400">GALE-0001</span>
+              </td>
+              <td class="px-4 py-4 text-xs text-gray-400">—</td>
+              <td class="px-4 py-4 text-xs font-medium text-gray-500">SNACK</td>
+              <td class="px-4 py-4">55</td>
+              <td class="px-4 py-4">S/. 1.50</td>
+              <td class="px-4 py-4">S/. 8.00</td>
+            </tr>
+            <!-- Fila de ejemplo 2 -->
+            <tr>
+              <td class="px-4 py-4">
+                <p class="font-medium text-gray-800">Leche Gloria Entera 1L</p>
+                <span class="text-xs text-gray-400">LECH-0005</span>
+              </td>
+              <td class="px-4 py-4 text-xs text-gray-500">CO-873-03</td>
+              <td class="px-4 py-4 text-xs font-medium text-gray-500">INSUMO</td>
+              <td class="px-4 py-4">67</td>
+              <td class="px-4 py-4">S/. 4.50</td>
+              <td class="px-4 py-4">S/. 17.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Información Adicional -->
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Información adicional</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-500">Método de pago</label>
+          <select class="w-full bg-white border border-gray-200 p-2.5 rounded-lg">
+            <option>Selecciona</option>
+          </select>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-500">Estado de pago</label>
+          <select class="w-full bg-white border border-gray-200 p-2.5 rounded-lg">
+            <option>Selecciona</option>
+          </select>
+        </div>
+      </div>
+      <div class="flex flex-col gap-1.5">
+        <label class="text-sm font-medium text-gray-500">Descripcion sobre alguna incidencia</label>
+        <textarea rows="3" placeholder="Ingrese una breve descripcion" class="w-full border border-gray-200 rounded-lg p-3"></textarea>
+      </div>
+    </section>
+  </div>
+
+  <!-- SIDEBAR (DERECHA) -->
+  <div sidebar class="space-y-6">
+    
+    <!-- Resumen de Egreso -->
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Resumen de egreso</h3>
+      <div class="space-y-4">
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-400">Total de productos</span>
+          <span class="font-semibold text-gray-800">3</span>
+        </div>
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-400">IGV (%)</span>
+          <span class="font-semibold text-gray-800">—</span>
+        </div>
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-400">Descuento</span>
+          <span class="font-semibold text-gray-800">—</span>
+        </div>
+        <hr class="border-gray-100" />
+        <div class="flex justify-between items-center pt-2">
+          <span class="text-gray-500 text-sm">Total de venta</span>
+          <span class="text-xl font-bold text-[#1F090A]">S/. 450.00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comprobante -->
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Comprobante</h3>
+      <div class="space-y-4">
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-500">N° de Comprobante</label>
+          <input type="text" placeholder="CO-3345-004" class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg text-gray-600" />
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-500">Nombre del cliente</label>
+          <input type="text" placeholder="Maricarmen Campos" class="w-full bg-white border border-gray-200 p-2.5 rounded-lg" />
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-500">Tipo de comprobante</label>
+          <select class="w-full border border-gray-200 p-2.5 rounded-lg">
+            <option>Selecciona</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACCIONES -->
+  <div actions>
+    <button class="px-8 py-2.5 rounded-lg border border-gray-300 text-gray-500 font-medium hover:bg-gray-50 transition-colors">
+      Cancelar
+    </button>
+    <button class="px-8 py-2.5 rounded-lg bg-[#531E1E] text-white font-medium hover:opacity-95 transition-colors">
+      Registrar Egreso
+    </button>
+  </div>
+
+</app-form-layout>

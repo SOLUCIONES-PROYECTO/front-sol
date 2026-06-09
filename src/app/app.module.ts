@@ -26,6 +26,7 @@ ChevronLeft,
 ChevronRight,
 Trash } from 'lucide-angular';
 
+
 @NgModule({
   declarations: [
     AppComponent,

@@ -10,7 +10,7 @@ import { Proveedor } from '../class/models/proveedores';
 })
 export class ProveedorService {
 
-  private baseUrl = environment.URL_BACKEND + '/proveedor';
+  private baseUrl = environment.URL_BACKEND + '/proveedores';
 
   constructor(private http: HttpClient) {}
 
