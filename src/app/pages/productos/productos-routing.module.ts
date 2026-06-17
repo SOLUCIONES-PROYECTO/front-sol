@@ -16,7 +16,7 @@ export const PRODUCTOS_ROUTES: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(PRODUCTOS_ROUTES)],
+  imports: [RouterModule.forChild(PRODUCTOS_ROUTES),],
   exports: [RouterModule],
 })
 export class ProductosRoutingModule { }

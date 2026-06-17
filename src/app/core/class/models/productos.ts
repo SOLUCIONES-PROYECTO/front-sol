@@ -1,108 +1,117 @@
 export class Producto {
 
   idproducto: number;
+
   nombre: string;
   descripcion: string;
   categoria: string;
-  proveedor_idProveedor: number;
+
+  // Para Request
+  idProveedor: number;
+  idEstado: number;
+  idUnidadMedida: number;
+
+  // Para Response
+  proveedor: string;
+  estado: string;
+  unidadMedida: string;
+
   precioCompra: number;
   precioVenta: number;
+
   stockMinimo: number;
   stockActual: number;
+
   imagen: string;
+
   margen: number;
   ganancia: number;
-  estadoProducto_idEstadoProducto: number;
-  unidadMedida_idUnidadMedida: number;
 
   constructor(producto: Partial<Producto> = {}) {
 
-    this.idproducto = producto.idproducto || 0;
-    this.nombre = producto.nombre || '';
-    this.descripcion = producto.descripcion || '';
-    this.categoria = producto.categoria || '';
-    this.proveedor_idProveedor = producto.proveedor_idProveedor || 0;
-    this.precioCompra = producto.precioCompra || 0;
-    this.precioVenta = producto.precioVenta || 0;
-    this.stockMinimo = producto.stockMinimo || 0;
-    this.stockActual = producto.stockActual || 0;
-    this.imagen = producto.imagen || '';
-    this.margen = producto.margen || 0;
-    this.ganancia = producto.ganancia || 0;
-    this.estadoProducto_idEstadoProducto =
-      producto.estadoProducto_idEstadoProducto || 0;
-    this.unidadMedida_idUnidadMedida =
-      producto.unidadMedida_idUnidadMedida || 0;
+    this.idproducto = producto.idproducto ?? 0;
+
+    this.nombre = producto.nombre ?? '';
+    this.descripcion = producto.descripcion ?? '';
+    this.categoria = producto.categoria ?? '';
+
+    this.idProveedor = producto.idProveedor ?? 0;
+    this.idEstado = producto.idEstado ?? 0;
+    this.idUnidadMedida = producto.idUnidadMedida ?? 0;
+
+    this.proveedor = producto.proveedor ?? '';
+    this.estado = producto.estado ?? '';
+    this.unidadMedida = producto.unidadMedida ?? '';
+
+    this.precioCompra = producto.precioCompra ?? 0;
+    this.precioVenta = producto.precioVenta ?? 0;
+
+    this.stockMinimo = producto.stockMinimo ?? 0;
+    this.stockActual = producto.stockActual ?? 0;
+
+    this.imagen = producto.imagen ?? '';
+
+    this.margen = producto.margen ?? 0;
+    this.ganancia = producto.ganancia ?? 0;
   }
 
   static fromJson(producto: unknown): Producto {
 
-    const casted = producto as Record<string, unknown>;
+  const casted = producto as Record<string, unknown>;
 
-    return new Producto({
+  return new Producto({
 
-      idproducto: casted['idproducto'] as number,
+    idproducto: casted['idproducto'] as number,
 
-      nombre: casted['nombre'] as string,
-      descripcion: casted['descripcion'] as string,
-      categoria: casted['categoria'] as string,
+    nombre: casted['nombre'] as string,
+    descripcion: casted['descripcion'] as string,
+    categoria: casted['categoria'] as string,
 
-      proveedor_idProveedor:
-        casted['proveedor_idProveedor'] as number,
+    proveedor: casted['proveedor'] as string,
+    estado: casted['estado'] as string,
+    unidadMedida: casted['unidadMedida'] as string,
 
-      precioCompra: casted['precioCompra'] as number,
-      precioVenta: casted['precioVenta'] as number,
+    precioCompra: casted['precioCompra'] as number,
+    precioVenta: casted['precioVenta'] as number,
 
-      stockMinimo: casted['stockMinimo'] as number,
-      stockActual: casted['stockActual'] as number,
+    stockMinimo: casted['stockMinimo'] as number,
+    stockActual: casted['stockActual'] as number,
 
-      imagen: casted['imagen'] as string,
+    imagen: casted['imagen'] as string,
 
-      margen: casted['margen'] as number,
-      ganancia: casted['ganancia'] as number,
+    margen: casted['margen'] as number,
+    ganancia: casted['ganancia'] as number
+  });
 
-      estadoProducto_idEstadoProducto:
-        casted['estadoProducto_idEstadoProducto'] as number,
+}
 
-      unidadMedida_idUnidadMedida:
-        casted['unidadMedida_idUnidadMedida'] as number,
+static toJson(producto: Producto): unknown {
 
-    });
+  return {
 
-  }
+    nombre: producto.nombre,
+    descripcion: producto.descripcion,
+    categoria: producto.categoria,
 
-  static toJson(producto: Producto): unknown {
+    idProveedor: producto.idProveedor,
 
-    return {
+    precioCompra: producto.precioCompra,
+    precioVenta: producto.precioVenta,
 
-      idproducto: producto.idproducto,
+    stockMinimo: producto.stockMinimo,
+    stockActual: producto.stockActual,
 
-      nombre: producto.nombre,
-      descripcion: producto.descripcion,
-      categoria: producto.categoria,
+    idEstado: producto.idEstado,
 
-      proveedor_idProveedor:
-        producto.proveedor_idProveedor,
+    idUnidadMedida: producto.idUnidadMedida,
 
-      precioCompra: producto.precioCompra,
-      precioVenta: producto.precioVenta,
+    imagen: producto.imagen,
 
-      stockMinimo: producto.stockMinimo,
-      stockActual: producto.stockActual,
+    margen: producto.margen,
+    ganancia: producto.ganancia
 
-      imagen: producto.imagen,
+  };
 
-      margen: producto.margen,
-      ganancia: producto.ganancia,
-
-      estadoProducto_idEstadoProducto:
-        producto.estadoProducto_idEstadoProducto,
-
-      unidadMedida_idUnidadMedida:
-        producto.unidadMedida_idUnidadMedida,
-
-    };
-
-  }
+}
 
 }

@@ -11,13 +11,14 @@ import {Router} from "@angular/router";
 export class ProductosComponent implements OnInit {
 
   columns = [
-    { key: 'producto', label: 'Producto' },
-    { key: 'codigo', label: 'Código' },
-    { key: 'categoria', label: 'Categoria' },
-    { key: 'unidadMedida', label: 'Unidad de Medida' },
-    { key: 'precioVenta', label: 'Precio de Venta' },
-    { key: 'estado', label: 'Estado', type: 'badge' },
-  ];
+  { key: 'producto', label: 'Producto' },
+  { key: 'codigo', label: 'Código' },
+  { key: 'categoria', label: 'Categoria' },
+  { key: 'proveedor', label: 'Proveedor' },
+  { key: 'unidadMedida', label: 'Unidad de Medida' },
+  { key: 'precioVenta', label: 'Precio Venta' },
+  { key: 'estado', label: 'Estado', type: 'badge' }
+];
 
   data: any[] = [];
 
@@ -30,25 +31,30 @@ export class ProductosComponent implements OnInit {
   }
 
   cargarProductos(): void {
+
   this.productoService.listarProductos().subscribe({
+
     next: (productos) => {
 
       this.data = productos.map((p: Producto) => ({
         producto: p.nombre,
         codigo: p.idproducto,
         categoria: p.categoria,
-        unidadMedida: p.unidadMedida_idUnidadMedida,
+        unidadMedida: p.unidadMedida,
         precioVenta: p.precioVenta,
-        estado: p.estadoProducto_idEstadoProducto
+        estado: p.estado,
+        proveedor: p.proveedor
       }));
 
-      this.cdr.detectChanges();  
-      console.log('DATA TABLA:', this.data);
+      this.cdr.detectChanges();
+      console.log(this.data);
     },
+
     error: (error) => {
-      console.error('Error al obtener productos', error);
+      console.error(error);
     }
   });
+
 }
 
   onAddProduct(): void {

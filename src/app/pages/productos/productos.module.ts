@@ -6,6 +6,7 @@ import { ProductosComponent } from './productos.component';
 
 import { SharedModule } from '../../shared/shared.module';
 import { ProductoFormComponent } from './producto-form/producto-form.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { ProductoFormComponent } from './producto-form/producto-form.component';
   imports: [
     ProductosRoutingModule,
     CommonModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ]
 })
 export class ProductosModule { }
