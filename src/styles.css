@@ -1,3 +1,38 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import "tailwindcss";
+
+@theme {
+  /* Paleta principal */
+  --color-primary:     #1E0909;
+  --color-primary-100: #EEE6E5;
+  --color-primary-200: #D3ACAA;
+  --color-primary-300: #926A69;
+  --color-primary-400: #D56262;
+  --color-primary-500: #A32924;
+  --color-primary-600: #531E1E;
+  --color-primary-700: #1E0909;
+
+  /* Badges de estado */
+  --color-badge-recibido-bg:        #FAE0D6;
+  --color-badge-recibido-text:      #A0522D;
+
+  --color-badge-encamino-bg:        #E8E8E8;
+  --color-badge-encamino-text:      #6B7280;
+
+  --color-badge-pagado-bg:          #D4EDDA;
+  --color-badge-pagado-text:        #276749;
+
+  --color-badge-disponible-bg:      #D4EDDA;
+  --color-badge-disponible-text:    #276749;
+
+  --color-badge-agotado-bg:       #EFEFEF;
+  --color-badge-agotado-text:     #9CA3AF;
+
+  --color-badge-transferencia-bg:   #FEF9C3;
+  --color-badge-transferencia-text: #92730A;
+
+  --color-badge-yape-bg:            #EDE9FE;
+  --color-badge-yape-text:          #6D28D9;
+
+  --color-badge-efectivo-bg:        #D4EDDA;
+  --color-badge-efectivo-text:      #276749;
+}

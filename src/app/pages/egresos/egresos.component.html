@@ -1,9 +1,10 @@
+
 <app-crud-table
-  title="Egresos"
-  addButtonText="Añadir Egreso"
-  [showExportButton]="true"
+  [title]="'Egresos'"
   [columns]="columns"
   [data]="data"
-  (onAdd)="agregarEgreso()"
->
+  [filters]="filters"
+  (searchChange)="buscar($event)"
+  (filterChange)="filtrar($event)"
+  (onAdd)="agregarEgreso()">
 </app-crud-table>

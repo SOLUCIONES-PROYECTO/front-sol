@@ -1,0 +1,68 @@
+<div class="relative inline-block w-fit">
+
+  <button
+    (click)="toggleFilters()"
+    class="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 bg-white hover:bg-gray-50 text-sm font-medium text-gray-700 transition">
+
+    <lucide-icon name="filter" class="w-4 h-4 text-[#531E1E]"></lucide-icon>
+    <span>Filtros</span>
+
+    <span
+      *ngIf="activeFilterCount > 0"
+      class="bg-[#531E1E] text-white text-xs font-semibold rounded-full w-5 h-5 flex items-center justify-center">
+      {{ activeFilterCount }}
+    </span>
+
+    <lucide-icon
+      [name]="showFilters ? 'chevron-up' : 'chevron-down'"
+      class="w-4 h-4 text-gray-400">
+    </lucide-icon>
+  </button>
+
+  <div
+    *ngIf="showFilters"
+    class="absolute top-12 left-0 z-50 w-64 bg-white border border-gray-200 rounded-xl shadow-lg p-4">
+
+    <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-100">
+      <span class="text-sm font-semibold text-gray-800">Filtros</span>
+      <button
+        *ngIf="activeFilterCount > 0"
+        (click)="clearFilters()"
+        class="text-xs text-[#531E1E] hover:underline font-medium">
+        Limpiar
+      </button>
+    </div>
+
+    <div
+      *ngFor="let filter of filters; let last = last"
+      [class.mb-3]="!last" [class.pb-3]="!last"
+      [class.border-b]="!last" [class.border-gray-100]="!last">
+
+      <button
+        (click)="toggleSection(filter.key)"
+        class="w-full flex items-center justify-between py-1 text-sm font-medium text-gray-700">
+        <span>{{ filter.label }}</span>
+        <lucide-icon
+          [name]="expandedFilter === filter.key ? 'chevron-up' : 'chevron-down'"
+          class="w-4 h-4 text-gray-400">
+        </lucide-icon>
+      </button>
+
+      <div *ngIf="expandedFilter === filter.key" class="pl-2 mt-2 space-y-2">
+        <label
+          *ngFor="let option of filter.options"
+          class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+          <input
+            type="radio"
+            [name]="filter.key"
+            [value]="option.value"
+            [checked]="selectedValues[filter.key] === option.value"
+            (change)="onFilter(option.value, filter.key)"
+            class="accent-[#531E1E] w-3.5 h-3.5">
+          {{ option.label }}
+        </label>
+      </div>
+
+    </div>
+  </div>
+</div>

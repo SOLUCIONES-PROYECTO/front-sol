@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { EgresosService } from '../../core/services/egresos.service';
 import { DocSalida } from '../../core/class/models/docsalida';
 import { Router } from '@angular/router';
+import { SidebarCounterService } from '../../shared/services/sidebar-counter.service';
 @Component({
   selector: 'app-egresos',
   standalone: false,
@@ -14,41 +15,115 @@ export class EgresosComponent implements OnInit {
     { key: 'documento', label: 'N° Documento' },
     { key: 'fecha', label: 'Fecha de egreso' },
     { key: 'cliente', label: 'Cliente' },
-    { key: 'metodoPago', label: 'Método de Pago' },
+    { key: 'metodoPago', label: 'Método de Pago', type: 'badge'},
+    { key: 'tipoDocSalida', label: 'Tipo de Salida' },
     { key: 'total', label: 'Total' },
   ];
 
   data: any[] = [];
+  dataOriginal: any[] = [];
+  searchText = '';
+  filters = [
+    {
+      key: 'metodoPago',
+      label: 'Método de Pago',
+      options: [
+        { value: 'Yape', label: 'Yape' },
+        { value: 'Efectivo', label: 'Efectivo' },
+        { value: 'Transferencia', label: 'Transferencia' },
+      ]
+    },
+    {
+      key: 'tipoDocSalida',
+      label: 'Tipo de Salida',
+      options: [
+        { value: 'Boleta', label: 'Boleta' },
+        { value: 'Factura', label: 'Factura' },
+        { value: 'Ticket', label: 'Ticket' },
+        { value: 'Merma', label: 'Merma' },
+        { value: 'Uso Interno', label: 'Uso Interno' },
+        { value: 'Devolucion', label: 'Devolucion' },
+      ]
+    },
+  ];
+  activeFilters: Record<string, string> = {};
 
   constructor(
     private egresosService: EgresosService,
     private cdr: ChangeDetectorRef,
-    private router: Router
-  ) {}
+    private router: Router,
+    private sidebarCounter: SidebarCounterService,
+  ) { }
 
   ngOnInit(): void {
     this.cargarEgresos();
   }
 
   cargarEgresos(): void {
-    this.egresosService.listarEgresos().subscribe({
-      next: (egresos) => {
 
+    this.egresosService.listarEgresos().subscribe({
+
+      next: (egresos) => {
         this.data = egresos.map((d: DocSalida) => ({
           documento: d.numeroDocumento,
           fecha: d.fechaEgreso,
-          cliente: d.cliente_idcliente, 
-          metodoPago: d.metododepago_idmetododepago,
-          total: d.totalSalida
+          cliente: d.cliente,
+          metodoPago: d.metodoPago,
+          tipoDocSalida: d.tipoDocSalida,
+          total: new Intl.NumberFormat('es-PE', {
+            style: 'currency',
+            currency: 'PEN'
+          }).format(d.totalSalida),
         }));
+        this.dataOriginal = [...this.data];
+
+        this.sidebarCounter.egresosCount.next(
+          egresos.length
+        );
 
         this.cdr.detectChanges();
         console.log('DATA EGRESOS:', this.data);
+
       },
+
       error: (err) => {
         console.error('Error al obtener egresos', err);
       }
     });
+
+  }
+
+  buscar(texto: string): void {
+    this.searchText = texto.toLowerCase();
+    this.aplicarFiltros();
+  }
+
+  filtrar(filter: { key: string; value: string }): void {
+    this.activeFilters[filter.key] = filter.value;
+    this.aplicarFiltros();
+  }
+
+  aplicarFiltros(): void {
+    this.data = this.dataOriginal.filter(item => {
+      const cumpleBusqueda =
+        Object.values(item)
+          .join(' ')
+          .toLowerCase()
+          .includes(this.searchText);
+
+      const cumpleFiltros =
+        Object.entries(this.activeFilters).every(
+          ([key, value]) => {
+
+            if (!value) return true;
+
+            return item[key] === value;
+
+          }
+        );
+      return cumpleBusqueda && cumpleFiltros;
+    });
+
   }
   agregarEgreso(): void {
     this.router.navigate(['/egresos/nuevo']);

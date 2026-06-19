@@ -68,8 +68,13 @@ export class Producto {
     categoria: casted['categoria'] as string,
 
     proveedor: casted['proveedor'] as string,
+    idProveedor: casted['idProveedor'] as number,         // 👈 nuevo
+
     estado: casted['estado'] as string,
+    idEstado: casted['idEstado'] as number,                // 👈 nuevo
+
     unidadMedida: casted['unidadMedida'] as string,
+    idUnidadMedida: casted['idUnidadMedida'] as number,    // 👈 nuevo
 
     precioCompra: casted['precioCompra'] as number,
     precioVenta: casted['precioVenta'] as number,

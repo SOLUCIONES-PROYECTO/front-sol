@@ -1,10 +1,15 @@
 <app-crud-table
-  title="Productos"
-  addButtonText="Añadir Producto"
-  [showExportButton]="true"
+  [title]="'Productos'"
   [columns]="columns"
   [data]="data"
+  [filters]="filters"
+  keyField="codigo"
+  [canDeleteItem]="puedeEliminar"
+  cannotDeleteMessage="No puedes eliminar productos en estado Disponible. Cambia su estado a 'No Disponible' primero."
+  (searchChange)="buscar($event)"
+  (filterChange)="filtrar($event)"
   (onAdd)="onAddProduct()"
->
+  (onDelete)="eliminarProductos($event)"
+  (onEdit)="editarProducto($event)"
+  (onView)="verProducto($event)">
 </app-crud-table>
-

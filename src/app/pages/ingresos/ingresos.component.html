@@ -1,9 +1,10 @@
+
 <app-crud-table
-  title="Ingresos"
-  addButtonText="Añadir Ingreso"
-  [showExportButton]="true"
+  [title]="'Ingresos'"
   [columns]="columns"
   [data]="data"
-  (onAdd)="onAddIngresos()"
->
+  [filters]="filters"
+  (searchChange)="buscar($event)"
+  (filterChange)="filtrar($event)"
+  (onAdd)="onAddIngresos()">
 </app-crud-table>

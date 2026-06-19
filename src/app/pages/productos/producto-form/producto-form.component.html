@@ -1,35 +1,38 @@
-<app-form-layout title="Añadir Producto" (onBack)="Regresar()">
+<app-form-layout [title]="tituloFormulario" (onBack)="Regresar()">
 
   <div general class="space-y-8">
-    
+
     <section>
       <h3 class="text-xl font-bold mb-5 text-[#1F090A]">Información</h3>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
-        <div class="flex flex-col gap-2">
-          <label class="text-sm font-medium text-gray-700">Código del producto</label>
-          <input type="text" placeholder="CO-090-64" class="w-full bg-[#F3F4F9] border-none p-3 rounded-lg focus:ring-2 focus:ring-brown-500" />
-        </div>
-        <div class="flex flex-col gap-2">
-          <label class="text-sm font-medium text-gray-700">Categoría</label>
-          <select class="w-full bg-[#F3F4F9] border-none p-3 rounded-lg appearance-none">
-            <option>Selecciona</option>
-          </select>
-        </div>
+
         <div class="flex flex-col gap-2">
           <label class="text-sm font-medium text-gray-700">Nombre del Producto</label>
-          <input
-  type="text"
-  [(ngModel)]="producto.nombre"
-  class="w-full bg-[#F3F4F9] border-none p-3 rounded-lg"
-/>
-<p>{{ producto.nombre }}</p>
+          <input type="text" [(ngModel)]="producto.nombre" [disabled]="modoVista"
+            class="w-full bg-[#F3F4F9] border-none p-3 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
         </div>
+
         <div class="flex flex-col gap-2">
-          <label class="text-sm font-medium text-gray-700">Unidad de Medida</label>
-          <select class="w-full bg-[#F3F4F9] border-none p-3 rounded-lg appearance-none">
-            <option>Selecciona</option>
+          <label class="text-sm font-medium text-gray-700">Categoría</label>
+          <select [(ngModel)]="producto.categoria" [disabled]="modoVista"
+            class="w-full bg-[#F3F4F9] border-none p-3 rounded-lg appearance-none disabled:opacity-60 disabled:cursor-not-allowed">
+            <option value="">Selecciona</option>
+            <option value="Abarrotes">Abarrotes</option>
+            <option value="Lácteos">Lácteos</option>
+            <option value="Limpieza">Limpieza</option>
+            <option value="Bebidas">Bebidas</option>
           </select>
         </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-medium text-gray-700">Unidad de Medida</label>
+          <select [(ngModel)]="producto.idUnidadMedida" [disabled]="modoVista"
+            class="w-full bg-[#F3F4F9] border-none p-3 rounded-lg appearance-none disabled:opacity-60 disabled:cursor-not-allowed">
+            <option [ngValue]="0">Selecciona</option>
+            <option *ngFor="let u of unidadesMedida" [ngValue]="u.idUnidadMedida">{{ u.nombre }}</option>
+          </select>
+        </div>
+
       </div>
     </section>
 
@@ -39,16 +42,15 @@
           <h3 class="text-xl font-bold mb-5">Información del producto</h3>
           <div class="flex flex-col gap-2">
             <label class="text-sm font-medium text-gray-700">Stock mínimo</label>
-            <input
-  type="number"
-  [(ngModel)]="producto.stockMinimo"
-  class="w-full bg-white border border-gray-200 p-3 rounded-lg"
-/>
+            <input type="number" [(ngModel)]="producto.stockMinimo" [disabled]="modoVista"
+              class="w-full bg-white border border-gray-200 p-3 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
           </div>
           <div class="flex flex-col gap-2 mt-4">
             <label class="text-sm font-medium text-gray-700">Proveedor</label>
-            <select class="w-full bg-white border border-gray-200 p-3 rounded-lg appearance-none">
-              <option>Selecciona</option>
+            <select [(ngModel)]="producto.idProveedor" [disabled]="modoVista"
+              class="w-full bg-white border border-gray-200 p-3 rounded-lg appearance-none disabled:opacity-60 disabled:cursor-not-allowed">
+              <option [ngValue]="0">Selecciona</option>
+              <option *ngFor="let p of proveedores" [ngValue]="p.idProveedor">{{ p.descripcion }}</option>
             </select>
           </div>
         </section>
@@ -57,8 +59,10 @@
           <h3 class="text-xl font-bold mb-5">Estado de Producto</h3>
           <div class="flex flex-col gap-2">
             <label class="text-sm font-medium text-gray-700">Estado</label>
-            <select class="w-full bg-[#F3F4F9] border-none p-3 rounded-lg appearance-none">
-              <option>Selecciona</option>
+            <select [(ngModel)]="producto.idEstado" [disabled]="modoVista"
+              class="w-full bg-[#F3F4F9] border-none p-3 rounded-lg appearance-none disabled:opacity-60 disabled:cursor-not-allowed">
+              <option [ngValue]="0">Selecciona</option>
+              <option *ngFor="let e of estados" [ngValue]="e.idEstadoProducto">{{ e.nombre }}</option>
             </select>
           </div>
         </section>
@@ -66,20 +70,21 @@
 
       <div class="flex flex-col">
         <h3 class="text-xl font-bold mb-5">Imagen</h3>
-        <div class="border-2 border-dashed border-gray-200 rounded-xl p-10 flex flex-col items-center justify-center bg-white h-full min-h-[250px]">
-          <button class="bg-[#531E1E] text-white px-6 py-2.5 rounded-lg mb-2 hover:opacity-90 transition">Añadir Archivo</button>
-          <p class="text-xs text-gray-400">O arrastrar archivo</p>
+        <div
+          class="border-2 border-dashed border-gray-200 rounded-xl p-10 flex flex-col items-center justify-center bg-white h-full min-h-[250px]">
+          <button *ngIf="!modoVista"
+            class="bg-[#531E1E] text-white px-6 py-2.5 rounded-lg mb-2 hover:opacity-90 transition">Añadir
+            Archivo</button>
+          <p *ngIf="!modoVista" class="text-xs text-gray-400">O arrastrar archivo</p>
+          <p *ngIf="modoVista" class="text-xs text-gray-400">Sin imagen</p>
         </div>
       </div>
     </div>
 
     <section>
       <label class="text-sm font-medium text-gray-700 block mb-2">Descripción del producto</label>
-      <textarea
-  rows="5"
-  [(ngModel)]="producto.descripcion"
-  class="w-full border border-gray-200 rounded-lg p-3">
-</textarea>
+      <textarea rows="5" [(ngModel)]="producto.descripcion" [disabled]="modoVista"
+        class="w-full border border-gray-200 rounded-lg p-3 disabled:opacity-60 disabled:cursor-not-allowed"></textarea>
     </section>
   </div>
 
@@ -88,40 +93,38 @@
     <div class="grid grid-cols-2 gap-4">
       <div class="flex flex-col gap-2">
         <label class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Precio Compra</label>
-        <input
-  type="number"
-  [(ngModel)]="producto.precioCompra"
-  class="w-full border border-gray-200 p-2.5 rounded-lg"
-/>
+        <input type="number" [(ngModel)]="producto.precioCompra" [disabled]="modoVista"
+          (ngModelChange)="recalcularPrecios()"
+          class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
       </div>
       <div class="flex flex-col gap-2">
         <label class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Precio Venta</label>
-        <input
-  type="number"
-  [(ngModel)]="producto.precioVenta"
-  class="w-full border border-gray-200 p-2.5 rounded-lg"
-/>
-</div>
+        <input type="number" [(ngModel)]="producto.precioVenta" [disabled]="modoVista"
+          (ngModelChange)="recalcularPrecios()"
+          class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+      </div>
       <div class="flex flex-col gap-2">
         <label class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Margen</label>
-        <input type="text" class="w-full border border-gray-200 p-2.5 rounded-lg bg-gray-50" />
+        <input type="text" [(ngModel)]="producto.margen" disabled
+          class="w-full border border-gray-200 p-2.5 rounded-lg bg-gray-50 disabled:opacity-60" />
       </div>
       <div class="flex flex-col gap-2">
         <label class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Ganancia</label>
-        <input type="text" class="w-full border border-gray-200 p-2.5 rounded-lg bg-gray-50" />
+        <input type="text" [(ngModel)]="producto.ganancia" disabled
+          class="w-full border border-gray-200 p-2.5 rounded-lg bg-gray-50 disabled:opacity-60" />
       </div>
     </div>
   </div>
 
   <div actions>
-    <button class="px-6 py-2.5 rounded-lg border border-[#531E1E] text-[#531E1E] font-medium hover:bg-gray-50 transition-colors">
-      Cancelar
-    </button>
     <button
-  (click)="guardar()"
-  class="px-6 py-2.5 rounded-lg bg-[#531E1E] text-white">
-  Guardar
-</button>
+      class="px-6 py-2.5 rounded-lg border border-[#531E1E] text-[#531E1E] font-medium hover:bg-gray-50 transition-colors"
+      (click)="Regresar()">
+      {{ modoVista ? 'Regresar' : 'Cancelar' }}
+    </button>
+    <button *ngIf="!modoVista" (click)="guardar()" class="px-6 py-2.5 rounded-lg bg-[#531E1E] text-white">
+      Guardar
+    </button>
   </div>
 
 </app-form-layout>

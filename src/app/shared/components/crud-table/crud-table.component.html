@@ -1,162 +1,163 @@
 <div class="bg-[#F5F5F7] min-h-screen p-6">
-    <div class="flex items-center justify-between mb-6">
+
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-3xl font-bold text-[#1F090A]">{{ title }}</h1>
+      <p class="text-gray-400 text-sm mt-1">Gestiona los registros de {{ title.toLowerCase() }}</p>
+    </div>
+
+    <button class="bg-[#531E1E] text-white px-5 py-2 rounded-md hover:opacity-90 transition flex items-center gap-2"
+      (click)="onAdd.emit()">
+      <lucide-icon name="plus" class="w-4 h-4"></lucide-icon>
+      {{ addButtonText }}
+    </button>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+
+    <div class="flex items-center justify-between mb-5">
+
+      <div class="flex items-center gap-3">
+        <app-filter-panel [filters]="filters" (filterChange)="filterChange.emit($event)">
+        </app-filter-panel>
+        <input type="text" placeholder="Buscar..." (input)="onSearch($event)"
+          class="border border-gray-200 rounded-lg px-4 py-2 text-sm w-64 focus:outline-none focus:ring-1 focus:ring-[#531E1E]">
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button class="border border-gray-200 p-2 rounded-md transition" [ngClass]="canEdit
+    ? 'bg-[var(--color-primary-100)] hover:bg-[var(--color-primary-200)] cursor-pointer'
+    : 'opacity-40 cursor-not-allowed'" [disabled]="!canEdit" (click)="requestEdit()">
+          <lucide-icon name="pencil" class="w-4 h-4 text-[#531E1E]"></lucide-icon>
+        </button>
+        <button class="border border-gray-200 p-2 rounded-md transition" [ngClass]="selectedKeys.size > 0
+      ? 'bg-red-50 border-red-200 hover:bg-red-100 cursor-pointer'
+      : 'opacity-40 cursor-not-allowed'" (click)="openDeleteModal()" [disabled]="selectedKeys.size === 0">
+          <lucide-icon name="trash" class="w-4 h-4"
+            [ngClass]="selectedKeys.size > 0 ? 'text-red-500' : 'text-[#531E1E]'">
+          </lucide-icon>
+        </button>
+      </div>
+
+    </div>
+
+    <div class="overflow-x-auto min-h-[420px]">
+      <table class="w-full">
+        <thead>
+          <tr class="border-b border-gray-200 text-gray-500 text-sm">
+            <th class="text-left py-3 px-2">
+              <input type="checkbox" [checked]="allSelected" (change)="toggleSelectAll()"
+                class="accent-[#531E1E] w-3.5 h-3.5 cursor-pointer">
+            </th>
+            <th *ngFor="let column of columns" class="text-left py-3 px-2 font-medium">{{ column.label }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data"
+  (click)="viewItem(item)"
+  class="border-b border-gray-100 hover:bg-gray-50 transition cursor-pointer">
+            <td class="py-4 px-2">
+  <input type="checkbox"
+    [checked]="isSelected(item)"
+    (click)="$event.stopPropagation()"
+    (change)="toggleSelect(item)"
+    class="accent-[#531E1E] w-3.5 h-3.5 cursor-pointer">
+</td>
+            <td *ngFor="let column of columns" class="py-4 px-2 text-sm text-gray-700">
+              <ng-container *ngIf="column.type === 'badge'; else normalValue">
+                <span class="px-3 py-1 rounded-full text-xs font-medium" [ngClass]="{
+                  'bg-[var(--color-badge-pagado-bg)]        text-[var(--color-badge-pagado-text)]':        item[column.key] === 'Pagado',
+                  'bg-[var(--color-badge-agotado-bg)]     text-[var(--color-badge-agotado-text)]':     item[column.key] === 'Agotado',
+                  'bg-[var(--color-badge-transferencia-bg)] text-[var(--color-badge-transferencia-text)]': item[column.key] === 'Transferencia',
+                  'bg-[var(--color-badge-yape-bg)]          text-[var(--color-badge-yape-text)]':          item[column.key] === 'Yape',
+                  'bg-[var(--color-badge-efectivo-bg)]      text-[var(--color-badge-efectivo-text)]':      item[column.key] === 'Efectivo',
+                  'bg-[var(--color-badge-disponible-bg)]      text-[var(--color-badge-disponible-text)]':  item[column.key] === 'Disponible',
+                  'bg-[var(--color-badge-recibido-bg)]      text-[var(--color-badge-recibido-text)]':  item[column.key] === 'Recibido'
+                }">
+                  {{ item[column.key] }}
+                </span>
+              </ng-container>
+              <ng-template #normalValue>{{ item[column.key] }}</ng-template>
+            </td>
+          </tr>
+          <!-- Estado vacío -->
+          <tr *ngIf="data.length === 0">
+            <td [attr.colspan]="columns.length + 1" class="py-16 text-center">
+              <div class="flex flex-col items-center gap-2 text-gray-400">
+                <lucide-icon name="search" class="w-8 h-8 opacity-40"></lucide-icon>
+                <p class="text-sm font-medium">Sin resultados</p>
+                <p class="text-xs">Intenta ajustar los filtros o la búsqueda</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="flex items-center justify-between border-t border-gray-100 px-4 py-4 mt-5">
+      <div class="flex flex-1 justify-between sm:hidden">
+        <button
+          class="relative inline-flex items-center rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Anterior</button>
+        <button
+          class="relative ml-3 inline-flex items-center rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Siguiente</button>
+      </div>
+
+      <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
-            <h1 class="text-3xl font-bold text-[#1F090A]">
-                {{ title }}
-            </h1>
-            <p class="text-gray-400 text-sm mt-1">
-                Gestiona los registros de {{ title.toLowerCase() }}
-            </p>
+          <p class="text-sm text-gray-500">
+            Mostrando
+            <span class="font-medium">{{ data.length === 0 ? 0 : 1 }}</span>
+            a
+            <span class="font-medium">{{ data.length }}</span>
+            de
+            <span class="font-medium">{{ data.length }}</span>
+            resultados
+          </p>
         </div>
-
-        <div class="flex items-center gap-3">
-
+        <div>
+          <nav aria-label="Pagination" class="isolate inline-flex -space-x-px rounded-md shadow-xs">
             <button
-                class="bg-[#531E1E] text-white px-5 py-2 rounded-md hover:opacity-90 transition flex items-center gap-2"
-                (click)="onAdd.emit()">
-                <lucide-icon name="plus" class="w-4 h-4"></lucide-icon>
-                {{ addButtonText }}
-
+              class="relative inline-flex items-center rounded-l-md px-3 py-2 text-gray-400 ring-1 ring-gray-200 hover:bg-gray-50">
+              <lucide-icon name="chevron-left" class="w-4 h-4"></lucide-icon>
             </button>
+            <button
+              class="relative z-10 inline-flex items-center bg-[#531E1E] px-4 py-2 text-sm font-semibold text-white">1</button>
+            <button
+              class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-gray-200 hover:bg-gray-50">2</button>
+            <button
+              class="relative hidden md:inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-gray-200 hover:bg-gray-50">3</button>
+            <span
+              class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-400 ring-1 ring-gray-200">...</span>
+            <button
+              class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-gray-200 hover:bg-gray-50">8</button>
+            <button
+              class="relative inline-flex items-center rounded-r-md px-3 py-2 text-gray-400 ring-1 ring-gray-200 hover:bg-gray-50">
+              <lucide-icon name="chevron-right" class="w-4 h-4"></lucide-icon>
+            </button>
+          </nav>
         </div>
+      </div>
     </div>
-
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-        <div class="flex items-center justify-between mb-5">
-            <div class="flex items-center gap-3">
-                <select class="border border-gray-200 rounded-md px-4 py-2 text-sm outline-none focus:border-[#531E1E]">
-                    <option value="">
-                        Filtro
-                    </option>
-                </select>
-                <div class="relative">
-                    <lucide-icon name="search"
-                        class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></lucide-icon>
-                    <input type="text" placeholder="Buscar"
-                        class="border border-gray-200 rounded-md pl-10 pr-4 py-2 text-sm outline-none focus:border-[#531E1E]">
-                </div>
-
-            </div>
-
-            <div class="flex items-center gap-2">
-                <button class="border border-gray-200 p-2 rounded-md hover:bg-gray-100 transition">
-                    <lucide-icon name="pencil" class="w-4 h-4 text-[#531E1E]"></lucide-icon>
-                </button>
-                <button class="border border-gray-200 p-2 rounded-md hover:bg-gray-100 transition">
-                    <lucide-icon name="trash" class="w-4 h-4 text-[#531E1E]"></lucide-icon>
-                </button>
-            </div>
-        </div>
-        <div class="overflow-x-auto">
-            <table class="w-full">
-                <thead>
-                    <tr class="border-b border-gray-200 text-gray-500 text-sm">
-                        <th class="text-left py-3 px-2">
-                            <input type="checkbox">
-                        </th>
-                        <th *ngFor="let column of columns" class="text-left py-3 px-2 font-medium">
-                            {{ column.label }}
-                        </th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    <tr *ngFor="let item of data" class="border-b border-gray-100 hover:bg-gray-50 transition">
-                        <td class="py-4 px-2">
-                            <input type="checkbox">
-                        </td>
-                        <td *ngFor="let column of columns" class="py-4 px-2 text-sm text-gray-700">
-                            <ng-container *ngIf="column.type === 'badge'; else normalValue">
-
-                                <span class="px-3 py-1 rounded text-xs" [ngClass]="{
-                                        'bg-[#F28B8B] text-white': item[column.key] === 'Recibido',
-                                        'bg-[#9AA0A0] text-white': item[column.key] === 'En camino',
-                                        'bg-[#A7E6C4] text-green-700': item[column.key] === 'Pagado',
-                                        'bg-[#E8E8F9] text-indigo-500': item[column.key] === 'Pendiente',
-                                        'bg-[#F6E7B0] text-yellow-700': item[column.key] === 'transferencia',
-                                        'bg-[#CFE3FA] text-blue-700': item[column.key] === 'Efectivo',
-                                        'bg-[#F6B0B0] text-red-700': item[column.key] === 'Yape'
-                                    }">
-                                    {{ item[column.key] }}
-                                </span>
-
-                            </ng-container>
-
-                            <ng-template #normalValue>
-                                {{ item[column.key] }}
-                            </ng-template>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="flex items-center justify-between border-t border-gray-100 px-4 py-4 mt-5">
-            <div class="flex flex-1 justify-between sm:hidden">
-                <button
-                    class="relative inline-flex items-center rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
-                    Anterior
-                </button>
-                <button
-                    class="relative ml-3 inline-flex items-center rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
-                    Siguiente
-                </button>
-            </div>
-
-            <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-                <div>
-                    <p class="text-sm text-gray-500">
-                        Mostrando
-                        <span class="font-medium">
-                            1
-                        </span>
-                        a
-                        <span class="font-medium">
-                            10
-                        </span>
-                        de
-                        <span class="font-medium">
-                            {{ data.length }}
-                        </span>
-                        resultados
-                    </p>
-                </div>
-
-                <div>
-                    <nav aria-label="Pagination" class="isolate inline-flex -space-x-px rounded-md shadow-xs">
-                        <button
-                            class="relative inline-flex items-center rounded-l-md px-3 py-2 text-gray-400 ring-1 ring-gray-200 hover:bg-gray-50">
-                            <lucide-icon name="chevron-left" class="w-4 h-4"></lucide-icon>
-                        </button>
-
-                        <button
-                            class="relative z-10 inline-flex items-center bg-[#531E1E] px-4 py-2 text-sm font-semibold text-white">
-                            1
-                        </button>
-                        <button
-                            class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-gray-200 hover:bg-gray-50">
-                            2
-                        </button>
-                        <button
-                            class="relative hidden md:inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-gray-200 hover:bg-gray-50">
-                            3
-                        </button>
-                        <span
-                            class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-400 ring-1 ring-gray-200">
-                            ...
-                        </span>
-                        <button
-                            class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-gray-200 hover:bg-gray-50">
-                            8
-                        </button>
-                        <button
-                            class="relative inline-flex items-center rounded-r-md px-3 py-2 text-gray-400 ring-1 ring-gray-200 hover:bg-gray-50">
-                            <lucide-icon name="chevron-right" class="w-4 h-4"></lucide-icon>
-                        </button>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
+  </div>
 </div>
+<app-confirm-modal
+  [visible]="showDeleteModal"
+  title="¿Eliminar registros?"
+  [message]="deleteMessage"
+  confirmText="Sí, eliminar"
+  cancelText="Cancelar"
+  icon="trash"
+  (confirm)="confirmDelete()"
+  (cancel)="cancelDelete()">
+</app-confirm-modal>
+
+<app-confirm-modal
+  [visible]="showBlockedModal"
+  title="No se puede eliminar"
+  [message]="cannotDeleteMessage"
+  confirmText="Entendido"
+  cancelText="Cerrar"
+  icon="trash"
+  (confirm)="closeBlockedModal()"
+  (cancel)="closeBlockedModal()">
+</app-confirm-modal>

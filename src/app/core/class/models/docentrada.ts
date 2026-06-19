@@ -2,136 +2,92 @@ export class DocEntrada {
 
   iddocentrada: number;
 
-  tipodocentrada_idtipodocentrada: number;
-  metododepago_idmetododepago: number;
-  estadoPago_idestadoPago: number;
-  estadoIngreso_idestadoIngreso: number;
+  // Request
+  idTipoDocEntrada: number;
+  idMetodoPago: number;
+  idEstadoPago: number;
+  idEstadoIngreso: number;
+  idEmpleado: number;
+  idProveedor: number;
 
-  empleado_idempleado: number;
-  proveedor_idProveedor: number;
+  // Response
+  tipoDocEntrada: string;
+  metodoPago: string;
+  estadoPago: string;
+  estadoIngreso: string;
+  empleado: string;
+  proveedor: string;
 
   numeroDocumento: string;
-  fecha_ingreso: string;
+  fechaIngreso: string;
   incidencias: string;
   precioTotal: number;
 
-  constructor(docEntrada: Partial<DocEntrada> = {}) {
+  constructor(doc: Partial<DocEntrada> = {}) {
 
-    this.iddocentrada = docEntrada.iddocentrada || 0;
+    this.iddocentrada = doc.iddocentrada ?? 0;
 
-    this.tipodocentrada_idtipodocentrada =
-      docEntrada.tipodocentrada_idtipodocentrada || 0;
+    this.idTipoDocEntrada = doc.idTipoDocEntrada ?? 0;
+    this.idMetodoPago = doc.idMetodoPago ?? 0;
+    this.idEstadoPago = doc.idEstadoPago ?? 0;
+    this.idEstadoIngreso = doc.idEstadoIngreso ?? 0;
+    this.idEmpleado = doc.idEmpleado ?? 0;
+    this.idProveedor = doc.idProveedor ?? 0;
 
-    this.metododepago_idmetododepago =
-      docEntrada.metododepago_idmetododepago || 0;
+    this.tipoDocEntrada = doc.tipoDocEntrada ?? '';
+    this.metodoPago = doc.metodoPago ?? '';
+    this.estadoPago = doc.estadoPago ?? '';
+    this.estadoIngreso = doc.estadoIngreso ?? '';
+    this.empleado = doc.empleado ?? '';
+    this.proveedor = doc.proveedor ?? '';
 
-    this.estadoPago_idestadoPago =
-      docEntrada.estadoPago_idestadoPago || 0;
-
-    this.estadoIngreso_idestadoIngreso =
-      docEntrada.estadoIngreso_idestadoIngreso || 0;
-
-    this.empleado_idempleado =
-      docEntrada.empleado_idempleado || 0;
-
-    this.proveedor_idProveedor =
-      docEntrada.proveedor_idProveedor || 0;
-
-    this.numeroDocumento =
-      docEntrada.numeroDocumento || '';
-
-    this.fecha_ingreso =
-      docEntrada.fecha_ingreso || '';
-
-    this.incidencias =
-      docEntrada.incidencias || '';
-
-    this.precioTotal =
-      docEntrada.precioTotal || 0;
+    this.numeroDocumento = doc.numeroDocumento ?? '';
+    this.fechaIngreso = doc.fechaIngreso ?? '';
+    this.incidencias = doc.incidencias ?? '';
+    this.precioTotal = doc.precioTotal ?? 0;
   }
 
-  static fromJson(docEntrada: unknown): DocEntrada {
+  static fromJson(data: unknown): DocEntrada {
 
-    const casted = docEntrada as Record<string, unknown>;
+    const d = data as Record<string, unknown>;
 
     return new DocEntrada({
 
-      iddocentrada:
-        casted['iddocentrada'] as number,
+      iddocentrada: d['iddocentrada'] as number,
 
-      tipodocentrada_idtipodocentrada:
-        casted['tipodocentrada_idtipodocentrada'] as number,
+      tipoDocEntrada: d['tipoDocEntrada'] as string,
+      metodoPago: d['metodoPago'] as string,
+      estadoPago: d['estadoPago'] as string,
+      estadoIngreso: d['estadoIngreso'] as string,
 
-      metododepago_idmetododepago:
-        casted['metododepago_idmetododepago'] as number,
+      empleado: d['empleado'] as string,
+      proveedor: d['proveedor'] as string,
 
-      estadoPago_idestadoPago:
-        casted['estadoPago_idestadoPago'] as number,
+      numeroDocumento: d['numeroDocumento'] as string,
+      fechaIngreso: d['fechaIngreso'] as string,
+      incidencias: d['incidencias'] as string,
 
-      estadoIngreso_idestadoIngreso:
-        casted['estadoIngreso_idestadoIngreso'] as number,
-
-      empleado_idempleado:
-        casted['empleado_idempleado'] as number,
-
-      proveedor_idProveedor:
-        casted['proveedor_idProveedor'] as number,
-
-      numeroDocumento:
-        casted['numeroDocumento'] as string,
-
-      fecha_ingreso:
-        casted['fecha_ingreso'] as string,
-
-      incidencias:
-        casted['incidencias'] as string,
-
-      precioTotal:
-        casted['precioTotal'] as number,
-
+      precioTotal: d['precioTotal'] as number
     });
 
   }
-
-  static toJson(docEntrada: DocEntrada): unknown {
+  static toJson(doc: DocEntrada): unknown {
 
     return {
 
-      iddocentrada:
-        docEntrada.iddocentrada,
+      idTipoDocEntrada: doc.idTipoDocEntrada,
+      idMetodoPago: doc.idMetodoPago,
+      idEstadoPago: doc.idEstadoPago,
+      idEstadoIngreso: doc.idEstadoIngreso,
+      idEmpleado: doc.idEmpleado,
+      idProveedor: doc.idProveedor,
 
-      tipodocentrada_idtipodocentrada:
-        docEntrada.tipodocentrada_idtipodocentrada,
-
-      metododepago_idmetododepago:
-        docEntrada.metododepago_idmetododepago,
-
-      estadoPago_idestadoPago:
-        docEntrada.estadoPago_idestadoPago,
-
-      estadoIngreso_idestadoIngreso:
-        docEntrada.estadoIngreso_idestadoIngreso,
-
-      empleado_idempleado:
-        docEntrada.empleado_idempleado,
-
-      proveedor_idProveedor:
-        docEntrada.proveedor_idProveedor,
-
-      numeroDocumento:
-        docEntrada.numeroDocumento,
-
-      fecha_ingreso:
-        docEntrada.fecha_ingreso,
-
-      incidencias:
-        docEntrada.incidencias,
-
-      precioTotal:
-        docEntrada.precioTotal,
+      numeroDocumento: doc.numeroDocumento,
+      fechaIngreso: doc.fechaIngreso,
+      incidencias: doc.incidencias,
+      precioTotal: doc.precioTotal
 
     };
 
   }
-
 }

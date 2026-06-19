@@ -9,7 +9,9 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { FormLayoutComponent } from './components/form-layout/form-layout.component';
-
+import { FilterPanelComponent } from './components/filter-panel/filter-panel.component';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 @NgModule({
   declarations: [
     CrudTableComponent,
@@ -17,6 +19,9 @@ import { FormLayoutComponent } from './components/form-layout/form-layout.compon
     NavBarComponent,
     FooterComponent,
     FormLayoutComponent,
+    FilterPanelComponent,
+    SearchBarComponent,
+    ConfirmModalComponent
   ],
 
   imports: [
@@ -31,6 +36,8 @@ import { FormLayoutComponent } from './components/form-layout/form-layout.compon
     NavBarComponent,
     FooterComponent,
     FormLayoutComponent,
+    FilterPanelComponent,
+    ConfirmModalComponent
   ]
 })
 export class SharedModule {}

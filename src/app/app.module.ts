@@ -24,7 +24,11 @@ import { LucideAngularModule,
   Trash2,
 ChevronLeft,
 ChevronRight,
-Trash } from 'lucide-angular';
+Trash,
+Filter,
+ExpandIcon,
+ChevronDown,
+ChevronUp} from 'lucide-angular';
 
 
 @NgModule({
@@ -53,7 +57,11 @@ Trash } from 'lucide-angular';
         Trash2,
         ChevronLeft,
         ChevronRight,
-        Trash
+        Trash,
+        Filter,
+        ExpandIcon,
+        ChevronDown,
+        ChevronUp
        }),
   ],
   providers: [],

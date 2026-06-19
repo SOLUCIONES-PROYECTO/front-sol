@@ -1,8 +1,11 @@
+
 <app-crud-table
-  title="Proveedores"
-  addButtonText="Añadir Proveedor"
-  [showExportButton]="true"
+  [title]="'Proveedores'"
   [columns]="columns"
   [data]="data"
->
+  [filters]="filters"
+  (searchChange)="buscar($event)"
+  (filterChange)="filtrar($event)"
+  (onAdd)="onAddProveedores()">
 </app-crud-table>
+

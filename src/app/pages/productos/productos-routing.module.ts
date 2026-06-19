@@ -12,11 +12,21 @@ export const PRODUCTOS_ROUTES: Routes = [
   {
     path: 'nuevo',
     component: ProductoFormComponent
+  },
+  {
+    path: 'editar/:id',
+    component: ProductoFormComponent,
+    data: {modo: 'editar'}
+  },
+  {
+    path: 'ver/:id',      
+    component: ProductoFormComponent,
+    data: { modo: 'ver' }
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(PRODUCTOS_ROUTES),],
+  imports: [RouterModule.forChild(PRODUCTOS_ROUTES)],
   exports: [RouterModule],
 })
 export class ProductosRoutingModule { }
