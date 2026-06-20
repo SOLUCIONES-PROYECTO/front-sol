@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import {AuthApiService} from "../../../../pages/auth/services/auth-api.service";
-import {AuthService} from "../../../../pages/auth/services/auth.service";
+import { AuthApiService } from "../../../../pages/auth/services/auth-api.service";
+import { AuthService } from "../../../../pages/auth/services/auth.service";
 
 @Injectable({
   providedIn: 'root',
@@ -13,25 +13,21 @@ export class LoginFacade {
     private authApiService: AuthApiService,
     private authService: AuthService,
     private router: Router,
-  ) {}
+  ) { }
 
-  iniciarSesion(credentials: { email: string; password: string }): void {
+  iniciarSesion(credentials: {
+    usuarioSistema: string;
+    password: string;
+  }): void {
 
     this.authApiService.login(credentials).subscribe({
 
-      next: () => {
+      next: (response) => {
 
-        this.authService.setUser({
-    nombre: 'Angie',
-    apellido: 'Pérez',
-    correo: credentials.email
-  });
-        this.authService.login();
-        this.router.navigate(['/']);
-      },
+        this.authService.login(response);
 
-      error: (error) => {
-        console.error('Error al iniciar sesión', error);
+  this.router.navigate(['/']);
+
       },
 
     });

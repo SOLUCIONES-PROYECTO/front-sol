@@ -47,30 +47,37 @@ export class DocEntrada {
     this.precioTotal = doc.precioTotal ?? 0;
   }
 
-  static fromJson(data: unknown): DocEntrada {
+  static fromJson(docEntrada: unknown): DocEntrada {
+  const casted = docEntrada as Record<string, unknown>;
+  const fechaCompleta = casted['fechaIngreso'] as string;
+  const soloFecha = fechaCompleta ? fechaCompleta.split('T')[0] : '';
+  return new DocEntrada({
 
-    const d = data as Record<string, unknown>;
+    iddocentrada: casted['iddocentrada'] as number,
 
-    return new DocEntrada({
+    idTipoDocEntrada: casted['idTipoDocEntrada'] as number,
+    idMetodoPago: casted['idMetodoPago'] as number,
+    idEstadoPago: casted['idEstadoPago'] as number,
+    idEstadoIngreso: casted['idEstadoIngreso'] as number,
+    idEmpleado: casted['idEmpleado'] as number,
+    idProveedor: casted['idProveedor'] as number,
 
-      iddocentrada: d['iddocentrada'] as number,
+    tipoDocEntrada: casted['tipoDocEntrada'] as string,
+    metodoPago: casted['metodoPago'] as string,
+    estadoPago: casted['estadoPago'] as string,
+    estadoIngreso: casted['estadoIngreso'] as string,
 
-      tipoDocEntrada: d['tipoDocEntrada'] as string,
-      metodoPago: d['metodoPago'] as string,
-      estadoPago: d['estadoPago'] as string,
-      estadoIngreso: d['estadoIngreso'] as string,
+    empleado: casted['empleado'] as string,
+    proveedor: casted['proveedor'] as string,
 
-      empleado: d['empleado'] as string,
-      proveedor: d['proveedor'] as string,
+    numeroDocumento: casted['numeroDocumento'] as string,
+    fechaIngreso: soloFecha,
+    incidencias: casted['incidencias'] as string,
 
-      numeroDocumento: d['numeroDocumento'] as string,
-      fechaIngreso: d['fechaIngreso'] as string,
-      incidencias: d['incidencias'] as string,
+    precioTotal: casted['precioTotal'] as number
+  });
 
-      precioTotal: d['precioTotal'] as number
-    });
-
-  }
+}
   static toJson(doc: DocEntrada): unknown {
 
     return {
@@ -83,7 +90,7 @@ export class DocEntrada {
       idProveedor: doc.idProveedor,
 
       numeroDocumento: doc.numeroDocumento,
-      fechaIngreso: doc.fechaIngreso,
+      fechaIngreso: doc.fechaIngreso ? `${doc.fechaIngreso}T00:00:00` : null,
       incidencias: doc.incidencias,
       precioTotal: doc.precioTotal
 

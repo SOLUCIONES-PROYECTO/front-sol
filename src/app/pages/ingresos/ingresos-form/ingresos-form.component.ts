@@ -1,5 +1,24 @@
-import { Component } from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { forkJoin } from 'rxjs';
+
+import { DocEntrada } from '../../../core/class/models/docentrada';
+import { DetalleEntrada } from '../../../core/class/models/detalleentrada';
+import { Proveedor } from '../../../core/class/models/proveedores';
+import { Producto } from '../../../core/class/models/productos';
+import { TipoDocEntrada } from '../../../core/class/models/tipodocentrada';
+import { MetodoPago } from '../../../core/class/models/metodopago';
+import { EstadoPago } from '../../../core/class/models/estadopago';
+import { EstadoIngreso } from '../../../core/class/models/estadoingreso';
+
+import { DocEntradaService } from '../../../core/services/docEntrada.service';
+import { ProveedorService } from '../../../core/services/proveedores.service';
+import { ProductoService } from '../../../core/services/producto.service';
+import { TipoDocEntradaService } from '../../../core/services/tipoDocEntrada.service';
+import { MetodoPagoService } from '../../../core/services/metodoPago.service';
+import { EstadoPagoService } from '../../../core/services/estadoPago.service';
+import { EstadoIngresoService } from '../../../core/services/estadoIngreso.service';
+import { DetalleEntradaService } from '../../../core/services/detalleEntrada.service';
 
 @Component({
   selector: 'app-ingresos-form',
@@ -7,10 +26,310 @@ import {Router} from '@angular/router';
   templateUrl: './ingresos-form.component.html',
   styleUrl: './ingresos-form.component.css',
 })
-export class IngresosFormComponent {
-   constructor(private router: Router) {}
+export class IngresosFormComponent implements OnInit {
+
+  docEntrada: DocEntrada = new DocEntrada();
+
+  modoEdicion = false;
+  modoVista = false;
+  idDocEntrada: number | null = null;
+
+  proveedores: Proveedor[] = [];
+  tiposDocEntrada: TipoDocEntrada[] = [];
+  metodosPago: MetodoPago[] = [];
+  estadosPago: EstadoPago[] = [];
+  estadosIngreso: EstadoIngreso[] = [];
+  productosDisponibles: Producto[] = [];
+
+  // — Detalle de productos del ingreso (en memoria, Fase C1) —
+  detalles: DetalleEntrada[] = [];
+  showModalProducto = false;
+
+  nuevoDetalle = {
+    categoria: '',
+    idProducto: 0,
+    codigo: 0,
+    unidadMedida: '',
+    loteProducto: '',
+    fechaVencimiento: '',
+    cantidad: 0,
+    precioCompra: 0,
+    subtotal: 0
+  };
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private docEntradaService: DocEntradaService,
+    private proveedorService: ProveedorService,
+    private productoService: ProductoService,
+    private tipoDocEntradaService: TipoDocEntradaService,
+    private metodoPagoService: MetodoPagoService,
+    private estadoPagoService: EstadoPagoService,
+    private estadoIngresoService: EstadoIngresoService,
+    private detalleEntradaService: DetalleEntradaService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+    const modo = this.route.snapshot.data['modo'] || 'nuevo';
+    this.modoEdicion = modo === 'editar';
+    this.modoVista = modo === 'ver';
+
+    const idParam = this.route.snapshot.paramMap.get('id');
+    this.idDocEntrada = idParam ? Number(idParam) : null;
+
+    forkJoin({
+      proveedores: this.proveedorService.listarProveedores(),
+      productos: this.productoService.listarProductos(),
+      tiposDocEntrada: this.tipoDocEntradaService.listar(),
+      metodosPago: this.metodoPagoService.listar(),
+      estadosPago: this.estadoPagoService.listar(),
+      estadosIngreso: this.estadoIngresoService.listar()
+    }).subscribe({
+      next: (resultado) => {
+        this.proveedores = resultado.proveedores;
+        this.productosDisponibles = resultado.productos;
+        this.tiposDocEntrada = resultado.tiposDocEntrada;
+        this.metodosPago = resultado.metodosPago;
+        this.estadosPago = resultado.estadosPago;
+        this.estadosIngreso = resultado.estadosIngreso;
+        this.cdr.detectChanges();
+
+        if (this.idDocEntrada) {
+          this.cargarDocEntrada(this.idDocEntrada);
+        }
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  get tituloFormulario(): string {
+    if (this.modoVista) return 'Detalle del Ingreso';
+    if (this.modoEdicion) return 'Editar Ingreso';
+    return 'Registrar Ingreso';
+  }
+
+  cargarDocEntrada(id: number): void {
+  this.docEntradaService.obtenerIngreso(id).subscribe({
+    next: (data) => {
+      this.docEntrada = data;
+      this.cdr.detectChanges();
+
+      if (this.modoEdicion || this.modoVista) {
+        this.cargarDetallesExistentes(id);
+      }
+    },
+    error: (err) => console.error(err)
+  });
+}
+
+cargarDetallesExistentes(idDocEntrada: number): void {
+  this.detalleEntradaService.listar().subscribe({
+    next: (todos) => {
+      this.detalles = todos.filter(d => d.idDocEntrada === idDocEntrada);
+      this.cdr.detectChanges();
+    },
+    error: (err) => console.error(err)
+  });
+}
+
+get soloLecturaDetalle(): boolean {
+  return this.modoVista || this.modoEdicion;
+}
+
+  // — Filtros en cascada: proveedor (header) → categoría → producto —
+
+  get productosDelProveedor(): Producto[] {
+    if (!this.docEntrada.idProveedor) return [];
+    return this.productosDisponibles.filter(
+      p => p.idProveedor === this.docEntrada.idProveedor
+    );
+  }
+
+  get categoriasDelProveedor(): string[] {
+    const categorias = this.productosDelProveedor.map(p => p.categoria);
+    return [...new Set(categorias)];
+  }
+
+  get productosFiltradosPorCategoria(): Producto[] {
+    if (!this.nuevoDetalle.categoria) return [];
+    return this.productosDelProveedor.filter(
+      p => p.categoria === this.nuevoDetalle.categoria
+    );
+  }
+
+  // — Modal: abrir / cerrar / resetear —
+
+  abrirModalProducto(): void {
+    if (!this.docEntrada.idProveedor) {
+      alert('Selecciona un proveedor antes de agregar productos.');
+      return;
+    }
+
+    console.log('idProveedor seleccionado:', this.docEntrada.idProveedor);
+  console.log('productos disponibles:', this.productosDisponibles);
+  console.log('productos de ese proveedor:', this.productosDelProveedor);
+
+    if (this.productosDelProveedor.length === 0) {
+      alert('Este proveedor no tiene productos registrados. Regístralos primero en Productos.');
+      return;
+    }
+
+    this.resetNuevoDetalle();
+    this.showModalProducto = true;
+    this.cdr.detectChanges();
+  }
+
+  cerrarModalProducto(): void {
+    this.showModalProducto = false;
+    this.cdr.detectChanges();
+  }
+
+  resetNuevoDetalle(): void {
+    this.nuevoDetalle = {
+      categoria: '',
+      idProducto: 0,
+      codigo: 0,
+      unidadMedida: '',
+      loteProducto: '',
+      fechaVencimiento: '',
+      cantidad: 0,
+      precioCompra: 0,
+      subtotal: 0
+    };
+  }
+
+  // — Cascada dentro del modal —
+
+  onCategoriaChange(): void {
+    this.nuevoDetalle.idProducto = 0;
+    this.nuevoDetalle.codigo = 0;
+    this.nuevoDetalle.unidadMedida = '';
+    this.nuevoDetalle.precioCompra = 0;
+    this.recalcularSubtotal();
+  }
+
+  onProductoChange(): void {
+    const producto = this.productosDelProveedor.find(
+      p => p.idproducto === this.nuevoDetalle.idProducto
+    );
+
+    if (producto) {
+      this.nuevoDetalle.codigo = producto.idproducto;
+      this.nuevoDetalle.unidadMedida = producto.unidadMedida;
+      this.nuevoDetalle.precioCompra = producto.precioCompra;
+    }
+
+    this.recalcularSubtotal();
+  }
+
+  recalcularSubtotal(): void {
+    const cantidad = this.nuevoDetalle.cantidad || 0;
+    const precio = this.nuevoDetalle.precioCompra || 0;
+    this.nuevoDetalle.subtotal = +(cantidad * precio).toFixed(2);
+  }
+
+  get nuevoDetalleInvalido(): boolean {
+    return (
+      !this.nuevoDetalle.idProducto ||
+      !this.nuevoDetalle.loteProducto ||
+      !this.nuevoDetalle.fechaVencimiento ||
+      !this.nuevoDetalle.cantidad ||
+      this.nuevoDetalle.cantidad <= 0
+    );
+  }
+
+  // — Confirmar / eliminar línea del detalle —
+
+  agregarDetalle(): void {
+    if (this.nuevoDetalleInvalido) return;
+
+    const producto = this.productosDelProveedor.find(
+      p => p.idproducto === this.nuevoDetalle.idProducto
+    );
+
+    const detalle = new DetalleEntrada({
+      idProducto: this.nuevoDetalle.idProducto,
+      nombreProducto: producto?.nombre ?? '',
+      loteProducto: this.nuevoDetalle.loteProducto,
+      fechaVencimiento: new Date(this.nuevoDetalle.fechaVencimiento),
+      cantidad: this.nuevoDetalle.cantidad,
+      precioUnitario: this.nuevoDetalle.precioCompra,
+      subtotal: this.nuevoDetalle.subtotal
+    });
+
+    this.detalles.push(detalle);
+    this.showModalProducto = false;
+    this.cdr.detectChanges();
+  }
+
+  eliminarDetalle(index: number): void {
+    this.detalles.splice(index, 1);
+    this.cdr.detectChanges();
+  }
+
+  // — Resumen en vivo —
+
+  get totalProductosDetalle(): number {
+    return this.detalles.length;
+  }
+
+  get totalUnidadesDetalle(): number {
+    return this.detalles.reduce((sum, d) => sum + d.cantidad, 0);
+  }
+
+  get totalIngresoDetalle(): number {
+    return this.detalles.reduce((sum, d) => sum + d.subtotal, 0);
+  }
 
   Regresar(): void {
     this.router.navigate(['/ingresos']);
   }
+
+  guardar(): void {
+
+  this.docEntrada.precioTotal = this.totalIngresoDetalle;
+
+  if (this.modoEdicion) {
+    this.docEntradaService.actualizarIngreso(this.idDocEntrada!, this.docEntrada).subscribe({
+      next: () => {
+        alert('Ingreso actualizado');
+        this.router.navigate(['/ingresos']);
+      },
+      error: (err) => console.error(err)
+    });
+    return;
+  }
+
+  // Modo "nuevo": primero el header, luego cada línea de detalle
+  this.docEntradaService.crearIngreso(this.docEntrada).subscribe({
+    next: (docCreado) => {
+
+      if (this.detalles.length === 0) {
+        alert('Ingreso registrado');
+        this.router.navigate(['/ingresos']);
+        return;
+      }
+
+      const peticionesDetalle = this.detalles.map(d => {
+        d.idDocEntrada = docCreado.iddocentrada;
+        return this.detalleEntradaService.crear(d);
+      });
+
+      forkJoin(peticionesDetalle).subscribe({
+        next: () => {
+          alert('Ingreso registrado');
+          this.router.navigate(['/ingresos']);
+        },
+        error: (err) => {
+          console.error('Error al guardar el detalle', err);
+          alert('El ingreso se creó, pero hubo un error guardando algunos productos.');
+          this.router.navigate(['/ingresos']);
+        }
+      });
+    },
+    error: (err) => console.error(err)
+  });
+}
 }

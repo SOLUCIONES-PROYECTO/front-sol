@@ -11,6 +11,16 @@ export const EGRESOS_ROUTES: Routes = [
   {
     path: 'nuevo',
     component: EgresosFormComponent,
+  },
+  {
+    path: 'editar/:id',
+    component: EgresosFormComponent,
+    data: { modo: 'editar' }
+  },
+  {
+    path: 'ver/:id',
+    component: EgresosFormComponent,
+    data: { modo: 'ver' }
   }
 ];
 

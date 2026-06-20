@@ -8,7 +8,7 @@ import {StepPresenter} from "../../../core/helpers/step.presenter";
 })
 export class LoginFormPresenter extends StepPresenter<Login> {
 
-  public email!: FormControl;
+  public usuarioSistema!: FormControl;
   public password!: FormControl;
 
   constructor(private readonly fb: FormBuilder) {
@@ -16,14 +16,14 @@ export class LoginFormPresenter extends StepPresenter<Login> {
   }
 
   public initForm(): void {
-    this.email = new FormControl(null, [Validators.required,Validators.email,]);
+    this.usuarioSistema = new FormControl(null, [Validators.required]);
     this.password = new FormControl(null, [Validators.required,Validators.minLength(8),]);
   }
 
   public createForm(): void {
     this.initForm();
     this.form = this.fb.group({
-      email: this.email,
+      usuarioSistema: this.usuarioSistema,
       password: this.password,
     });
   }

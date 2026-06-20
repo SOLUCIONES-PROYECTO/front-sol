@@ -1,7 +1,9 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { IngresosService } from '../../core/services/ingresos.service';
-import { DocEntrada } from '../../core/class/models/docentrada';
+import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
+
+import { DocEntradaService } from '../../core/services/docEntrada.service';
+import { DocEntrada } from '../../core/class/models/docentrada';
 import { SidebarCounterService } from '../../shared/services/sidebar-counter.service';
 
 @Component({
@@ -38,7 +40,7 @@ export class IngresosComponent implements OnInit {
   activeFilters: Record<string, string> = {};
 
   constructor(
-    private ingresosService: IngresosService,
+    private ingresosService: DocEntradaService,
     private cdr: ChangeDetectorRef,
     private router: Router,
     private sidebarCounter: SidebarCounterService,
@@ -79,7 +81,7 @@ export class IngresosComponent implements OnInit {
       }
     });
   }
-  
+
   buscar(texto: string): void {
     this.searchText = texto.toLowerCase();
     this.aplicarFiltros();
@@ -101,18 +103,44 @@ export class IngresosComponent implements OnInit {
       const cumpleFiltros =
         Object.entries(this.activeFilters).every(
           ([key, value]) => {
-
             if (!value) return true;
-
             return item[key] === value;
-
           }
         );
       return cumpleBusqueda && cumpleFiltros;
     });
-
   }
+
   onAddIngresos(): void {
     this.router.navigate(['/ingresos/nuevo']);
   }
+
+  editarIngreso(item: any): void {
+    this.router.navigate(['/ingresos/editar', item.lote]);
+  }
+
+  verIngreso(item: any): void {
+    this.router.navigate(['/ingresos/ver', item.lote]);
+  }
+
+  eliminarIngresos(items: any[]): void {
+    const peticiones = items.map(item =>
+      this.ingresosService.eliminarIngreso(item.lote)
+    );
+
+    forkJoin(peticiones).subscribe({
+      next: () => {
+        this.cargarIngresos();
+      },
+      error: (err) => {
+        const mensaje = err.error?.mensaje || 'No se pudo eliminar el ingreso';
+        alert(mensaje);
+        console.error('Error al eliminar', err);
+      }
+    });
+  }
+
+  puedeEliminar = (item: any): boolean => {
+    return item.estado !== 'Recibido'; // true = se puede eliminar
+  };
 }

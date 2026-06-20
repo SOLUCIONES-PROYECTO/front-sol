@@ -13,29 +13,29 @@
         ¿Eres usuario nuevo?
       </span>
 
-      <a
-        routerLink="/auth/register"
-        class="text-[#531E1E] ml-2 hover:underline"
-      >
+      <a routerLink="/auth/register" class="text-[#531E1E] ml-2 hover:underline">
         Crear una cuenta
       </a>
     </div>
 
     <!-- Formulario -->
-    <form class="space-y-6">
+    <form [formGroup]="loginFormPresenter.Form" (ngSubmit)="iniciarSesion()" class="space-y-6">
 
       <!-- Usuario -->
       <div>
 
         <label class="block text-gray-400 mb-2 text-sm">
-          Correo electrónico
+          Usuario
         </label>
 
-        <input
-          type="text"
-          placeholder="Ingresa tu correo electrónico"
-          class="w-full border border-gray-200 rounded-md px-4 py-4 outline-none focus:border-[#531E1E]"
-        >
+        <input type="text" formControlName="usuarioSistema" placeholder="Ingresa tu usuario"
+          class="w-full border border-gray-200 rounded-md px-4 py-4 outline-none focus:border-[#531E1E]">
+        <p *ngIf="loginFormPresenter.usuarioSistema.invalid &&
+          loginFormPresenter.usuarioSistema.touched" class="text-red-500 text-xs mt-1">
+
+          El usuario es obligatorio
+
+        </p>
 
       </div>
 
@@ -46,20 +46,24 @@
           Contraseña
         </label>
 
-        <input
-          type="password"
-          placeholder="Ingresa tu contraseña"
-          class="w-full border border-gray-200 rounded-md px-4 py-4 outline-none focus:border-[#531E1E]"
-        >
+        <input type="password" formControlName="password" placeholder="Ingresa tu contraseña"
+          class="w-full border border-gray-200 rounded-md px-4 py-4 outline-none focus:border-[#531E1E]" />
+
+        <p *ngIf="loginFormPresenter.password.invalid &&
+          loginFormPresenter.password.touched" class="text-red-500 text-xs mt-1">
+
+          La contraseña debe tener al menos 8 caracteres
+
+        </p>
 
       </div>
 
       <!-- Botón -->
-      <button
-        type="submit"
-        class="w-full bg-[#531E1E] hover:opacity-90 transition text-white py-4 rounded-md text-lg font-medium mt-4"
-      >
+      <button type="submit" [disabled]="loginFormPresenter.Form.invalid"
+        class="w-full bg-[#531E1E] hover:opacity-90 transition text-white py-4 rounded-md text-lg font-medium mt-4 disabled:opacity-50">
+
         Ingresar
+
       </button>
 
     </form>
@@ -67,11 +71,10 @@
     <!-- Recuperar contraseña -->
     <div class="text-center mt-10">
 
-      <a
-        href="#"
-        class="text-[#531E1E] text-sm hover:underline"
-      >
+      <a href="#" class="text-[#531E1E] text-sm hover:underline">
+
         ¿Olvidaste tu contraseña?
+
       </a>
 
     </div>

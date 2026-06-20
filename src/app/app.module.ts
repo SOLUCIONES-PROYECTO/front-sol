@@ -4,31 +4,34 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardLayoutComponent } from './layout/dashboard-layout/dashboard-layout.component';
-import {SharedModule} from './shared/shared.module';
+import { SharedModule } from './shared/shared.module';
 
 import { HttpClientModule } from '@angular/common/http';
 
-import { LucideAngularModule, 
-          Menu, 
-          Package, 
-          Users, 
-          Settings, 
-          User,
-          ShoppingBasket,
-          List,
-          House,
-          ClipboardList,
-        Plus,
-      Search,
-    Pencil,
+import {
+  LucideAngularModule,
+  Menu,
+  Package,
+  Users,
+  Settings,
+  User,
+  ShoppingBasket,
+  List,
+  House,
+  ClipboardList,
+  Plus,
+  Search,
+  Pencil,
   Trash2,
-ChevronLeft,
-ChevronRight,
-Trash,
-Filter,
-ExpandIcon,
-ChevronDown,
-ChevronUp} from 'lucide-angular';
+  ChevronLeft,
+  ChevronRight,
+  Trash,
+  Filter,
+  ExpandIcon,
+  ChevronDown,
+  ChevronUp,
+  X,
+} from 'lucide-angular';
 
 
 @NgModule({
@@ -42,10 +45,11 @@ ChevronUp} from 'lucide-angular';
     SharedModule,
     HttpClientModule,
     LucideAngularModule.pick(
-      { Menu, 
-        Package, 
-        Users, 
-        User, 
+      {
+        Menu,
+        Package,
+        Users,
+        User,
         Settings,
         ShoppingBasket,
         List,
@@ -61,8 +65,9 @@ ChevronUp} from 'lucide-angular';
         Filter,
         ExpandIcon,
         ChevronDown,
-        ChevronUp
-       }),
+        ChevronUp,
+        X
+      }),
   ],
   providers: [],
   bootstrap: [AppComponent]

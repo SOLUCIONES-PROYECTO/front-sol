@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService, Usuario } from '../../../pages/auth/services/auth.service';
+import { AuthService} from '../../../pages/auth/services/auth.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -11,7 +11,8 @@ export class NavBarComponent implements OnInit {
 
   mostrarModal: boolean = false;
 
-  usuario: Usuario | null = null;
+  usuarioSistema = '';
+rol = '';
 
   constructor(
     private authService: AuthService
@@ -23,13 +24,18 @@ toggleMenu(): void {
   this.menuAbierto = !this.menuAbierto;
 }
 
-  ngOnInit(): void {
+  isLoggedIn = false;
 
-    this.authService.user$.subscribe(user => {
-      this.usuario = user;
-    });
+ngOnInit(): void {
 
-  }
+  this.isLoggedIn = this.authService.isAuthenticated();
+
+  this.usuarioSistema =
+    this.authService.getUsuarioSistema();
+
+  this.rol =
+    this.authService.getRol();
+}
 
   abrirModal() {
     this.mostrarModal = true;

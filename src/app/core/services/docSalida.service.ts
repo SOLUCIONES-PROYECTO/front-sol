@@ -3,65 +3,65 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 
 import { environment } from '../../../../environments/environment';
-import { DocEntrada } from '../class/models/docentrada';
+import { DocSalida } from '../class/models/docsalida';
 
 @Injectable({
   providedIn: 'root'
 })
-export class IngresosService {
+export class DocSalidaService {
 
-  private baseUrl = environment.URL_BACKEND + '/docentrada';
+  private baseUrl = environment.URL_BACKEND + '/docsalida';
 
   constructor(private http: HttpClient) {}
 
-  listarIngresos(): Observable<DocEntrada[]> {
+  listarEgresos(): Observable<DocSalida[]> {
 
     return this.http.get<unknown[]>(this.baseUrl).pipe(
       map(response =>
-        response.map(item => DocEntrada.fromJson(item))
+        response.map(item => DocSalida.fromJson(item))
       )
     );
 
   }
 
-  obtenerIngreso(id: number): Observable<DocEntrada> {
+  obtenerEgreso(id: number): Observable<DocSalida> {
 
     return this.http.get<unknown>(
       `${this.baseUrl}/${id}`
     ).pipe(
-      map(response => DocEntrada.fromJson(response))
+      map(response => DocSalida.fromJson(response))
     );
 
   }
 
-  crearIngreso(
-    docEntrada: DocEntrada
-  ): Observable<DocEntrada> {
+  crearEgreso(
+    docSalida: DocSalida
+  ): Observable<DocSalida> {
 
     return this.http.post<unknown>(
       this.baseUrl,
-      DocEntrada.toJson(docEntrada)
+      DocSalida.toJson(docSalida)
     ).pipe(
-      map(response => DocEntrada.fromJson(response))
+      map(response => DocSalida.fromJson(response))
     );
 
   }
 
-  actualizarIngreso(
+  actualizarEgreso(
     id: number,
-    docEntrada: DocEntrada
-  ): Observable<DocEntrada> {
+    docSalida: DocSalida
+  ): Observable<DocSalida> {
 
     return this.http.put<unknown>(
       `${this.baseUrl}/${id}`,
-      DocEntrada.toJson(docEntrada)
+      DocSalida.toJson(docSalida)
     ).pipe(
-      map(response => DocEntrada.fromJson(response))
+      map(response => DocSalida.fromJson(response))
     );
 
   }
 
-  eliminarIngreso(
+  eliminarEgreso(
     id: number
   ): Observable<void> {
 

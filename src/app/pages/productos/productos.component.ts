@@ -13,6 +13,7 @@ import { forkJoin } from 'rxjs';
 export class ProductosComponent implements OnInit {
 
   columns = [
+    {key: 'imagen', label:'', type:'image'},
     { key: 'producto', label: 'Producto' },
     { key: 'codigo', label: 'Código' },
     { key: 'categoria', label: 'Categoria' },
@@ -72,7 +73,8 @@ export class ProductosComponent implements OnInit {
             currency: 'PEN'
           }).format(p.precioVenta),
           estado: p.estado,
-          proveedor: p.proveedor
+          proveedor: p.proveedor,
+          imagen: p.imagen,
         }));
 
         this.dataOriginal = [...this.data];

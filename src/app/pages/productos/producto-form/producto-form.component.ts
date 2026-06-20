@@ -125,4 +125,29 @@ export class ProductoFormComponent implements OnInit {
   this.producto.ganancia = +ganancia.toFixed(2);
   this.producto.margen = compra > 0 ? +((ganancia / compra) * 100).toFixed(2) : 0;
 }
+
+onFileSelected(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+
+  if (!file) return;
+
+  if (!file.type.startsWith('image/')) {
+    alert('Por favor selecciona un archivo de imagen válido.');
+    return;
+  }
+
+  const tamañoMaximoMB = 2;
+  if (file.size > tamañoMaximoMB * 1024 * 1024) {
+    alert(`La imagen no debe superar los ${tamañoMaximoMB}MB.`);
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    this.producto.imagen = reader.result as string;
+    this.cdr.detectChanges();
+  };
+  reader.readAsDataURL(file);
+}
 }

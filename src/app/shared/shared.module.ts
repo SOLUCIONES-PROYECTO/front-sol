@@ -12,6 +12,7 @@ import { FormLayoutComponent } from './components/form-layout/form-layout.compon
 import { FilterPanelComponent } from './components/filter-panel/filter-panel.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
+import { ModalFormComponent } from './components/modal-form/modal-form.component';
 @NgModule({
   declarations: [
     CrudTableComponent,
@@ -21,7 +22,8 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.
     FormLayoutComponent,
     FilterPanelComponent,
     SearchBarComponent,
-    ConfirmModalComponent
+    ConfirmModalComponent,
+    ModalFormComponent
   ],
 
   imports: [
@@ -37,7 +39,8 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.
     FooterComponent,
     FormLayoutComponent,
     FilterPanelComponent,
-    ConfirmModalComponent
+    ConfirmModalComponent,
+    ModalFormComponent
   ]
 })
 export class SharedModule {}

@@ -2,94 +2,62 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthApiService } from './auth-api.service';
-
-export interface Usuario {
-  nombre: string;
-  apellido: string;
-  correo: string;
-}
+import { LoginResponse } from '../../../core/class/auth/login.response';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
 
-  private loggedInSubject = new BehaviorSubject<boolean>(false);
+  private loggedInSubject = new BehaviorSubject<boolean>(
+    !!localStorage.getItem('token')
+  );
+
   public isLoggedIn$ = this.loggedInSubject.asObservable();
-
-  private userSubject =
-    new BehaviorSubject<Usuario | null>(null);
-
-  public user$ = this.userSubject.asObservable();
 
   constructor(
     private router: Router,
-    private authApiService: AuthApiService,
-  ) {
+    private authApiService: AuthApiService
+  ) {}
 
-    const usuarioGuardado =
-      localStorage.getItem('usuario');
+  login(response: LoginResponse): void {
 
-    if (usuarioGuardado) {
+    localStorage.setItem('token', response.token);
+    localStorage.setItem('rol', response.rol);
+    localStorage.setItem('usuarioSistema', response.usuarioSistema);
 
-      this.userSubject.next(
-        JSON.parse(usuarioGuardado)
-      );
-
-      this.loggedInSubject.next(true);
-    }
-
-  }
-
-  checkSession(): void {
-    this.authApiService.profile().subscribe({
-      next: () => this.loggedInSubject.next(true),
-      error: () => this.loggedInSubject.next(false),
-    });
-  }
-
-  login(): void {
     this.loggedInSubject.next(true);
-  }
 
-  setUser(user: Usuario): void {
-
-    localStorage.setItem(
-      'usuario',
-      JSON.stringify(user)
-    );
-
-    this.userSubject.next(user);
-  }
-
-  getUser(): Usuario | null {
-    return this.userSubject.value;
   }
 
   logout(): void {
 
-    localStorage.removeItem('usuario');
+    localStorage.removeItem('token');
+    localStorage.removeItem('rol');
+    localStorage.removeItem('usuarioSistema');
 
-    this.userSubject.next(null);
     this.loggedInSubject.next(false);
 
-    this.authApiService.logout().subscribe({
-      next: () => {
-        this.router.navigate(['/auth/login']);
-      },
-      error: () => {
-        this.router.navigate(['/auth/login']);
-      },
-    });
+    this.router.navigate(['/auth/login']);
 
   }
 
-  isLoggedIn(): boolean {
-    return this.loggedInSubject.value;
+  isAuthenticated(): boolean {
+
+    return !!localStorage.getItem('token');
+
   }
 
-  getUserImg(): string {
-    return 'https://randomuser.me/api/portraits/men/11.jpg';
+  getUsuarioSistema(): string {
+
+    return localStorage.getItem('usuarioSistema') ?? '';
+
+  }
+
+  getRol(): string {
+
+    return localStorage.getItem('rol') ?? '';
+
   }
 
 }

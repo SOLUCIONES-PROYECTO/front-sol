@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
+import { Login } from '../../../core/class/auth/login.class';
+import { LoginResponse } from '../../../core/class/auth/login.response';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
@@ -10,37 +12,25 @@ export class AuthApiService {
 
   constructor(private http: HttpClient) {}
 
-  login(credentials: { email: string; password: string }) {
-    return this.http.post(
-      `${this.baseUrl}/login`, 
-      credentials, {
-      withCredentials: true,
-    });
+  login(credentials: Login): Observable<LoginResponse> {
+
+    return this.http.post<LoginResponse>(
+      `${this.baseUrl}/auth/login`,
+      Login.toJson(credentials)
+    );
   }
 
   register(registerData: unknown) {
-    return this.http.post(
-      `${this.baseUrl}/register`,
-      registerData,
-      {
-        withCredentials: true,
-      }
-    );
-  }
+  return this.http.post(
+    `${this.baseUrl}/auth/register`,
+    registerData
+  );
+}
 
-  logout() {
-    return this.http.post(
-      `${this.baseUrl}/logout`,
-      {},
-      { withCredentials: true },
-    );
-  }
-
-  profile() {
-    return this.http.get(
-      `${this.baseUrl}/profile`,
-      { withCredentials: true }
-    );
-  }
-
+logout() {
+  return this.http.post(
+    `${this.baseUrl}/auth/logout`,
+    {}
+  );
+}
 }

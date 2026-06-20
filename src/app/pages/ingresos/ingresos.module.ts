@@ -5,6 +5,8 @@ import {IngresosRoutingModule} from "./ingresos-routing.module";
 import { IngresosComponent } from './ingresos.component';
 
 import {SharedModule} from "../../shared/shared.module";
+import { FormsModule } from '@angular/forms';
+import { LucideAngularModule } from 'lucide-angular';
 import { IngresosFormComponent } from './ingresos-form/ingresos-form.component';
 
 @NgModule({
@@ -15,7 +17,9 @@ import { IngresosFormComponent } from './ingresos-form/ingresos-form.component';
   imports: [
     IngresosRoutingModule,
     CommonModule,
-    SharedModule
+    SharedModule,
+    FormsModule,
+    LucideAngularModule
   ]
 })
 export class IngresosModule {}

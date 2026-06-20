@@ -1,7 +1,9 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { EgresosService } from '../../core/services/egresos.service';
-import { DocSalida } from '../../core/class/models/docsalida';
 import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
+
+import { DocSalida } from '../../core/class/models/docsalida';
+import { DocSalidaService } from '../../core/services/docSalida.service';
 import { SidebarCounterService } from '../../shared/services/sidebar-counter.service';
 @Component({
   selector: 'app-egresos',
@@ -49,7 +51,7 @@ export class EgresosComponent implements OnInit {
   activeFilters: Record<string, string> = {};
 
   constructor(
-    private egresosService: EgresosService,
+    private egresosService: DocSalidaService,
     private cdr: ChangeDetectorRef,
     private router: Router,
     private sidebarCounter: SidebarCounterService,
@@ -128,4 +130,31 @@ export class EgresosComponent implements OnInit {
   agregarEgreso(): void {
     this.router.navigate(['/egresos/nuevo']);
   }
+  editarEgreso(item: any): void {
+    this.router.navigate(['/egresos/editar', item.documento]);
+  }
+  verEgreso(item: any): void {
+    this.router.navigate(['/egresos/ver', item.documento]);
+  }
+
+  eliminarEgresos(items: any[]): void {
+    const peticiones = items.map(item =>
+      this.egresosService.eliminarEgreso(item.documento)
+    );
+
+    forkJoin(peticiones).subscribe({
+      next: () => {
+        this.cargarEgresos();
+      },
+      error: (err) => {
+        const mensaje = err.error?.mensaje || 'No se pudo eliminar el egreso';
+        alert(mensaje);
+        console.error('Error al eliminar', err);
+      }
+    });
+  }
+
+  puedeEliminar = (item: any): boolean => {
+    return item.tipodocsalida !== 'Devolución'; // true = se puede eliminar
+  };
 }

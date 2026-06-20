@@ -10,6 +10,7 @@ export class Register extends AuthCredentials {
   telefono: string;
   genero: string;
   contraseña:string;
+  correo:string;
 
   confirmarContraseña: string;
 
@@ -24,6 +25,7 @@ export class Register extends AuthCredentials {
     this.fechaNacimiento = register.fechaNacimiento || '';
     this.telefono = register.telefono || '';
     this.genero = register.genero || '';
+    this.correo = register.correo || '';
     this.contraseña = register.contraseña || '';
     this.confirmarContraseña = register.confirmarContraseña || '';
 
@@ -42,7 +44,7 @@ export class Register extends AuthCredentials {
       fechaNacimiento: casted['fechaNacimiento'] as string,
       telefono: casted['telefono'] as string,
       genero: casted['genero'] as string,
-      email: casted['email'] as string,
+      correo: casted['correo'] as string,
       contraseña: casted['contraseña'] as string,
       confirmarContraseña: casted['confirmarContraseña'] as string,
 
@@ -60,7 +62,7 @@ export class Register extends AuthCredentials {
       fechaNacimiento: register.fechaNacimiento,
       telefono: register.telefono,
       genero: register.genero,
-      email: register.email,
+      correo: register.correo,
       contraseña: register.contraseña,
       confirmarContraseña: register.confirmarContraseña,
     };

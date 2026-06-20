@@ -53,19 +53,23 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of data"
-  (click)="viewItem(item)"
-  class="border-b border-gray-100 hover:bg-gray-50 transition cursor-pointer">
+          <tr *ngFor="let item of data" (click)="viewItem(item)"
+            class="border-b border-gray-100 hover:bg-gray-50 transition cursor-pointer">
             <td class="py-4 px-2">
-  <input type="checkbox"
-    [checked]="isSelected(item)"
-    (click)="$event.stopPropagation()"
-    (change)="toggleSelect(item)"
-    class="accent-[#531E1E] w-3.5 h-3.5 cursor-pointer">
-</td>
+              <input type="checkbox" [checked]="isSelected(item)" (click)="$event.stopPropagation()"
+                (change)="toggleSelect(item)" class="accent-[#531E1E] w-3.5 h-3.5 cursor-pointer">
+            </td>
             <td *ngFor="let column of columns" class="py-4 px-2 text-sm text-gray-700">
-              <ng-container *ngIf="column.type === 'badge'; else normalValue">
-                <span class="px-3 py-1 rounded-full text-xs font-medium" [ngClass]="{
+
+              <ng-container *ngIf="column.type === 'image'; else checkBadge">
+                <img *ngIf="item[column.key]" [src]="item[column.key]"
+                  class="w-10 h-10 rounded-lg object-cover border border-gray-100" />
+                <span *ngIf="!item[column.key]" class="text-xs text-gray-400">Sin imagen</span>
+              </ng-container>
+
+              <ng-template #checkBadge>
+                <ng-container *ngIf="column.type === 'badge'; else normalValue">
+                  <span class="px-3 py-1 rounded-full text-xs font-medium" [ngClass]="{
                   'bg-[var(--color-badge-pagado-bg)]        text-[var(--color-badge-pagado-text)]':        item[column.key] === 'Pagado',
                   'bg-[var(--color-badge-agotado-bg)]     text-[var(--color-badge-agotado-text)]':     item[column.key] === 'Agotado',
                   'bg-[var(--color-badge-transferencia-bg)] text-[var(--color-badge-transferencia-text)]': item[column.key] === 'Transferencia',
@@ -74,11 +78,12 @@
                   'bg-[var(--color-badge-disponible-bg)]      text-[var(--color-badge-disponible-text)]':  item[column.key] === 'Disponible',
                   'bg-[var(--color-badge-recibido-bg)]      text-[var(--color-badge-recibido-text)]':  item[column.key] === 'Recibido'
                 }">
-                  {{ item[column.key] }}
-                </span>
-              </ng-container>
+                    {{ item[column.key] }}
+                  </span>
+                </ng-container>
+              </ng-template>
+
               <ng-template #normalValue>{{ item[column.key] }}</ng-template>
-            </td>
           </tr>
           <!-- Estado vacío -->
           <tr *ngIf="data.length === 0">
@@ -140,24 +145,11 @@
     </div>
   </div>
 </div>
-<app-confirm-modal
-  [visible]="showDeleteModal"
-  title="¿Eliminar registros?"
-  [message]="deleteMessage"
-  confirmText="Sí, eliminar"
-  cancelText="Cancelar"
-  icon="trash"
-  (confirm)="confirmDelete()"
-  (cancel)="cancelDelete()">
+<app-confirm-modal [visible]="showDeleteModal" title="¿Eliminar registros?" [message]="deleteMessage"
+  confirmText="Sí, eliminar" cancelText="Cancelar" icon="trash" (confirm)="confirmDelete()" (cancel)="cancelDelete()">
 </app-confirm-modal>
 
-<app-confirm-modal
-  [visible]="showBlockedModal"
-  title="No se puede eliminar"
-  [message]="cannotDeleteMessage"
-  confirmText="Entendido"
-  cancelText="Cerrar"
-  icon="trash"
-  (confirm)="closeBlockedModal()"
+<app-confirm-modal [visible]="showBlockedModal" title="No se puede eliminar" [message]="cannotDeleteMessage"
+  confirmText="Entendido" cancelText="Cerrar" icon="trash" (confirm)="closeBlockedModal()"
   (cancel)="closeBlockedModal()">
 </app-confirm-modal>

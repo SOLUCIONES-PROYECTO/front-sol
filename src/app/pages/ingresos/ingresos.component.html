@@ -1,10 +1,15 @@
-
 <app-crud-table
   [title]="'Ingresos'"
   [columns]="columns"
   [data]="data"
   [filters]="filters"
+  keyField="lote"
+  [canDeleteItem]="puedeEliminar"
+  cannotDeleteMessage="No puedes eliminar ingresos en estado Recibido, ya que afectaron el stock."
   (searchChange)="buscar($event)"
   (filterChange)="filtrar($event)"
-  (onAdd)="onAddIngresos()">
+  (onAdd)="onAddIngresos()"
+  (onEdit)="editarIngreso($event)"
+  (onDelete)="eliminarIngresos($event)"
+  (onView)="verIngreso($event)">
 </app-crud-table>

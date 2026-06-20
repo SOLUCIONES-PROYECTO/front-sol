@@ -11,6 +11,16 @@ export const INGRESOS_ROUTES: Routes = [
   {
     path: 'nuevo',
     component: IngresosFormComponent,
+  },
+  {
+    path: 'editar/:id',
+    component: IngresosFormComponent,
+    data: { modo: 'editar' }
+  },
+  {
+    path: 'ver/:id',
+    component: IngresosFormComponent,
+    data: { modo: 'ver' }
   }
 ];
 

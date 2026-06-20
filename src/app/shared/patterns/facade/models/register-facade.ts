@@ -23,8 +23,6 @@ export class RegisterFacade {
       .subscribe({
 
         next: () => {
-
-          this.authService.login();
           this.router.navigate(['/']);
 
         },
