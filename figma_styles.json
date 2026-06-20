@@ -1,0 +1,86 @@
+{
+  "6:16784": {
+    "key": "e21b16ffb31d9ee1ff2a4792765537ea77c7b80e",
+    "name": "Body Strong",
+    "styleType": "TEXT",
+    "remote": true,
+    "description": ""
+  },
+  "6:16751": {
+    "key": "cebee1b62ea594fa8f97b0b247fd163730736f2a",
+    "name": "Body Base",
+    "styleType": "TEXT",
+    "remote": true,
+    "description": ""
+  },
+  "2:5188": {
+    "key": "123744a272cae144bcd905dacfb5abf2fdbaba63",
+    "name": "04 Green/Green 100",
+    "styleType": "FILL",
+    "remote": true,
+    "description": ""
+  },
+  "2:5206": {
+    "key": "c03b9ce14079e00309b9381007f59ba44bef17a8",
+    "name": "05 Red/Red 100",
+    "styleType": "FILL",
+    "remote": true,
+    "description": ""
+  },
+  "2:5341": {
+    "key": "3eb68090c69f3f6001babef19fad060358213501",
+    "name": "01 General/General 100",
+    "styleType": "FILL",
+    "remote": true,
+    "description": ""
+  },
+  "2:5470": {
+    "key": "245e7bfb55a047d3918b8285658fada9e994fc72",
+    "name": "01 General/General 70",
+    "styleType": "FILL",
+    "remote": true,
+    "description": ""
+  },
+  "2:5411": {
+    "key": "1dfbdb4989ead00f36f68d1155b4f48cd733ed81",
+    "name": "01 General/General 0",
+    "styleType": "FILL",
+    "remote": true,
+    "description": ""
+  },
+  "11:19377": {
+    "key": "cd8fb7890d02bb365020e6d4d9dc37dd932bbf3b",
+    "name": "Single Line/Body Base",
+    "styleType": "TEXT",
+    "remote": true,
+    "description": "Used for any text element where you need 100% line height. For example, an input field, a label."
+  },
+  "12:19857": {
+    "key": "6dc22e0ddb735b3b4fdf3afecd5762a1c9bc42ed",
+    "name": "Drop Shadow/200",
+    "styleType": "EFFECT",
+    "remote": true,
+    "description": ""
+  },
+  "4:16621": {
+    "key": "dfbe5c8aedd892ba1aa0fe61bf528889ff866e4f",
+    "name": "Heading",
+    "styleType": "TEXT",
+    "remote": true,
+    "description": ""
+  },
+  "74:4913": {
+    "key": "cc7ecddd3203e70433321c668f6522457bc0dac4",
+    "name": "Title Hero",
+    "styleType": "TEXT",
+    "remote": true,
+    "description": ""
+  },
+  "74:4917": {
+    "key": "9c2797bb072374ec904f4171aae1cac4d0a6f88b",
+    "name": "Subtitle",
+    "styleType": "TEXT",
+    "remote": true,
+    "description": ""
+  }
+}

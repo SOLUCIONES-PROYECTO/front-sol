@@ -1,0 +1,39 @@
+<div class="w-full min-h-screen bg-[#F5F5F7] p-6 mx-auto">
+  
+  <div class="mb-6 flex items-center justify-between">
+    <div>
+      <button class="flex items-center text-sm text-gray-500 hover:text-gray-800 transition-colors mb-1" (click)="onBack.emit()">
+        <span class="mr-1">←</span> Regresar
+      </button>
+      <h1 class="text-3xl font-bold text-[#1F090A] mt-2">
+        {{ title }}
+      </h1>
+      <p class="text-gray-400 text-sm mt-1">
+        Crea o edita la información de {{ title.toLowerCase() }}
+      </p>
+    </div>
+    
+    <div class="flex items-center gap-3">
+        <ng-content select="[header-actions]"></ng-content>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    
+    <div class="lg:col-span-2 space-y-6">
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <ng-content select="[general]"></ng-content>
+      </div>
+    </div>
+
+    <div class="space-y-6">
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <ng-content select="[sidebar]"></ng-content>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex justify-end gap-3 mt-8 pt-4 border-t border-gray-200">
+    <ng-content select="[actions]"></ng-content>
+  </div>
+</div>

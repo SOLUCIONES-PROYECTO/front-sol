@@ -1,0 +1,10 @@
+
+<app-crud-table
+  [title]="'Egresos'"
+  [columns]="columns"
+  [data]="data"
+  [filters]="filters"
+  (searchChange)="buscar($event)"
+  (filterChange)="filtrar($event)"
+  (onAdd)="agregarEgreso()">
+</app-crud-table>

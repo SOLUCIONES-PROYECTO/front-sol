@@ -1,0 +1,146 @@
+<div class="p-6 space-y-6 bg-gray-50 min-h-screen">
+
+  <!-- INICIO DE VISTA DE PRUEBA DEL DASHBOARD (BORRAR O ADAPTAR LUEGO) -->
+
+  <!-- TOP CARDS -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+    
+    <!-- Ganancias -->
+    <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition">
+      <span class="text-sm text-gray-500 font-medium">Ganancias</span>
+      <div class="mt-2 flex items-baseline justify-between">
+        <span class="text-2xl font-bold text-gray-800">{{ metricas.ganancias.valor }}</span>
+        <span class="text-sm font-semibold flex items-center gap-1"
+              [ngClass]="metricas.ganancias.positivo ? 'text-green-500' : 'text-red-500'">
+          {{ metricas.ganancias.positivo ? '↑' : '↓' }} {{ metricas.ganancias.porcentaje | number:'1.1-1' }}%
+        </span>
+      </div>
+    </div>
+
+    <!-- Compras -->
+    <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition">
+      <span class="text-sm text-gray-500 font-medium">Compras</span>
+      <div class="mt-2 flex items-baseline justify-between">
+        <span class="text-2xl font-bold text-gray-800">{{ metricas.compras.valor }}</span>
+        <span class="text-sm font-semibold flex items-center gap-1"
+              [ngClass]="metricas.compras.positivo ? 'text-green-500' : 'text-red-500'">
+          {{ metricas.compras.positivo ? '↑' : '↓' }} {{ metricas.compras.porcentaje | number:'1.1-1' }}%
+        </span>
+      </div>
+    </div>
+
+    <!-- Ventas -->
+    <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition">
+      <span class="text-sm text-gray-500 font-medium">Ventas</span>
+      <div class="mt-2 flex items-baseline justify-between">
+        <span class="text-2xl font-bold text-gray-800">{{ metricas.ventas.valor }}</span>
+        <span class="text-sm font-semibold flex items-center gap-1"
+              [ngClass]="metricas.ventas.positivo ? 'text-green-500' : 'text-red-500'">
+          {{ metricas.ventas.positivo ? '↑' : '↓' }} {{ metricas.ventas.porcentaje | number:'1.1-1' }}%
+        </span>
+      </div>
+    </div>
+
+    <!-- Ingresos -->
+    <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition">
+      <span class="text-sm text-gray-500 font-medium">Ingresos</span>
+      <div class="mt-2 flex items-baseline justify-between">
+        <span class="text-2xl font-bold text-gray-800">{{ metricas.ingresos.valor }}</span>
+        <span class="text-sm font-semibold flex items-center gap-1"
+              [ngClass]="metricas.ingresos.positivo ? 'text-green-500' : 'text-red-500'">
+          {{ metricas.ingresos.positivo ? '↑' : '↓' }} {{ metricas.ingresos.porcentaje | number:'1.1-1' }}%
+        </span>
+      </div>
+    </div>
+
+    <!-- Salidas -->
+    <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition">
+      <span class="text-sm text-gray-500 font-medium">Salidas</span>
+      <div class="mt-2 flex items-baseline justify-between">
+        <span class="text-2xl font-bold text-gray-800">{{ metricas.salidas.valor }}</span>
+        <span class="text-sm font-semibold flex items-center gap-1"
+              [ngClass]="metricas.salidas.positivo ? 'text-green-500' : 'text-red-500'">
+          {{ metricas.salidas.positivo ? '↑' : '↓' }} {{ metricas.salidas.porcentaje | number:'1.1-1' }}%
+        </span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MIDDLE SECTION: Tablas -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    
+    <!-- Ingresos Recientes -->
+    <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+      <h3 class="text-lg font-bold text-gray-800 mb-4">Ingresos Recientes</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-gray-600">
+          <thead class="text-xs uppercase text-gray-400 border-b border-gray-100">
+            <tr>
+              <th class="pb-3 font-medium">Producto</th>
+              <th class="pb-3 font-medium">Fecha</th>
+              <th class="pb-3 font-medium">Cantidad</th>
+              <th class="pb-3 font-medium text-center">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of ingresosRecientes" class="border-b border-gray-50 hover:bg-gray-50 transition">
+              <td class="py-3 text-gray-800 font-medium">{{ item.producto }}</td>
+              <td class="py-3">{{ item.fecha }}</td>
+              <td class="py-3">{{ item.cantidad }}</td>
+              <td class="py-3 text-center">
+                <span class="badge-base" [ngClass]="{
+                  'badge-recibido': item.estado === 'Recibido',
+                  'badge-pendiente': item.estado === 'Pendiente',
+                  'badge-completado': item.estado === 'Completado',
+                  'badge-encamino': item.estado === 'En camino'
+                }">
+                  {{ item.estado }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Productos más vendidos -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+      <h3 class="text-lg font-bold text-gray-800 mb-4">Productos más vendidos</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-gray-600">
+          <thead class="text-xs uppercase text-gray-400 border-b border-gray-100">
+            <tr>
+              <th class="pb-3 font-medium">Atributo</th>
+              <th class="pb-3 font-medium text-right">Precio Unid.</th>
+              <th class="pb-3 font-medium text-right">Total Comp.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of productosVendidos" class="border-b border-gray-50 hover:bg-gray-50 transition">
+              <td class="py-3 text-gray-800 font-medium truncate max-w-[140px]" title="{{ item.producto }}">{{ item.producto }}</td>
+              <td class="py-3 text-right">{{ item.precio }}</td>
+              <td class="py-3 text-right font-bold text-primary-600">{{ item.total }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM SECTION: Lista de precios -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+    <h3 class="text-lg font-bold text-gray-800 mb-4">Lista de precios por unidad</h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-3 text-sm">
+      <div *ngFor="let item of listaPrecios" class="flex justify-between py-2 border-b border-gray-50 hover:bg-gray-50 transition px-2 rounded">
+        <span class="text-gray-600 font-medium">{{ item.producto }}</span>
+        <span class="text-gray-800 font-bold">{{ item.precio }}</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FIN DE VISTA DE PRUEBA -->
+
+</div>

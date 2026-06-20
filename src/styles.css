@@ -1,0 +1,138 @@
+@import "tailwindcss";
+
+@theme {
+  /* Paleta principal */
+  --color-primary:     #1E0909;
+  --color-primary-100: #EEE6E5;
+  --color-primary-200: #D3ACAA;
+  --color-primary-300: #926A69;
+  --color-primary-400: #D56262;
+  --color-primary-500: #A32924;
+  --color-primary-600: #531E1E;
+  --color-primary-700: #1E0909;
+
+  /* Paleta secundaria y estados generales (extraídos de Figma) */
+  --color-secondary:   #131523;
+  --color-success:     #06a561;
+  --color-success-bg:  #c4f8e2;
+  --color-warning:     #f99600;
+  --color-danger:      #ff6666;
+  --color-info:        #cae3ff;
+  
+  /* Badges de estado - Según el patrón de clasificación de Figma */
+  --color-badge-recibido-bg:        #ffb0b0; /* mismo color que yape */
+  --color-badge-recibido-text:      #ffffff; /* texto como pendiente */
+  
+  --color-badge-pendiente-bg:       #919898; /* actualizado según indicación */
+  --color-badge-pendiente-text:     #ffffff;
+  
+  --color-badge-completado-bg:      #c4f8e2; /* fondo de color para completado */
+  --color-badge-completado-text:    #06a561;
+  
+  --color-badge-transferencia-bg:   #ffefc0; /* fondo de color para transferencia */
+  --color-badge-transferencia-text: #131523;
+  
+  /* Listo ha sido eliminado */
+  
+  --color-badge-yape-bg:            #ffb0b0; /* fondo de color para yape */
+  --color-badge-yape-text:          #131523;
+  
+  --color-badge-efectivo-bg:        #cae3ff; /* fondo de color para efectivo */
+  --color-badge-efectivo-text:      #131523;
+  
+  --color-badge-encamino-bg:        #919898; /* fondo de color para en camino */
+  --color-badge-encamino-text:      #ffffff;
+  
+  --color-badge-generada-bg:        #ffb0b0; /* mismo color que yape */
+  --color-badge-generada-text:      #ffffff; /* texto como pendiente */
+  
+  --color-badge-agotado-bg:         #ffb0b0; /* mismo color que yape */
+  --color-badge-agotado-text:       #131523;
+  
+  --color-badge-disponible-bg:      #E0FFB0; /* nuevo color para disponible */
+  --color-badge-disponible-text:    #131523;
+
+  --color-badge-activo-bg:          #E1FFB0; /* nuevo color para activo */
+  --color-badge-activo-text:        #131523;
+
+  --color-badge-inactivo-bg:        #FFE1B0; /* nuevo color para inactivo */
+  --color-badge-inactivo-text:      #131523;
+}
+
+@utility badge-base {
+  @apply py-1 rounded-full text-xs font-medium inline-block min-w-[110px] text-center;
+}
+
+/* Clases utilitarias personalizadas para etiquetas/badges */
+@utility badge-recibido {
+  background-color: var(--color-badge-recibido-bg);
+  color: var(--color-badge-recibido-text);
+}
+
+@utility badge-pendiente {
+  background-color: var(--color-badge-pendiente-bg);
+  color: var(--color-badge-pendiente-text);
+}
+
+@utility badge-completado {
+  background-color: var(--color-badge-completado-bg);
+  color: var(--color-badge-completado-text);
+}
+
+@utility badge-transferencia {
+  background-color: var(--color-badge-transferencia-bg);
+  color: var(--color-badge-transferencia-text);
+}
+
+/* Listo eliminado */
+
+@utility badge-yape {
+  background-color: var(--color-badge-yape-bg);
+  color: var(--color-badge-yape-text);
+}
+
+@utility badge-efectivo {
+  background-color: var(--color-badge-efectivo-bg);
+  color: var(--color-badge-efectivo-text);
+}
+
+@utility badge-encamino {
+  background-color: var(--color-badge-encamino-bg);
+  color: var(--color-badge-encamino-text);
+}
+
+@utility badge-generada {
+  background-color: var(--color-badge-generada-bg);
+  color: var(--color-badge-generada-text);
+}
+
+@utility badge-agotado {
+  background-color: var(--color-badge-agotado-bg);
+  color: var(--color-badge-agotado-text);
+}
+
+@utility badge-disponible {
+  background-color: var(--color-badge-disponible-bg);
+  color: var(--color-badge-disponible-text);
+}
+
+@utility badge-activo {
+  background-color: var(--color-badge-activo-bg);
+  color: var(--color-badge-activo-text);
+}
+
+@utility badge-inactivo {
+  background-color: var(--color-badge-inactivo-bg);
+  color: var(--color-badge-inactivo-text);
+}
+
+@utility badge-bajo-stock {
+  background-color: var(--color-badge-transferencia-bg);
+  color: var(--color-badge-transferencia-text);
+}
+
+/* Para soportar estados idénticos visualmente */
+@utility badge-pagado {
+  background-color: var(--color-badge-completado-bg);
+  color: var(--color-badge-completado-text);
+}

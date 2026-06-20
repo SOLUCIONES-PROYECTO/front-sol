@@ -1,0 +1,10 @@
+
+<app-crud-table
+  [title]="'Ingresos'"
+  [columns]="columns"
+  [data]="data"
+  [filters]="filters"
+  (searchChange)="buscar($event)"
+  (filterChange)="filtrar($event)"
+  (onAdd)="onAddIngresos()">
+</app-crud-table>
