@@ -20,18 +20,15 @@ export class LoginFacade {
     password: string;
   }): void {
 
-    this.authApiService.login(credentials).subscribe({
-
+    this.authApiService.login(credentials as any).subscribe({
       next: (response) => {
-
         this.authService.login(response);
-
-  this.router.navigate(['/']);
-
+      this.router.navigate(['/dashboard']);
       },
-
+      error: (error) => {
+        console.error('Error al iniciar sesión', error);
+        alert('Usuario o contraseña incorrectos');
+      }
     });
-
   }
-
 }

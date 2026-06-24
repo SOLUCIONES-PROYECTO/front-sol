@@ -9,55 +9,43 @@ import { LoginResponse } from '../../../core/class/auth/login.response';
 })
 export class AuthService {
 
-  private loggedInSubject = new BehaviorSubject<boolean>(
-    !!localStorage.getItem('token')
-  );
-
+  private loggedInSubject = new BehaviorSubject<boolean>(false);
   public isLoggedIn$ = this.loggedInSubject.asObservable();
 
   constructor(
     private router: Router,
-    private authApiService: AuthApiService
-  ) {}
+    private authApiService: AuthApiService,
+  ) {
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.loggedInSubject.next(true);
+    }
+  }
 
   login(response: LoginResponse): void {
-
     localStorage.setItem('token', response.token);
-    localStorage.setItem('rol', response.rol);
     localStorage.setItem('usuarioSistema', response.usuarioSistema);
-
+    localStorage.setItem('rol', response.rol);
     this.loggedInSubject.next(true);
-
   }
 
   logout(): void {
-
     localStorage.removeItem('token');
-    localStorage.removeItem('rol');
     localStorage.removeItem('usuarioSistema');
-
+    localStorage.removeItem('rol');
     this.loggedInSubject.next(false);
 
-    this.router.navigate(['/auth/login']);
-
+    this.authApiService.logout().subscribe({
+      next: () => this.router.navigate(['/auth/login']),
+      error: () => this.router.navigate(['/auth/login']),
+    });
   }
 
-  isAuthenticated(): boolean {
-
-    return !!localStorage.getItem('token');
-
+  getToken(): string | null {
+    return localStorage.getItem('token');
   }
 
-  getUsuarioSistema(): string {
-
-    return localStorage.getItem('usuarioSistema') ?? '';
-
+  isLoggedIn(): boolean {
+    return this.loggedInSubject.value;
   }
-
-  getRol(): string {
-
-    return localStorage.getItem('rol') ?? '';
-
-  }
-
 }
