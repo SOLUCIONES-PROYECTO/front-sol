@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../../core/services/auth/auth.service';
+import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
+import { AuthService } from '../../../pages/auth/services/auth.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -12,30 +12,31 @@ export class NavBarComponent implements OnInit {
   mostrarModal: boolean = false;
 
   usuarioSistema = '';
-rol = '';
+  rol = '';
 
   constructor(
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private elementRef: ElementRef
+  ) { }
 
   menuAbierto = false;
 
-toggleMenu(): void {
-  this.menuAbierto = !this.menuAbierto;
-}
+  toggleMenu(): void {
+    this.menuAbierto = !this.menuAbierto;
+  }
 
   isLoggedIn = false;
 
-ngOnInit(): void {
+  ngOnInit(): void {
 
-  this.isLoggedIn = this.authService.isAuthenticated();
+    this.isLoggedIn = this.authService.isAuthenticated();
 
-  this.usuarioSistema =
-    this.authService.getUsuarioSistema();
+    this.usuarioSistema =
+      this.authService.getUsuarioSistema();
 
-  this.rol =
-    this.authService.getRol();
-}
+    this.rol =
+      this.authService.getRol();
+  }
 
   abrirModal() {
     this.mostrarModal = true;
@@ -47,6 +48,13 @@ ngOnInit(): void {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.menuAbierto = false;
+    }
   }
 
 }

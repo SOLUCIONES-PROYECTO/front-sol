@@ -47,12 +47,12 @@ export class AreaUsoInternoService {
   }
 
   crear(
-    detalleEntrada: AreaUsoInterno
+    areaUsoInterno: AreaUsoInterno
   ): Observable<AreaUsoInterno> {
 
     return this.http.post<unknown>(
       this.baseUrl,
-      AreaUsoInterno.toJson(detalleEntrada)
+      AreaUsoInterno.toJson(areaUsoInterno)
     ).pipe(
 
       map(data =>
@@ -65,12 +65,12 @@ export class AreaUsoInternoService {
 
   actualizar(
     id: number,
-    detalleEntrada: AreaUsoInterno
+    areaUsoInterno: AreaUsoInterno
   ): Observable<AreaUsoInterno> {
 
     return this.http.put<unknown>(
       `${this.baseUrl}/${id}`,
-      AreaUsoInterno.toJson(detalleEntrada)
+      AreaUsoInterno.toJson(areaUsoInterno)
     ).pipe(
 
       map(data =>

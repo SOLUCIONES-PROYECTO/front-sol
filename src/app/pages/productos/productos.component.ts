@@ -153,9 +153,7 @@ export class ProductosComponent implements OnInit {
     });
   }
 
-  puedeEliminar = (item: any): boolean => {
-  return item.estado !== 'Disponible'; // true = se puede eliminar (agotado/no disponible)
-};
+  puedeEliminar = (item: any): boolean => true; // siempre permite intentar; el backend decide
 
 verProducto(item: any): void {
   this.router.navigate(['/productos/ver', item.codigo]);

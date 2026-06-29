@@ -6,6 +6,8 @@ import { EgresosComponent } from './egresos.component';
 
 import {SharedModule} from "../../shared/shared.module";
 import { EgresosFormComponent } from './egresos-form/egresos-form.component';
+import { FormsModule } from '@angular/forms';
+import { LucideAngularModule } from 'lucide-angular';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,10 @@ import { EgresosFormComponent } from './egresos-form/egresos-form.component';
   imports: [
     EgresosRoutingModule,
     CommonModule,
-    SharedModule
+    SharedModule,
+    FormsModule,
+    LucideAngularModule
+
   ]
 })
 export class EgresosModule {}

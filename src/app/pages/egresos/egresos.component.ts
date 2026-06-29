@@ -154,7 +154,5 @@ export class EgresosComponent implements OnInit {
     });
   }
 
-  puedeEliminar = (item: any): boolean => {
-    return item.tipodocsalida !== 'Devolución'; // true = se puede eliminar
-  };
+  puedeEliminar = (item: any): boolean => true; // siempre permite intentar; el backend decide
 }

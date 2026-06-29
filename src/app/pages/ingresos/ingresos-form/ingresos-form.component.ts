@@ -10,6 +10,7 @@ import { TipoDocEntrada } from '../../../core/class/models/tipodocentrada';
 import { MetodoPago } from '../../../core/class/models/metodopago';
 import { EstadoPago } from '../../../core/class/models/estadopago';
 import { EstadoIngreso } from '../../../core/class/models/estadoingreso';
+import { Empleado } from '../../../core/class/models/empleado';
 
 import { DocEntradaService } from '../../../core/services/docEntrada.service';
 import { ProveedorService } from '../../../core/services/proveedores.service';
@@ -19,6 +20,8 @@ import { MetodoPagoService } from '../../../core/services/metodoPago.service';
 import { EstadoPagoService } from '../../../core/services/estadoPago.service';
 import { EstadoIngresoService } from '../../../core/services/estadoIngreso.service';
 import { DetalleEntradaService } from '../../../core/services/detalleEntrada.service';
+import { EmpleadoService } from '../../../core/services/empleado.service';
+import { AuthService } from '../../auth/services/auth.service';
 
 @Component({
   selector: 'app-ingresos-form',
@@ -45,6 +48,9 @@ export class IngresosFormComponent implements OnInit {
   detalles: DetalleEntrada[] = [];
   showModalProducto = false;
 
+  empleados: Empleado[] = [];
+  empleadoLogueado: Empleado | undefined;
+
   nuevoDetalle = {
     categoria: '',
     idProducto: 0,
@@ -68,6 +74,8 @@ export class IngresosFormComponent implements OnInit {
     private estadoPagoService: EstadoPagoService,
     private estadoIngresoService: EstadoIngresoService,
     private detalleEntradaService: DetalleEntradaService,
+    private empleadoService: EmpleadoService,
+    private authService: AuthService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -85,7 +93,8 @@ export class IngresosFormComponent implements OnInit {
       tiposDocEntrada: this.tipoDocEntradaService.listar(),
       metodosPago: this.metodoPagoService.listar(),
       estadosPago: this.estadoPagoService.listar(),
-      estadosIngreso: this.estadoIngresoService.listar()
+      estadosIngreso: this.estadoIngresoService.listar(),
+      empleados: this.empleadoService.listar()
     }).subscribe({
       next: (resultado) => {
         this.proveedores = resultado.proveedores;
@@ -94,6 +103,18 @@ export class IngresosFormComponent implements OnInit {
         this.metodosPago = resultado.metodosPago;
         this.estadosPago = resultado.estadosPago;
         this.estadosIngreso = resultado.estadosIngreso;
+        this.empleados = resultado.empleados;
+
+        // Identifica al empleado logueado por su usuario de sistema
+    this.empleadoLogueado = this.empleados.find(
+      e => e.usuarioSistema === this.authService.getUsuarioSistema()
+    );
+
+    // Solo en modo "nuevo" se asigna automáticamente
+    if (!this.modoEdicion && !this.modoVista && this.empleadoLogueado) {
+      this.docEntrada.idEmpleado = this.empleadoLogueado.idEmpleado;
+    }
+
         this.cdr.detectChanges();
 
         if (this.idDocEntrada) {
@@ -109,6 +130,13 @@ export class IngresosFormComponent implements OnInit {
     if (this.modoEdicion) return 'Editar Ingreso';
     return 'Registrar Ingreso';
   }
+
+  get empleadoMostrado(): Empleado | undefined {
+  if (this.modoEdicion || this.modoVista) {
+    return this.empleados.find(e => e.idEmpleado === this.docEntrada.idEmpleado);
+  }
+  return this.empleadoLogueado;
+}
 
   cargarDocEntrada(id: number): void {
   this.docEntradaService.obtenerIngreso(id).subscribe({
@@ -291,6 +319,11 @@ get soloLecturaDetalle(): boolean {
 
   this.docEntrada.precioTotal = this.totalIngresoDetalle;
 
+  if (!this.modoEdicion && !this.docEntrada.idEmpleado) {
+    alert('No se pudo identificar al empleado logueado. Por favor, vuelve a iniciar sesión.');
+    return;
+  }
+  
   if (this.modoEdicion) {
     this.docEntradaService.actualizarIngreso(this.idDocEntrada!, this.docEntrada).subscribe({
       next: () => {
