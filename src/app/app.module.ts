@@ -7,6 +7,8 @@ import { DashboardLayoutComponent } from './layout/dashboard-layout/dashboard-la
 import { SharedModule } from './shared/shared.module';
 
 import { HttpClientModule } from '@angular/common/http';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+
 
 import {
   LucideAngularModule,
@@ -31,6 +33,7 @@ import {
   ChevronDown,
   ChevronUp,
   X,
+  LogOut,
 } from 'lucide-angular';
 
 
@@ -66,10 +69,13 @@ import {
         ExpandIcon,
         ChevronDown,
         ChevronUp,
-        X
+        X,
+        LogOut
       }),
   ],
-  providers: [],
+  providers: [
+    provideCharts(withDefaultRegisterables())  // 👈 agrega esto
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

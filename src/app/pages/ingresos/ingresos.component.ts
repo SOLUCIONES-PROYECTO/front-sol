@@ -140,7 +140,5 @@ export class IngresosComponent implements OnInit {
     });
   }
 
-  puedeEliminar = (item: any): boolean => {
-    return item.estado !== 'Recibido'; // true = se puede eliminar
-  };
+  puedeEliminar = (item: any): boolean => true; // siempre permite intentar; el backend decide
 }

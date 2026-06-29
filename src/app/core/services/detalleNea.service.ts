@@ -46,12 +46,12 @@ export class DetalleNeaService {
     }
 
     crear(
-        detalleDevolucion: DetalleNea
+        detalleNea: DetalleNea
     ): Observable<DetalleNea> {
 
         return this.http.post<unknown>(
             this.baseUrl,
-            DetalleNea.toJson(detalleDevolucion)
+            DetalleNea.toJson(detalleNea)
         ).pipe(
 
             map(data =>
@@ -64,12 +64,12 @@ export class DetalleNeaService {
 
     actualizar(
         id: number,
-        detalleDevolucion: DetalleNea
+        detalleNea: DetalleNea
     ): Observable<DetalleNea> {
 
         return this.http.put<unknown>(
             `${this.baseUrl}/${id}`,
-            DetalleNea.toJson(detalleDevolucion)
+            DetalleNea.toJson(detalleNea)
         ).pipe(
 
             map(data =>

@@ -8,8 +8,7 @@
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">N° Documento</label>
-          <input type="text" [(ngModel)]="docEntrada.numeroDocumento" [disabled]="modoVista"
-            placeholder="#007"
+          <input type="text" [(ngModel)]="docEntrada.numeroDocumento" [disabled]="modoVista" placeholder="#007"
             class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg focus:ring-2 focus:ring-brown-500 disabled:opacity-60 disabled:cursor-not-allowed" />
         </div>
 
@@ -47,50 +46,50 @@
     </section>
 
     <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-  <div class="flex justify-between items-center mb-6">
-    <h3 class="text-lg font-bold text-[#1F090A]">Productos de Ingreso</h3>
-    <button *ngIf="!soloLecturaDetalle" (click)="abrirModalProducto()" [disabled]="!docEntrada.idProveedor"
-  class="bg-[#531E1E] text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed">
-  + Agregar Producto
-</button>
-  </div>
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-bold text-[#1F090A]">Productos de Ingreso</h3>
+        <button *ngIf="!soloLecturaDetalle" (click)="abrirModalProducto()" [disabled]="!docEntrada.idProveedor"
+          class="bg-[#531E1E] text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed">
+          + Agregar Producto
+        </button>
+      </div>
 
-  <div class="overflow-x-auto">
-    <table class="w-full text-left text-sm">
-      <thead>
-        <tr class="bg-gray-50 text-gray-500 font-semibold border-b border-gray-100">
-          <th class="px-4 py-3">Producto</th>
-          <th class="px-4 py-3">Lote</th>
-          <th class="px-4 py-3">Vencimiento</th>
-          <th class="px-4 py-3">Cantidad</th>
-          <th class="px-4 py-3">Precio Compra</th>
-          <th class="px-4 py-3">Subtotal</th>
-          <th class="px-4 py-3" *ngIf="!soloLecturaDetalle"></th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-gray-50">
-        <tr *ngFor="let d of detalles; let i = index">
-          <td class="px-4 py-4 font-medium text-gray-800">{{ d.nombreProducto }}</td>
-          <td class="px-4 py-4 text-gray-500 text-xs">{{ d.loteProducto }}</td>
-          <td class="px-4 py-4 text-gray-500 text-xs">{{ d.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
-          <td class="px-4 py-4 text-gray-500">{{ d.cantidad }}</td>
-          <td class="px-4 py-4 text-gray-500">{{ d.precioUnitario | currency:'PEN':'symbol-narrow':'1.2-2' }}</td>
-          <td class="px-4 py-4 text-gray-500">{{ d.subtotal | currency:'PEN':'symbol-narrow':'1.2-2' }}</td>
-          <td class="px-4 py-4" *ngIf="!soloLecturaDetalle">
-  <button (click)="eliminarDetalle(i)" class="text-red-400 hover:text-red-600 transition">
-    <lucide-icon name="trash" class="w-4 h-4"></lucide-icon>
-  </button>
-</td>
-        </tr>
-        <tr *ngIf="detalles.length === 0">
-          <td colspan="7" class="px-4 py-8 text-center text-gray-400 text-sm">
-            Aún no se han agregado productos a este ingreso.
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</section>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-gray-50 text-gray-500 font-semibold border-b border-gray-100">
+              <th class="px-4 py-3">Producto</th>
+              <th class="px-4 py-3">Lote</th>
+              <th class="px-4 py-3">Vencimiento</th>
+              <th class="px-4 py-3">Cantidad</th>
+              <th class="px-4 py-3">Precio Compra</th>
+              <th class="px-4 py-3">Subtotal</th>
+              <th class="px-4 py-3" *ngIf="!soloLecturaDetalle"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-50">
+            <tr *ngFor="let d of detalles; let i = index">
+              <td class="px-4 py-4 font-medium text-gray-800">{{ d.nombreProducto }}</td>
+              <td class="px-4 py-4 text-gray-500 text-xs">{{ d.loteProducto }}</td>
+              <td class="px-4 py-4 text-gray-500 text-xs">{{ d.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
+              <td class="px-4 py-4 text-gray-500">{{ d.cantidad }}</td>
+              <td class="px-4 py-4 text-gray-500">{{ d.precioUnitario | currency:'PEN':'symbol-narrow':'1.2-2' }}</td>
+              <td class="px-4 py-4 text-gray-500">{{ d.subtotal | currency:'PEN':'symbol-narrow':'1.2-2' }}</td>
+              <td class="px-4 py-4" *ngIf="!soloLecturaDetalle">
+                <button (click)="eliminarDetalle(i)" class="text-red-400 hover:text-red-600 transition">
+                  <lucide-icon name="trash" class="w-4 h-4"></lucide-icon>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="detalles.length === 0">
+              <td colspan="7" class="px-4 py-8 text-center text-gray-400 text-sm">
+                Aún no se han agregado productos a este ingreso.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
     <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
       <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Pago y estado</h3>
@@ -133,57 +132,55 @@
       <div class="space-y-4">
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Registrado por</label>
-          <select disabled
-            class="w-full border border-gray-200 p-2.5 rounded-lg bg-gray-50 text-gray-400">
-            <option>Pendiente (módulo Empleado)</option>
-          </select>
+          <input type="text"
+            [value]="empleadoMostrado ? (empleadoMostrado.nombre + ' ' + empleadoMostrado.apellido) : 'No identificado'"
+            disabled class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg text-gray-600" />
         </div>
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Cargo</label>
-          <input type="text" placeholder="—" disabled class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg text-gray-500" />
+          <input type="text" [value]="empleadoMostrado?.cargo || '—'" disabled
+            class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg text-gray-500" />
         </div>
       </div>
     </div>
 
     <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-  <h3 class="text-lg font-bold mb-6 text-[#1F090A]">Resumen de ingreso</h3>
-  <div class="space-y-4">
-    <div class="flex justify-between text-sm">
-      <span class="text-gray-500">Total de productos</span>
-      <span class="font-semibold text-gray-800">{{ totalProductosDetalle }}</span>
+      <h3 class="text-lg font-bold mb-6 text-[#1F090A]">Resumen de ingreso</h3>
+      <div class="space-y-4">
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-500">Total de productos</span>
+          <span class="font-semibold text-gray-800">{{ totalProductosDetalle }}</span>
+        </div>
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-500">Total de unidades</span>
+          <span class="font-semibold text-gray-800">{{ totalUnidadesDetalle }}</span>
+        </div>
+        <hr class="border-gray-100" />
+        <div class="flex justify-between items-center pt-2">
+          <span class="text-gray-500 text-sm">Total de ingreso</span>
+          <span class="text-xl font-bold text-[#1F090A]">
+            {{ totalIngresoDetalle | currency:'PEN':'symbol-narrow':'1.2-2' }}
+          </span>
+        </div>
+      </div>
     </div>
-    <div class="flex justify-between text-sm">
-      <span class="text-gray-500">Total de unidades</span>
-      <span class="font-semibold text-gray-800">{{ totalUnidadesDetalle }}</span>
-    </div>
-    <hr class="border-gray-100" />
-    <div class="flex justify-between items-center pt-2">
-      <span class="text-gray-500 text-sm">Total de ingreso</span>
-      <span class="text-xl font-bold text-[#1F090A]">
-        {{ totalIngresoDetalle | currency:'PEN':'symbol-narrow':'1.2-2' }}
-      </span>
-    </div>
-  </div>
-</div>
   </div>
 
   <div actions>
-    <button class="px-8 py-2.5 rounded-lg border border-gray-300 text-gray-600 font-medium hover:bg-gray-50 transition-colors" (click)="Regresar()">
+    <button
+      class="px-8 py-2.5 rounded-lg border border-gray-300 text-gray-600 font-medium hover:bg-gray-50 transition-colors"
+      (click)="Regresar()">
       {{ modoVista ? 'Regresar' : 'Cancelar' }}
     </button>
-    <button *ngIf="!modoVista" (click)="guardar()" class="px-8 py-2.5 rounded-lg bg-[#531E1E] text-white font-medium hover:opacity-95 transition-colors">
+    <button *ngIf="!modoVista" (click)="guardar()"
+      class="px-8 py-2.5 rounded-lg bg-[#531E1E] text-white font-medium hover:opacity-95 transition-colors">
       {{ modoEdicion ? 'Guardar Cambios' : 'Registrar Ingreso' }}
     </button>
   </div>
 </app-form-layout>
 
-<app-modal-form
-  [visible]="showModalProducto"
-  title="Agregar Producto al Ingreso"
-  confirmText="Agregar"
-  cancelText="Cancelar"
-  [confirmDisabled]="nuevoDetalleInvalido"
-  (confirm)="agregarDetalle()"
+<app-modal-form [visible]="showModalProducto" title="Agregar Producto al Ingreso" confirmText="Agregar"
+  cancelText="Cancelar" [confirmDisabled]="nuevoDetalleInvalido" (confirm)="agregarDetalle()"
   (cancel)="cerrarModalProducto()">
 
   <div class="space-y-6">

@@ -4,9 +4,12 @@ export class DocSalida {
 
   // Request
   idTipoDocSalida: number;
-  idCliente: number;
   idEmpleado: number;
   idMetodoPago: number;
+
+  nombreCliente: string;
+  apellidoCliente: string;
+  dniCliente: string;
 
   // Response
   tipoDocSalida: string;
@@ -25,9 +28,12 @@ export class DocSalida {
     this.iddocsalida = docSalida.iddocsalida ?? 0;
 
     this.idTipoDocSalida = docSalida.idTipoDocSalida ?? 0;
-    this.idCliente = docSalida.idCliente ?? 0;
     this.idEmpleado = docSalida.idEmpleado ?? 0;
     this.idMetodoPago = docSalida.idMetodoPago ?? 0;
+
+    this.nombreCliente = docSalida.nombreCliente ?? '';
+    this.apellidoCliente = docSalida.apellidoCliente ?? '';
+    this.dniCliente = docSalida.dniCliente ?? '';
 
     this.tipoDocSalida = docSalida.tipoDocSalida ?? '';
     this.cliente = docSalida.cliente ?? '';
@@ -41,24 +47,24 @@ export class DocSalida {
     this.totalSalida = docSalida.totalSalida ?? 0;
   }
 
-  static fromJson(docSalida: unknown): DocSalida {
+  static fromJson(data: unknown): DocSalida {
 
-    const casted = docSalida as Record<string, unknown>;
+    const d = data as Record<string, unknown>;
 
     return new DocSalida({
 
-      iddocsalida: casted['iddocsalida'] as number,
+      iddocsalida: d['iddocsalida'] as number,
 
-      tipoDocSalida: casted['tipoDocSalida'] as string,
-      cliente: casted['cliente'] as string,
-      empleado: casted['empleado'] as string,
-      metodoPago: casted['metodoPago'] as string,
+      tipoDocSalida: d['tipoDocSalida'] as string,
+      cliente: d['cliente'] as string,
+      empleado: d['empleado'] as string,
+      metodoPago: d['metodoPago'] as string,
 
-      numeroDocumento: casted['numeroDocumento'] as string,
-      fechaRegistro: casted['fechaRegistro'] as string,
-      fechaEgreso: casted['fechaEgreso'] as string,
-      descripcion: casted['descripcion'] as string,
-      totalSalida: casted['totalSalida'] as number,
+      numeroDocumento: d['numeroDocumento'] as string,
+      fechaRegistro: d['fechaRegistro'] as string,
+      fechaEgreso: d['fechaEgreso'] as string,
+      descripcion: d['descripcion'] as string,
+      totalSalida: d['totalSalida'] as number,
     });
 
   }
@@ -68,9 +74,12 @@ export class DocSalida {
     return {
 
       idTipoDocSalida: docSalida.idTipoDocSalida,
-      idCliente: docSalida.idCliente,
       idEmpleado: docSalida.idEmpleado,
       idMetodoPago: docSalida.idMetodoPago,
+
+      nombreCliente: docSalida.nombreCliente,
+      apellidoCliente: docSalida.apellidoCliente,
+      dniCliente: docSalida.dniCliente,
 
       numeroDocumento: docSalida.numeroDocumento,
       fechaRegistro: docSalida.fechaRegistro,

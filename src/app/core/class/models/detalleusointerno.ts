@@ -33,7 +33,7 @@ export class DetalleUsoInterno {
       idDetalleSalida: casted['idDetalleSalida'] as number,
       idProducto: casted['idProducto'] as number,
       nombreProducto: casted['nombreProducto'] as string,
-      numeroDocumentoSalida: casted['numeroDocumentoEntrada'] as string,
+      numeroDocumentoSalida: casted['numeroDocumentoSalida'] as string,
       idAreaUsoInterno: casted['idAreaUsoInterno'] as number,
       nombreAreaUsoInterno: casted['nombreAreaUsoInterno'] as string,
       descripcion: casted['descripcion'] as string,
@@ -44,7 +44,7 @@ export class DetalleUsoInterno {
     return {
       descripcion:detalleUsoInterno.descripcion,
       idDetalleSalida:detalleUsoInterno.idDetalleSalida,
-      idUsoInterno:detalleUsoInterno.idAreaUsoInterno,
+      idAreaUsoInterno:detalleUsoInterno.idAreaUsoInterno,
 
     };
 
