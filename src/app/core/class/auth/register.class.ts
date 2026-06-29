@@ -9,13 +9,12 @@ export class Register extends AuthCredentials {
   fechaNacimiento: string;
   telefono: string;
   genero: string;
-  contraseña:string;
-  correo:string;
-
-  confirmarContraseña: string;
+  correo: string;
+  confirmarPassword: string;
+  cargo: string;
+  area: string;
 
   constructor(register: Partial<Register> = {}) {
-
     super(register);
 
     this.nombres = register.nombres || '';
@@ -26,17 +25,15 @@ export class Register extends AuthCredentials {
     this.telefono = register.telefono || '';
     this.genero = register.genero || '';
     this.correo = register.correo || '';
-    this.contraseña = register.contraseña || '';
-    this.confirmarContraseña = register.confirmarContraseña || '';
-
+    this.confirmarPassword = register.confirmarPassword || '';
+    this.cargo = register.cargo || '';
+    this.area = register.area || '';
   }
 
   static fromJson(register: unknown): Register {
-
     const casted = register as Record<string, unknown>;
 
     return new Register({
-
       nombres: casted['nombres'] as string,
       apellidos: casted['apellidos'] as string,
       dni: casted['dni'] as string,
@@ -45,15 +42,15 @@ export class Register extends AuthCredentials {
       telefono: casted['telefono'] as string,
       genero: casted['genero'] as string,
       correo: casted['correo'] as string,
-      contraseña: casted['contraseña'] as string,
-      confirmarContraseña: casted['confirmarContraseña'] as string,
-
+      password: casted['password'] as string,
+      confirmarPassword: casted['confirmarPassword'] as string,
+      usuarioSistema: casted['usuarioSistema'] as string,
+      cargo: casted['cargo'] as string,
+      area: casted['area'] as string,
     });
-
   }
 
   static toJson(register: Register): unknown {
-
     return {
       nombres: register.nombres,
       apellidos: register.apellidos,
@@ -63,10 +60,10 @@ export class Register extends AuthCredentials {
       telefono: register.telefono,
       genero: register.genero,
       correo: register.correo,
-      contraseña: register.contraseña,
-      confirmarContraseña: register.confirmarContraseña,
+      password: register.password,
+      usuarioSistema: register.usuarioSistema,
+      cargo: register.cargo || 'Sin asignar',
+      area: register.area || 'Sin asignar',
     };
-
   }
-
 }
