@@ -21,7 +21,7 @@ import { EstadoPagoService } from '../../../core/services/estadoPago.service';
 import { EstadoIngresoService } from '../../../core/services/estadoIngreso.service';
 import { DetalleEntradaService } from '../../../core/services/detalleEntrada.service';
 import { EmpleadoService } from '../../../core/services/empleado.service';
-import { AuthService } from '../../auth/services/auth.service';
+import { AuthService } from '../../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-ingresos-form',

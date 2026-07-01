@@ -52,7 +52,7 @@
       <a routerLink="/productos" routerLinkActive="bg-white text-primary-600" #rlaProductos="routerLinkActive"
         class="flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600">
         <div class="flex items-center gap-3">
-          <lucide-icon name="shopping-basket" class="w-5 h-5">
+          <lucide-icon name="shopping-cart" class="w-5 h-5">
           </lucide-icon>
           <span class="text-sm font-medium">
             Productos
@@ -82,7 +82,7 @@
 
 
         <a routerLink="/almacen" routerLinkActive="bg-white text-primary-600" #rlaAlmacen="routerLinkActive"
-        class="flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600">
+          class="flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600">
         <div class="flex items-center gap-3">
           <lucide-icon name="package" class="w-5 h-5">
           </lucide-icon>
@@ -96,8 +96,8 @@
         </span>
       </a>
 
-      <a routerLink="/orden-de-compra" routerLinkActive="bg-white text-primary-600"
-        class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600">
+      <a routerLink="/orden-de-compra" routerLinkActive="bg-white text-primary-600" #rlaOrdenes="routerLinkActive"
+        class="flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600">
         <div class="flex items-center gap-3">
           <lucide-icon name="clipboard-list" class="w-5 h-5">
           </lucide-icon>
@@ -105,9 +105,9 @@
             Orden de Compra
           </span>
         </div>
-        <span *ngIf="(sidebarCounter.ingresosCount | async)! > 0"
+        <span *ngIf="(sidebarCounter.ordenesCount | async)! > 0" [class.invisible]="!rlaOrdenes.isActive"
           class="bg-primary text-white text-xs px-2 py-1 rounded-full">
-          {{ sidebarCounter.ingresosCount | async }}
+          {{ sidebarCounter.ordenesCount | async }}
         </span>
 
       </a>

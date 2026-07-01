@@ -1,17 +1,32 @@
-import { Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import {OrdenDeCompraComponent} from "./orden-de-compra.component";
-export const ORDEN_DE_COMPRA_ROUTES: Routes = [
+import { RouterModule, Routes } from '@angular/router';
+
+import { OrdenDeCompraComponent} from './orden-de-compra.component';
+import { OrdenesCompraFormComponent } from './ordenescompra-form/ordenescompra-form.component';
+
+export const ORDENES_COMPRA_ROUTES: Routes = [
   {
     path: '',
     component: OrdenDeCompraComponent,
   },
+  {
+    path: 'nuevo',
+    component: OrdenesCompraFormComponent,
+  },
+  {
+    path: 'editar/:id',
+    component: OrdenesCompraFormComponent,
+    data: { modo: 'editar' }
+  },
+  {
+    path: 'ver/:id',
+    component: OrdenesCompraFormComponent,
+    data: { modo: 'ver' }
+  }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(ORDEN_DE_COMPRA_ROUTES)],
+  imports: [RouterModule.forChild(ORDENES_COMPRA_ROUTES)],
   exports: [RouterModule],
 })
-
-export class OrdenDeCompraRoutingModule { }
+export class OrdenesCompraRoutingModule { }

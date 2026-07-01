@@ -52,7 +52,7 @@ export class ProveedoresComponent implements OnInit {
 
         this.data = proveedores.map((p: Proveedor) => ({
           nombre: p.descripcion,
-          ruc: p.RUC,
+          ruc: p.ruc,
           sectorista: p.nombreSectorista,
           telefono: p.celularSectorista,
           ubicacion: `${p.direccion}, ${p.ciudad}, ${p.departamento}`,

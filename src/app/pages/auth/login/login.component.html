@@ -1,84 +1,187 @@
-<div class="min-h-screen bg-[#F5F5F7] flex items-center justify-center px-4">
+<div class="min-h-screen bg-primary-100 flex items-center justify-center py-10 px-6">
+  <div class="w-full max-w-4xl overflow-hidden rounded-2xl shadow-2xl grid lg:grid-cols-5 min-h-[560px] bg-white">
 
-  <div class="bg-white w-full max-w-md rounded-3xl shadow-sm px-10 py-12">
+    <!-- ============================================================ -->
+    <!-- PANEL IZQUIERDO                                              -->
+    <!-- ============================================================ -->
 
-    <!-- Título -->
-    <h1 class="text-5xl font-bold text-center text-[#1F090A] mb-4">
-      Iniciar Sesión
-    </h1>
+    <aside class="hidden lg:flex lg:col-span-2 flex-col justify-between bg-primary-700 text-white p-12 relative overflow-hidden">
 
-    <!-- Texto -->
-    <div class="text-center mb-10">
-      <span class="text-gray-400">
-        ¿Eres usuario nuevo?
-      </span>
-
-      <a routerLink="/auth/register" class="text-[#531E1E] ml-2 hover:underline">
-        Crear una cuenta
-      </a>
-    </div>
-
-    <!-- Formulario -->
-    <form [formGroup]="loginFormPresenter.Form" (ngSubmit)="iniciarSesion()" class="space-y-6">
-
-      <!-- Usuario -->
-      <div>
-
-        <label class="block text-gray-400 mb-2 text-sm">
-          Usuario
-        </label>
-
-        <input type="text" formControlName="usuarioSistema" placeholder="Ingresa tu usuario"
-          class="w-full border border-gray-200 rounded-md px-4 py-4 outline-none focus:border-[#531E1E]">
-        <p *ngIf="loginFormPresenter.usuarioSistema.invalid &&
-          loginFormPresenter.usuarioSistema.touched" class="text-red-500 text-xs mt-1">
-
-          El usuario es obligatorio
-
-        </p>
-
+      <!-- Textura sutil de fondo -->
+      <div class="absolute inset-0 opacity-5"
+        style="background-image: repeating-linear-gradient(45deg, white 0, white 1px, transparent 0, transparent 50%); background-size: 12px 12px;">
       </div>
 
-      <!-- Contraseña -->
-      <div>
+      <div class="relative z-10">
+        <div class="mt-10">
+          <p class="text-primary-300 text-xs font-semibold tracking-widest uppercase">Sistema de gestión</p>
+          <h1 class="text-3xl font-bold mt-2 leading-snug">Bodega Yessy</h1>
+          <p class="text-primary-200 mt-4 text-sm leading-relaxed">
+            Plataforma integral para la administración de inventario, ventas y colaboradores.
+          </p>
+        </div>
 
-        <label class="block text-gray-400 mb-2 text-sm">
-          Contraseña
-        </label>
+        <div class="mt-10 border-t border-white/10"></div>
 
-        <input type="password" formControlName="password" placeholder="Ingresa tu contraseña"
-          class="w-full border border-gray-200 rounded-md px-4 py-4 outline-none focus:border-[#531E1E]" />
-
-        <p *ngIf="loginFormPresenter.password.invalid &&
-          loginFormPresenter.password.touched" class="text-red-500 text-xs mt-1">
-
-          La contraseña debe tener al menos 8 caracteres
-
-        </p>
-
+        <ul class="mt-5.5 space-y-3">
+          <li class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
+              <lucide-icon name="package" class="w-4 h-4 text-primary-200"></lucide-icon>
+            </div>
+            <span class="text-sm text-primary-100">Gestión de inventario en tiempo real</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
+              <lucide-icon name="shopping-basket" class="w-4 h-4 text-primary-200"></lucide-icon>
+            </div>
+            <span class="text-sm text-primary-100">Control y seguimiento de ventas</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
+              <lucide-icon name="users" class="w-4 h-4 text-primary-200"></lucide-icon>
+            </div>
+            <span class="text-sm text-primary-100">Administración de colaboradores</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
+              <lucide-icon name="shield-check" class="w-4 h-4 text-primary-200"></lucide-icon>
+            </div>
+            <span class="text-sm text-primary-100">Acceso seguro por credenciales</span>
+          </li>
+        </ul>
       </div>
 
-      <!-- Botón -->
-      <button type="submit" [disabled]="loginFormPresenter.Form.invalid"
-        class="w-full bg-[#531E1E] hover:opacity-90 transition text-white py-4 rounded-md text-lg font-medium mt-4 disabled:opacity-50">
+      <br>
+      <div class="relative z-10 border-t border-white/10 pt-8">
+        <p class="text-xs text-primary-300 leading-relaxed">
+          Ingresa con tus credenciales para acceder al sistema de gestión.
+        </p>
+      </div>
 
-        Ingresar
+    </aside>
 
-      </button>
+    <!-- ============================================================ -->
+    <!-- PANEL DERECHO                                                -->
+    <!-- ============================================================ -->
 
-    </form>
+    <main class="lg:col-span-3 flex flex-col justify-center">
+      <div class="px-12 py-10">
 
-    <!-- Recuperar contraseña -->
-    <div class="text-center mt-10">
+        <!-- Encabezado -->
+        <div class="mb-10">
+          <h2 class="text-2xl font-bold text-primary-700 mt-4">Iniciar sesión</h2>
+          <p class="text-sm text-gray-500 mt-1">
+            Ingresa tus credenciales para acceder al sistema.
+          </p>
+          <p class="mt-4 text-sm text-gray-500">
+            ¿Eres usuario nuevo?
+            <a routerLink="/auth/register" class="font-semibold text-primary-500 hover:text-primary-700 transition ml-1">
+              Crear una cuenta
+            </a>
+          </p>
+        </div>
 
-      <a href="#" class="text-[#531E1E] text-sm hover:underline">
+        <!-- ======================================================== -->
+        <!-- NOTIFICACIÓN                                             -->
+        <!-- ======================================================== -->
 
-        ¿Olvidaste tu contraseña?
+        @if(notification) {
+          <div
+            class="mb-6 flex items-start gap-3 rounded-lg border px-4 py-3 text-sm transition-all"
+            [ngClass]="{
+              'bg-green-50 border-green-200 text-green-700': notification.type === 'success',
+              'bg-red-50   border-red-200   text-red-700':   notification.type === 'error',
+              'bg-blue-50  border-blue-200  text-blue-700':  notification.type === 'info'
+            }"
+          >
+            <lucide-icon
+              class="w-4 h-4 mt-0.5 flex-shrink-0"
+              [name]="notification.type === 'success' ? 'check-circle-2' : notification.type === 'error' ? 'x-circle' : 'info'"
+            ></lucide-icon>
+            <span>{{ notification.message }}</span>
+            <button type="button" (click)="clearNotification()" class="ml-auto opacity-60 hover:opacity-100 transition">
+              <lucide-icon name="x" class="w-4 h-4"></lucide-icon>
+            </button>
+          </div>
+        }
 
-      </a>
+        <!-- ======================================================== -->
+        <!-- FORMULARIO                                               -->
+        <!-- ======================================================== -->
 
-    </div>
+        <form [formGroup]="loginFormPresenter.Form" (ngSubmit)="iniciarSesion()" class="space-y-5">
+
+          <!-- USUARIO -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+              Usuario <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <lucide-icon name="at-sign" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+              <input
+                type="text"
+                formControlName="usuarioSistema"
+                placeholder="Ingresa tu usuario"
+                class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
+                  focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+              >
+            </div>
+            @if(loginFormPresenter.usuarioSistema.invalid && loginFormPresenter.usuarioSistema.touched) {
+              <p class="mt-1.5 text-xs text-red-500">El usuario es obligatorio.</p>
+            }
+          </div>
+
+          <!-- CONTRASEÑA -->
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="block text-sm font-medium text-gray-700">
+                Contraseña <span class="text-red-500">*</span>
+              </label>
+              <a href="#" class="text-xs text-primary-500 hover:text-primary-700 transition">
+                ¿Olvidaste tu contraseña?
+              </a>
+            </div>
+            <div class="relative">
+              <lucide-icon name="lock" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                formControlName="password"
+                placeholder="Ingresa tu contraseña"
+                class="w-full rounded-lg border border-gray-200 pl-10 pr-10 py-2.5 text-sm outline-none transition-all
+                  focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+              >
+              <button type="button" (click)="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary-600 transition">
+                <lucide-icon [name]="showPassword ? 'eye-off' : 'eye'" class="w-4 h-4"></lucide-icon>
+              </button>
+            </div>
+            @if(loginFormPresenter.password.invalid && loginFormPresenter.password.touched) {
+              <p class="mt-1.5 text-xs text-red-500">La contraseña debe tener al menos 8 caracteres.</p>
+            }
+          </div>
+
+          <!-- BOTÓN -->
+          <div class="pt-2">
+            <button
+              type="submit"
+              [disabled]="isLoading"
+              class="w-full rounded-lg bg-primary-700 hover:bg-primary-600 active:bg-primary-700 text-white font-semibold py-3 text-sm
+                transition-all duration-200 flex items-center justify-center gap-2
+                disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              @if(isLoading) {
+                <lucide-icon name="loader-circle" class="w-4 h-4 animate-spin"></lucide-icon>
+                Iniciando sesión...
+              } @else {
+                <lucide-icon name="log-in" class="w-4 h-4"></lucide-icon>
+                Ingresar
+              }
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+    </main>
 
   </div>
-
 </div>

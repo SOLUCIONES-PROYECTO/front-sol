@@ -1,0 +1,331 @@
+<app-form-layout [title]="tituloFormulario" (onBack)="Regresar()">
+
+  <div general class="space-y-6">
+
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Información general</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Proveedor</label>
+          <select [(ngModel)]="ordenCompra.idProveedor" [disabled]="modoVista || modoEdicion"
+            class="w-full bg-white border border-gray-200 p-2.5 rounded-lg appearance-none
+              disabled:opacity-60 disabled:cursor-not-allowed">
+            <option [ngValue]="0">Selecciona</option>
+            <option *ngFor="let p of proveedores" [ngValue]="p.idProveedor">{{ p.descripcion }}</option>
+          </select>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Método de pago</label>
+          <select [(ngModel)]="ordenCompra.idMetodoPago" [disabled]="modoVista"
+            class="w-full bg-white border border-gray-200 p-2.5 rounded-lg appearance-none
+              disabled:opacity-60 disabled:cursor-not-allowed">
+            <option [ngValue]="0">Selecciona</option>
+            <option *ngFor="let m of metodosPago" [ngValue]="m.idMetodoPago">{{ m.nombre }}</option>
+          </select>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Fecha de emisión</label>
+          <input type="date" [(ngModel)]="ordenCompra.fechaEmision" [disabled]="modoVista"
+            class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg
+              disabled:opacity-60 disabled:cursor-not-allowed" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Fecha de entrega esperada</label>
+          <input type="date" [(ngModel)]="ordenCompra.fechaEntregaEsperada" [disabled]="modoVista"
+            class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg
+              disabled:opacity-60 disabled:cursor-not-allowed" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Condiciones de pago</label>
+          <input type="text" [(ngModel)]="ordenCompra.condicionesPago" [disabled]="modoVista"
+            placeholder="Ej: 30 días"
+            class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg
+              disabled:opacity-60 disabled:cursor-not-allowed" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Moneda</label>
+          <select [(ngModel)]="ordenCompra.moneda" [disabled]="modoVista"
+            class="w-full bg-white border border-gray-200 p-2.5 rounded-lg appearance-none
+              disabled:opacity-60 disabled:cursor-not-allowed">
+            <option value="PEN">PEN - Soles</option>
+            <option value="USD">USD - Dólares</option>
+          </select>
+        </div>
+
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Observaciones</label>
+          <textarea rows="3" [(ngModel)]="ordenCompra.observaciones" [disabled]="modoVista"
+            placeholder="Alguna nota adicional sobre la orden..."
+            class="w-full border border-gray-200 rounded-lg p-3
+              disabled:opacity-60 disabled:cursor-not-allowed"></textarea>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-bold text-[#1F090A]">Productos solicitados</h3>
+        <button *ngIf="!soloLecturaDetalle"
+          (click)="abrirModalProducto()"
+          [disabled]="!ordenCompra.idProveedor"
+          class="bg-[#531E1E] text-white px-4 py-2 rounded-lg text-sm font-medium
+            hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed">
+          + Agregar Producto
+        </button>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-gray-50 text-gray-500 font-semibold border-b border-gray-100">
+              <th class="px-4 py-3">Producto</th>
+              <th class="px-4 py-3">Cantidad</th>
+              <th class="px-4 py-3">Precio unitario</th>
+              <th class="px-4 py-3">Subtotal</th>
+              <th class="px-4 py-3">Venc. esperado</th>
+              <th class="px-4 py-3">Lote esperado</th>
+              <th class="px-4 py-3" *ngIf="!soloLecturaDetalle"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-50">
+            <tr *ngFor="let d of detalles; let i = index">
+              <td class="px-4 py-4 font-medium text-gray-800">{{ d.nombreProducto }}</td>
+              <td class="px-4 py-4 text-gray-500">{{ d.cantidadSolicitada }}</td>
+              <td class="px-4 py-4 text-gray-500">
+                {{ d.precioUnitario | currency:'PEN':'symbol-narrow':'1.2-2' }}
+              </td>
+              <td class="px-4 py-4 text-gray-500">
+                {{ d.subTotal | currency:'PEN':'symbol-narrow':'1.2-2' }}
+              </td>
+              <td class="px-4 py-4 text-gray-500 text-xs">
+                {{ d.fechaVencimientoEsperada || '—' }}
+              </td>
+              <td class="px-4 py-4 text-gray-500 text-xs">
+                {{ d.loteEsperado || '—' }}
+              </td>
+              <td class="px-4 py-4" *ngIf="!soloLecturaDetalle">
+                <button (click)="eliminarDetalle(i)"
+                  class="text-red-400 hover:text-red-600 transition">
+                  <lucide-icon name="trash" class="w-4 h-4"></lucide-icon>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="detalles.length === 0">
+              <td colspan="7" class="px-4 py-8 text-center text-gray-400 text-sm">
+                Aún no se han agregado productos a esta orden.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section *ngIf="modoEdicion" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Estado de la orden</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Estado</label>
+          <select [(ngModel)]="ordenCompra.idEstadoOc"
+            class="w-full bg-white border border-gray-200 p-2.5 rounded-lg appearance-none">
+            <option *ngFor="let e of estadosOc" [ngValue]="e.idestadoOc">{{ e.nombre }}</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div sidebar class="space-y-6">
+
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Responsable</h3>
+      <div class="space-y-4">
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Registrado por</label>
+          <input type="text"
+            [value]="empleadoMostrado
+              ? (empleadoMostrado.nombre + ' ' + empleadoMostrado.apellido)
+              : 'No identificado'"
+            disabled
+            class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg text-gray-600" />
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Cargo</label>
+          <input type="text"
+            [value]="empleadoMostrado?.cargo || '—'"
+            disabled
+            class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg text-gray-500" />
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-6 text-[#1F090A]">Resumen de orden</h3>
+      <div class="space-y-4">
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-500">Total de productos</span>
+          <span class="font-semibold text-gray-800">{{ totalProductosDetalle }}</span>
+        </div>
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-500">Total de unidades</span>
+          <span class="font-semibold text-gray-800">{{ totalUnidadesDetalle }}</span>
+        </div>
+        <hr class="border-gray-100" />
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-500">Subtotal</span>
+          <span class="font-semibold text-gray-800">
+            {{ subtotalDetalle | currency:'PEN':'symbol-narrow':'1.2-2' }}
+          </span>
+        </div>
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-500">IGV (18%)</span>
+          <span class="font-semibold text-gray-800">
+            {{ igvDetalle | currency:'PEN':'symbol-narrow':'1.2-2' }}
+          </span>
+        </div>
+        <hr class="border-gray-100" />
+        <div class="flex justify-between items-center pt-2">
+          <span class="text-gray-500 text-sm">Total</span>
+          <span class="text-xl font-bold text-[#1F090A]">
+            {{ totalDetalle | currency:'PEN':'symbol-narrow':'1.2-2' }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div actions>
+    <button
+      class="px-8 py-2.5 rounded-lg border border-gray-300 text-gray-600 font-medium
+        hover:bg-gray-50 transition-colors"
+      (click)="Regresar()">
+      {{ modoVista ? 'Regresar' : 'Cancelar' }}
+    </button>
+    <button *ngIf="!modoVista" (click)="guardar()"
+      class="px-8 py-2.5 rounded-lg bg-[#531E1E] text-white font-medium
+        hover:opacity-95 transition-colors">
+      {{ modoEdicion ? 'Guardar Cambios' : 'Registrar Orden' }}
+    </button>
+  </div>
+
+</app-form-layout>
+
+<app-modal-form
+  [visible]="showModalProducto"
+  title="Agregar Producto a la Orden"
+  confirmText="Agregar"
+  cancelText="Cancelar"
+  [confirmDisabled]="nuevoDetalleInvalido"
+  (confirm)="agregarDetalle()"
+  (cancel)="cerrarModalProducto()">
+
+  <div class="space-y-6">
+
+    <section>
+      <h4 class="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wide">
+        Información del producto
+      </h4>
+      <div class="grid grid-cols-2 gap-4">
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Categoría</label>
+          <select [(ngModel)]="nuevoDetalle.categoria" (ngModelChange)="onCategoriaChange()"
+            class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg appearance-none">
+            <option value="">Selecciona</option>
+            <option *ngFor="let c of categoriasDelProveedor" [value]="c">{{ c }}</option>
+          </select>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Producto</label>
+          <select [(ngModel)]="nuevoDetalle.idProducto" (ngModelChange)="onProductoChange()"
+            [disabled]="!nuevoDetalle.categoria"
+            class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg appearance-none
+              disabled:opacity-60">
+            <option [ngValue]="0">Selecciona</option>
+            <option *ngFor="let p of productosFiltradosPorCategoria" [ngValue]="p.idproducto">
+              {{ p.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Unidad de medida</label>
+          <input type="text" [value]="nuevoDetalle.unidadMedida" disabled
+            class="w-full bg-gray-50 border-none p-2.5 rounded-lg text-gray-500" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Precio de compra</label>
+          <input type="text"
+            [value]="nuevoDetalle.precioUnitario | currency:'PEN':'symbol-narrow':'1.2-2'"
+            disabled
+            class="w-full bg-gray-50 border-none p-2.5 rounded-lg text-gray-500" />
+        </div>
+
+      </div>
+    </section>
+
+    <section>
+      <h4 class="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wide">
+        Cantidad y lote
+      </h4>
+      <div class="grid grid-cols-3 gap-4">
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Cantidad</label>
+          <input type="number" [(ngModel)]="nuevoDetalle.cantidadSolicitada"
+            (ngModelChange)="recalcularSubtotal()"
+            class="w-full border border-gray-200 p-2.5 rounded-lg" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Lote esperado</label>
+          <input type="text" [(ngModel)]="nuevoDetalle.loteEsperado"
+            class="w-full border border-gray-200 p-2.5 rounded-lg" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Venc. esperado</label>
+          <input type="date" [(ngModel)]="nuevoDetalle.fechaVencimientoEsperada"
+            class="w-full border border-gray-200 p-2.5 rounded-lg" />
+        </div>
+
+      </div>
+    </section>
+
+    <section>
+      <h4 class="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wide">
+        Resumen de línea
+      </h4>
+      <div class="grid grid-cols-2 gap-4">
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Observaciones</label>
+          <input type="text" [(ngModel)]="nuevoDetalle.observaciones"
+            placeholder="Opcional"
+            class="w-full border border-gray-200 p-2.5 rounded-lg" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Subtotal</label>
+          <input type="text"
+            [value]="nuevoDetalle.subTotal | currency:'PEN':'symbol-narrow':'1.2-2'"
+            disabled
+            class="w-full bg-gray-50 border-none p-2.5 rounded-lg text-gray-500 font-semibold" />
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+</app-modal-form>

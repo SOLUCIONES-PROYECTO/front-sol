@@ -1,96 +1,601 @@
-<div class="min-h-screen bg-[#F5F5F7] flex items-center justify-center px-4 py-10">
-  <div class="bg-white w-full max-w-3xl rounded-3xl shadow-sm px-10 py-12">
+<div class="min-h-screen bg-primary-100 flex items-center justify-center py-10 px-6">
+  <div class="w-full max-w-6xl overflow-hidden rounded-2xl shadow-2xl grid lg:grid-cols-5 min-h-[860px] bg-white">
 
-    <h1 class="text-5xl font-bold text-center text-[#1F090A] mb-4">Crear Cuenta</h1>
+    <!-- ============================================================ -->
+    <!-- PANEL IZQUIERDO                                              -->
+    <!-- ============================================================ -->
 
-    <div class="text-center mb-10">
-      <span class="text-gray-400">¿Ya tienes una cuenta?</span>
-      <a routerLink="/auth/login" class="text-[#531E1E] ml-2 hover:underline">Iniciar sesión</a>
-    </div>
+    <aside class="hidden lg:flex lg:col-span-2 flex-col justify-between bg-primary-700 text-white p-12 relative overflow-hidden">
 
-    <form [formGroup]="registerFormPresenter.Form" (ngSubmit)="registrarUsuario()" class="space-y-6">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Textura sutil de fondo -->
+      <div class="absolute inset-0 opacity-5"
+        style="background-image: repeating-linear-gradient(45deg, white 0, white 1px, transparent 0, transparent 50%); background-size: 12px 12px;">
+      </div>
 
-        <div>
-          <label class="block text-gray-400 mb-2 text-sm">Nombres</label>
-          <input type="text" formControlName="nombres" placeholder="Ingresa tus nombres"
-            class="w-full border border-gray-200 rounded-md px-4 py-4 outline-none focus:border-[#531E1E]">
+      <div class="relative z-10">
+
+        <div class="mt-10">
+          <p class="text-primary-300 text-xs font-semibold tracking-widest uppercase">Sistema de gestión</p>
+          <h1 class="text-3xl font-bold mt-2 leading-snug">Bodega Yessy</h1>
+          <p class="text-primary-200 mt-4 text-sm leading-relaxed">
+            Plataforma integral para la administración de inventario, ventas y colaboradores.
+          </p>
         </div>
 
-        <div>
-          <label class="block text-gray-400 mb-2 text-sm">Apellidos</label>
-          <input type="text" formControlName="apellidos" placeholder="Ingresa tus apellidos"
-            class="w-full border border-gray-200 rounded-md px-4 py-4 outline-none focus:border-[#531E1E]">
-        </div>
+        <!-- Divisor -->
+        <div class="mt-10 border-t border-white/10"></div>
 
-        <div>
-          <label class="block text-gray-400 mb-2 text-sm">DNI</label>
-          <input type="text" formControlName="dni" placeholder="Ingresa tu DNI"
-            class="w-full border border-gray-200 rounded-md px-4 py-4 outline-none focus:border-[#531E1E]">
-        </div>
+        <!-- Beneficios -->
+        <ul class="mt-8 space-y-5">
 
-        <div>
-          <label class="block text-gray-400 mb-2 text-sm">Teléfono</label>
-          <input type="text" formControlName="telefono" placeholder="Ingresa tu teléfono"
-            class="w-full border border-gray-200 rounded-md px-4 py-4 outline-none focus:border-[#531E1E]">
-        </div>
+          <li class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
+              <lucide-icon name="package" class="w-4 h-4 text-primary-200"></lucide-icon>
+            </div>
+            <span class="text-sm text-primary-100">Gestión de inventario en tiempo real</span>
+          </li>
 
-        <!-- ✅ correo en vez de email -->
-        <div class="md:col-span-2">
-          <label class="block text-gray-400 mb-2 text-sm">Correo electrónico</label>
-          <input type="email" formControlName="correo" placeholder="Ingresa tu correo"
-            class="w-full border border-gray-200 rounded-md px-4 py-4 outline-none focus:border-[#531E1E]">
-        </div>
+          <li class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
+              <lucide-icon name="shopping-basket" class="w-4 h-4 text-primary-200"></lucide-icon>
+            </div>
+            <span class="text-sm text-primary-100">Control y seguimiento de ventas</span>
+          </li>
 
-        <div class="md:col-span-2">
-          <label class="block text-gray-400 mb-2 text-sm">Dirección</label>
-          <input type="text" formControlName="direccion" placeholder="Ingresa tu dirección"
-            class="w-full border border-gray-200 rounded-md px-4 py-4 outline-none focus:border-[#531E1E]">
-        </div>
+          <li class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
+              <lucide-icon name="users" class="w-4 h-4 text-primary-200"></lucide-icon>
+            </div>
+            <span class="text-sm text-primary-100">Administración de colaboradores</span>
+          </li>
 
-        <div>
-          <label class="block text-gray-400 mb-2 text-sm">Fecha de nacimiento</label>
-          <input type="date" formControlName="fechaNacimiento"
-            class="w-full border border-gray-200 rounded-md px-4 py-4 outline-none focus:border-[#531E1E]">
-        </div>
+          <li class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
+              <lucide-icon name="shield-check" class="w-4 h-4 text-primary-200"></lucide-icon>
+            </div>
+            <span class="text-sm text-primary-100">Acceso seguro por credenciales</span>
+          </li>
 
-        <div>
-          <label class="block text-gray-400 mb-2 text-sm">Género</label>
-          <select formControlName="genero"
-            class="w-full border border-gray-200 rounded-md px-4 py-4 outline-none focus:border-[#531E1E]">
-            <option value="">Selecciona tu género</option>
-            <option value="Masculino">Masculino</option>
-            <option value="Femenino">Femenino</option>
-            <option value="Otro">Otro</option>
-          </select>
-        </div>
-
-        <!-- NUEVO campo usuarioSistema -->
-        <div class="md:col-span-2">
-          <label class="block text-gray-400 mb-2 text-sm">Usuario del sistema</label>
-          <input type="text" formControlName="usuarioSistema" placeholder="Ej: maria.castro"
-            class="w-full border border-gray-200 rounded-md px-4 py-4 outline-none focus:border-[#531E1E]">
-        </div>
-
-        <div>
-          <label class="block text-gray-400 mb-2 text-sm">Contraseña</label>
-          <input type="password" formControlName="password" placeholder="Ingresa tu contraseña"
-            class="w-full border border-gray-200 rounded-md px-4 py-4 outline-none focus:border-[#531E1E]">
-        </div>
-
-        <div>
-          <label class="block text-gray-400 mb-2 text-sm">Confirmar contraseña</label>
-          <input type="password" formControlName="confirmarPassword" placeholder="Confirma tu contraseña"
-            class="w-full border border-gray-200 rounded-md px-4 py-4 outline-none focus:border-[#531E1E]">
-        </div>
+        </ul>
 
       </div>
 
-      <button type="submit"
-        class="w-full bg-[#531E1E] hover:opacity-90 transition text-white py-4 rounded-md text-lg font-medium mt-4">
-        Crear Cuenta
-      </button>
+      <!-- Footer del panel -->
+      <div class="relative z-10 border-t border-white/10 pt-8">
+        <p class="text-xs text-primary-300 leading-relaxed">
+          Cada colaborador registrado recibirá acceso personalizado al sistema de gestión.
+        </p>
+      </div>
 
-    </form>
+    </aside>
+
+    <!-- ============================================================ -->
+    <!-- PANEL DERECHO                                                -->
+    <!-- ============================================================ -->
+
+    <main class="lg:col-span-3 overflow-y-auto">
+      <div class="px-12 py-10">
+
+        <!-- Encabezado -->
+        <div class="mb-10">
+          <h2 class="text-2xl font-bold text-primary-700 mt-4">Registrar colaborador</h2>
+
+          <p class="text-sm text-gray-500 mt-1">
+            Completa los datos del nuevo colaborador para crear su cuenta de acceso.
+          </p>
+
+          <p class="mt-4 text-sm text-gray-500">
+            ¿Ya tienes una cuenta?
+            <a routerLink="/auth/login" class="font-semibold text-primary-500 hover:text-primary-700 transition ml-1">
+              Iniciar sesión
+            </a>
+          </p>
+
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- FORMULARIO                                                -->
+        <!-- ======================================================== -->
+
+        <form [formGroup]="registerFormPresenter.Form" (ngSubmit)="registrarUsuario()" class="space-y-8">
+
+          <!-- ====================================================== -->
+          <!-- SECCIÓN 1 · INFORMACIÓN PERSONAL                       -->
+          <!-- ====================================================== -->
+
+          <section>
+
+            <!-- Título de sección -->
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-8 h-8 rounded-lg bg-primary-100 flex items-center justify-center flex-shrink-0">
+                <lucide-icon name="circle-user-round" class="w-4 h-4 text-primary-600"></lucide-icon>
+              </div>
+              <div>
+                <h3 class="text-sm font-semibold text-primary-700 uppercase tracking-wide">Información personal</h3>
+                <p class="text-xs text-gray-400">Datos de identificación del colaborador</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-5">
+
+              <!-- NOMBRES -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                  Nombres <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                  <lucide-icon name="user" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input
+                    type="text"
+                    formControlName="nombres"
+                    placeholder="Ingrese los nombres"
+                    class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                  >
+                </div>
+                @if(registerFormPresenter.Form.get('nombres')?.touched && registerFormPresenter.Form.get('nombres')?.invalid) {
+                  <p class="mt-1.5 text-xs text-red-500">
+                    @if(registerFormPresenter.Form.get('nombres')?.errors?.['required']) { Los nombres son obligatorios. }
+                    @if(registerFormPresenter.Form.get('nombres')?.errors?.['minlength']) { Mínimo 3 caracteres. }
+                  </p>
+                }
+              </div>
+
+              <!-- APELLIDOS -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                  Apellidos <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                  <lucide-icon name="user-pen" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input
+                    type="text"
+                    formControlName="apellidos"
+                    placeholder="Ingrese los apellidos"
+                    class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                  >
+                </div>
+                @if(registerFormPresenter.Form.get('apellidos')?.touched && registerFormPresenter.Form.get('apellidos')?.invalid) {
+                  <p class="mt-1.5 text-xs text-red-500">
+                    @if(registerFormPresenter.Form.get('apellidos')?.errors?.['required']) { Los apellidos son obligatorios. }
+                    @if(registerFormPresenter.Form.get('apellidos')?.errors?.['minlength']) { Mínimo 3 caracteres. }
+                  </p>
+                }
+              </div>
+
+              <!-- DNI -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                  DNI <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                  <lucide-icon name="credit-card" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input
+                    type="text"
+                    maxlength="8"
+                    formControlName="dni"
+                    placeholder="12345678"
+                    class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                  >
+                </div>
+                @if(registerFormPresenter.Form.get('dni')?.touched && registerFormPresenter.Form.get('dni')?.invalid) {
+                  <p class="mt-1.5 text-xs text-red-500">Ingrese un DNI válido de 8 dígitos.</p>
+                }
+              </div>
+
+              <!-- FECHA DE NACIMIENTO -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                  Fecha de nacimiento <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                  <lucide-icon name="calendar-days" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input
+                    type="date"
+                    formControlName="fechaNacimiento"
+                    class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                  >
+                </div>
+                @if(registerFormPresenter.Form.get('fechaNacimiento')?.touched && registerFormPresenter.Form.get('fechaNacimiento')?.invalid) {
+                  <p class="mt-1.5 text-xs text-red-500">La fecha de nacimiento es obligatoria.</p>
+                }
+              </div>
+
+              <!-- GÉNERO -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                  Género <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                  <lucide-icon name="users-round" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <select
+                    formControlName="genero"
+                    class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all appearance-none
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100 bg-white"
+                  >
+                    <option value="">Seleccione una opción</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Femenino">Femenino</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                  <lucide-icon name="chevron-down" class="absolute right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                </div>
+                @if(registerFormPresenter.Form.get('genero')?.touched && registerFormPresenter.Form.get('genero')?.invalid) {
+                  <p class="mt-1.5 text-xs text-red-500">Seleccione el género.</p>
+                }
+              </div>
+
+            </div>
+
+          </section>
+
+          <!-- Divisor -->
+          <div class="border-t border-gray-100"></div>
+
+          <!-- ====================================================== -->
+          <!-- SECCIÓN 2 · CONTACTO                                   -->
+          <!-- ====================================================== -->
+
+          <section>
+
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-8 h-8 rounded-lg bg-primary-100 flex items-center justify-center flex-shrink-0">
+                <lucide-icon name="contact-round" class="w-4 h-4 text-primary-600"></lucide-icon>
+              </div>
+              <div>
+                <h3 class="text-sm font-semibold text-primary-700 uppercase tracking-wide">Información de contacto</h3>
+                <p class="text-xs text-gray-400">Datos para comunicarse con el colaborador</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-5">
+
+              <!-- CORREO -->
+              <div class="col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                  Correo electrónico <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                  <lucide-icon name="mail" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input
+                    type="email"
+                    formControlName="correo"
+                    placeholder="colaborador@bodegayessy.com"
+                    class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                  >
+                </div>
+                @if(registerFormPresenter.Form.get('correo')?.touched && registerFormPresenter.Form.get('correo')?.invalid) {
+                  <p class="mt-1.5 text-xs text-red-500">
+                    @if(registerFormPresenter.Form.get('correo')?.errors?.['required']) { El correo es obligatorio. }
+                    @if(registerFormPresenter.Form.get('correo')?.errors?.['email']) { Ingrese un correo válido. }
+                  </p>
+                }
+              </div>
+
+              <!-- TELÉFONO -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                  Teléfono <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                  <lucide-icon name="phone" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input
+                    type="text"
+                    maxlength="9"
+                    formControlName="telefono"
+                    placeholder="987654321"
+                    class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                  >
+                </div>
+                @if(registerFormPresenter.Form.get('telefono')?.touched && registerFormPresenter.Form.get('telefono')?.invalid) {
+                  <p class="mt-1.5 text-xs text-red-500">Ingrese un teléfono válido de 9 dígitos.</p>
+                }
+              </div>
+
+              <!-- DIRECCIÓN -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                  Dirección <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                  <lucide-icon name="map-pin" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input
+                    type="text"
+                    formControlName="direccion"
+                    placeholder="Av. Principal 123"
+                    class="w-full rounded-lg border border-gray-200 pl-10 pr-10 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                  >
+                  <button
+                    type="button"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary-600 transition"
+                    title="Búsqueda automática próximamente"
+                  >
+                    <lucide-icon name="search" class="w-4 h-4"></lucide-icon>
+                  </button>
+                </div>
+                @if(registerFormPresenter.Form.get('direccion')?.touched && registerFormPresenter.Form.get('direccion')?.invalid) {
+                  <p class="mt-1.5 text-xs text-red-500">La dirección es obligatoria.</p>
+                }
+              </div>
+
+            </div>
+
+          </section>
+
+          <!-- Divisor -->
+          <div class="border-t border-gray-100"></div>
+
+          <!-- ====================================================== -->
+          <!-- SECCIÓN 3 · ROL EN LA EMPRESA                          -->
+          <!-- ====================================================== -->
+
+          <section>
+
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-8 h-8 rounded-lg bg-primary-100 flex items-center justify-center flex-shrink-0">
+                <lucide-icon name="briefcase" class="w-4 h-4 text-primary-600"></lucide-icon>
+              </div>
+              <div>
+                <h3 class="text-sm font-semibold text-primary-700 uppercase tracking-wide">Rol en la empresa</h3>
+                <p class="text-xs text-gray-400">Cargo y área del colaborador dentro de la organización</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-5">
+
+              <!-- CARGO -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Cargo</label>
+                <div class="relative">
+                  <lucide-icon name="badge" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input
+                    type="text"
+                    formControlName="cargo"
+                    placeholder="Sin asignar"
+                    class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                  >
+                </div>
+              </div>
+
+              <!-- ÁREA -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Área</label>
+                <div class="relative">
+                  <lucide-icon name="layers" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input
+                    type="text"
+                    formControlName="area"
+                    placeholder="Sin asignar"
+                    class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                  >
+                </div>
+              </div>
+
+            </div>
+
+          </section>
+
+          <!-- Divisor -->
+          <div class="border-t border-gray-100"></div>
+
+          <!-- ====================================================== -->
+          <!-- SECCIÓN 4 · ACCESO AL SISTEMA                          -->
+          <!-- ====================================================== -->
+
+          <section>
+
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-8 h-8 rounded-lg bg-primary-100 flex items-center justify-center flex-shrink-0">
+                <lucide-icon name="key-round" class="w-4 h-4 text-primary-600"></lucide-icon>
+              </div>
+              <div>
+                <h3 class="text-sm font-semibold text-primary-700 uppercase tracking-wide">Acceso al sistema</h3>
+                <p class="text-xs text-gray-400">Credenciales que usará el colaborador para ingresar</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-5">
+
+              <!-- USUARIO DEL SISTEMA -->
+              <div class="col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                  Usuario del sistema <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                  <lucide-icon name="at-sign" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input
+                    type="text"
+                    formControlName="usuarioSistema"
+                    placeholder="Ej: maria.garcia"
+                    class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                  >
+                </div>
+                @if(registerFormPresenter.Form.get('usuarioSistema')?.touched && registerFormPresenter.Form.get('usuarioSistema')?.invalid) {
+                  <p class="mt-1.5 text-xs text-red-500">
+                    @if(registerFormPresenter.Form.get('usuarioSistema')?.errors?.['required']) { El usuario es obligatorio. }
+                    @if(registerFormPresenter.Form.get('usuarioSistema')?.errors?.['minlength']) { Mínimo 4 caracteres. }
+                    @if(registerFormPresenter.Form.get('usuarioSistema')?.errors?.['pattern']) { Solo letras, números, puntos y guiones bajos. }
+                  </p>
+                }
+              </div>
+
+              <!-- CONTRASEÑA -->
+              <div class="col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                  Contraseña <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                  <lucide-icon name="lock" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input
+                    [type]="showPassword ? 'text' : 'password'"
+                    formControlName="password"
+                    placeholder="Crea una contraseña segura"
+                    class="w-full rounded-lg border border-gray-200 pl-10 pr-10 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                  >
+                  <button type="button" (click)="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary-600 transition">
+                    <lucide-icon [name]="showPassword ? 'eye-off' : 'eye'" class="w-4 h-4"></lucide-icon>
+                  </button>
+                </div>
+
+                <!-- Barra de fortaleza -->
+                <div class="mt-3">
+                  <div class="flex items-center justify-between mb-1.5">
+                    <span class="text-xs text-gray-500">Seguridad de la contraseña</span>
+                    <span class="text-xs font-medium"
+                      [ngClass]="{
+                        'text-red-500':    passwordStrength <= 1,
+                        'text-orange-500': passwordStrength == 2,
+                        'text-yellow-600': passwordStrength == 3,
+                        'text-lime-600':   passwordStrength == 4,
+                        'text-green-600':  passwordStrength == 5
+                      }">
+                      {{ passwordStrengthLabel }}
+                    </span>
+                  </div>
+                  <div class="flex gap-1">
+                    <div class="h-1 flex-1 rounded-full transition-all duration-300"
+                      [ngClass]="passwordStrength >= 1 ? (passwordStrength <= 1 ? 'bg-red-500' : passwordStrength == 2 ? 'bg-orange-500' : passwordStrength == 3 ? 'bg-yellow-500' : passwordStrength == 4 ? 'bg-lime-500' : 'bg-green-600') : 'bg-gray-200'">
+                    </div>
+                    <div class="h-1 flex-1 rounded-full transition-all duration-300"
+                      [ngClass]="passwordStrength >= 2 ? (passwordStrength == 2 ? 'bg-orange-500' : passwordStrength == 3 ? 'bg-yellow-500' : passwordStrength == 4 ? 'bg-lime-500' : 'bg-green-600') : 'bg-gray-200'">
+                    </div>
+                    <div class="h-1 flex-1 rounded-full transition-all duration-300"
+                      [ngClass]="passwordStrength >= 3 ? (passwordStrength == 3 ? 'bg-yellow-500' : passwordStrength == 4 ? 'bg-lime-500' : 'bg-green-600') : 'bg-gray-200'">
+                    </div>
+                    <div class="h-1 flex-1 rounded-full transition-all duration-300"
+                      [ngClass]="passwordStrength >= 4 ? (passwordStrength == 4 ? 'bg-lime-500' : 'bg-green-600') : 'bg-gray-200'">
+                    </div>
+                    <div class="h-1 flex-1 rounded-full transition-all duration-300"
+                      [ngClass]="passwordStrength >= 5 ? 'bg-green-600' : 'bg-gray-200'">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Requisitos -->
+                <div class="mt-4 grid grid-cols-2 gap-y-2 gap-x-4">
+
+                  <div class="flex items-center gap-2">
+                    <lucide-icon
+                      [name]="passwordRequirements.length ? 'check-circle-2' : 'circle'"
+                      class="w-3.5 h-3.5 flex-shrink-0"
+                      [ngClass]="passwordRequirements.length ? 'text-green-500' : 'text-gray-300'">
+                    </lucide-icon>
+                    <span class="text-xs" [ngClass]="passwordRequirements.length ? 'text-gray-600' : 'text-gray-400'">8 caracteres mínimo</span>
+                  </div>
+
+                  <div class="flex items-center gap-2">
+                    <lucide-icon
+                      [name]="passwordRequirements.uppercase ? 'check-circle-2' : 'circle'"
+                      class="w-3.5 h-3.5 flex-shrink-0"
+                      [ngClass]="passwordRequirements.uppercase ? 'text-green-500' : 'text-gray-300'">
+                    </lucide-icon>
+                    <span class="text-xs" [ngClass]="passwordRequirements.uppercase ? 'text-gray-600' : 'text-gray-400'">Una mayúscula</span>
+                  </div>
+
+                  <div class="flex items-center gap-2">
+                    <lucide-icon
+                      [name]="passwordRequirements.lowercase ? 'check-circle-2' : 'circle'"
+                      class="w-3.5 h-3.5 flex-shrink-0"
+                      [ngClass]="passwordRequirements.lowercase ? 'text-green-500' : 'text-gray-300'">
+                    </lucide-icon>
+                    <span class="text-xs" [ngClass]="passwordRequirements.lowercase ? 'text-gray-600' : 'text-gray-400'">Una minúscula</span>
+                  </div>
+
+                  <div class="flex items-center gap-2">
+                    <lucide-icon
+                      [name]="passwordRequirements.number ? 'check-circle-2' : 'circle'"
+                      class="w-3.5 h-3.5 flex-shrink-0"
+                      [ngClass]="passwordRequirements.number ? 'text-green-500' : 'text-gray-300'">
+                    </lucide-icon>
+                    <span class="text-xs" [ngClass]="passwordRequirements.number ? 'text-gray-600' : 'text-gray-400'">Un número</span>
+                  </div>
+
+                  <div class="flex items-center gap-2 col-span-2">
+                    <lucide-icon
+                      [name]="passwordRequirements.symbol ? 'check-circle-2' : 'circle'"
+                      class="w-3.5 h-3.5 flex-shrink-0"
+                      [ngClass]="passwordRequirements.symbol ? 'text-green-500' : 'text-gray-300'">
+                    </lucide-icon>
+                    <span class="text-xs" [ngClass]="passwordRequirements.symbol ? 'text-gray-600' : 'text-gray-400'">Un símbolo (@$!%*?&._#)</span>
+                  </div>
+
+                </div>
+
+              </div>
+
+              <!-- CONFIRMAR CONTRASEÑA -->
+              <div class="col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                  Confirmar contraseña <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                  <lucide-icon name="lock-keyhole" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input
+                    [type]="showConfirmPassword ? 'text' : 'password'"
+                    formControlName="confirmarPassword"
+                    placeholder="Repite la contraseña"
+                    class="w-full rounded-lg border border-gray-200 pl-10 pr-10 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                  >
+                  <button type="button" (click)="toggleConfirmPassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary-600 transition">
+                    <lucide-icon [name]="showConfirmPassword ? 'eye-off' : 'eye'" class="w-4 h-4"></lucide-icon>
+                  </button>
+                </div>
+                @if(confirmPasswordControl?.touched) {
+                  @if(passwordsMatch) {
+                    <p class="mt-1.5 text-xs text-green-600 flex items-center gap-1">
+                      <lucide-icon name="check-circle-2" class="w-3.5 h-3.5"></lucide-icon>
+                      Las contraseñas coinciden
+                    </p>
+                  } @else {
+                    <p class="mt-1.5 text-xs text-red-500 flex items-center gap-1">
+                      <lucide-icon name="x-circle" class="w-3.5 h-3.5"></lucide-icon>
+                      Las contraseñas no coinciden
+                    </p>
+                  }
+                }
+              </div>
+
+            </div>
+
+          </section>
+
+          <!-- ====================================================== -->
+          <!-- BOTÓN DE ENVÍO                                         -->
+          <!-- ====================================================== -->
+
+          <div class="pt-2 pb-4">
+            <button
+              type="submit"
+              [disabled]="isLoading"
+              class="w-full rounded-lg bg-primary-700 hover:bg-primary-600 active:bg-primary-700 text-white font-semibold py-3 text-sm
+                transition-all duration-200 flex items-center justify-center gap-2
+                disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              @if(isLoading) {
+                <lucide-icon name="loader-circle" class="w-4 h-4 animate-spin"></lucide-icon>
+                Registrando colaborador...
+              } @else {
+                <lucide-icon name="user-check" class="w-4 h-4"></lucide-icon>
+                Registrar colaborador
+              }
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+    </main>
+
   </div>
 </div>

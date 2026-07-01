@@ -1,8 +1,15 @@
-<!--<app-crud-table
-  title="Orden de Compra"
-  addButtonText="Añadir Orden de Compra"
-  [showExportButton]="true"
+<app-crud-table
+  [title]="'Órdenes de compra'"
   [columns]="columns"
   [data]="data"
->
-</app-crud-table>-->
+  [filters]="filters"
+  keyField="id"
+  [canDeleteItem]="puedeEliminar"
+  cannotDeleteMessage="No puedes eliminar órdenes en estado Recibida o Anulada."
+  (searchChange)="buscar($event)"
+  (filterChange)="filtrar($event)"
+  (onAdd)="onAgregar()"
+  (onEdit)="onEditar($event)"
+  (onDelete)="onEliminar($event)"
+  (onView)="onVer($event)">
+</app-crud-table>

@@ -30,14 +30,14 @@ export class RegisterFormPresenter extends StepPresenter<Register> {
   public initForm(): void {
     this.nombres = new FormControl(null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]);
     this.apellidos = new FormControl(null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]);
-    this.dni = new FormControl(null, [Validators.required, Validators.minLength(8), Validators.maxLength(8)]);
+    this.dni = new FormControl(null, [Validators.required, Validators.minLength(8), Validators.maxLength(8), Validators.pattern(/^\d{8}$/)]);
     this.correo = new FormControl(null, [Validators.required, Validators.email]);
     this.direccion = new FormControl(null, [Validators.required, Validators.minLength(5), Validators.maxLength(100)]);
     this.fechaNacimiento = new FormControl(null, [Validators.required]);
-    this.telefono = new FormControl(null, [Validators.required, Validators.minLength(9), Validators.maxLength(15)]);
+    this.telefono = new FormControl(null, [Validators.required, Validators.minLength(9), Validators.maxLength(15),Validators.pattern(/^\d{9}$/)]);
     this.genero = new FormControl(null, [Validators.required]);
-    this.usuarioSistema = new FormControl(null, [Validators.required, Validators.minLength(3)]);
-    this.password = new FormControl(null, [Validators.required, Validators.minLength(8)]);
+    this.usuarioSistema = new FormControl(null, [Validators.required, Validators.minLength(4),Validators.pattern(/^[a-zA-Z0-9._]+$/)]);
+    this.password = new FormControl(null, [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._#])[A-Za-z\d@$!%*?&._#]{8,}$/)]);
     this.confirmarPassword = new FormControl(null, [Validators.required]);
     this.cargo = new FormControl('Sin asignar');
     this.area = new FormControl('Sin asignar');

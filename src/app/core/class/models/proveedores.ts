@@ -3,7 +3,7 @@ export class Proveedor {
   idProveedor: number;
   persona_idpersona: number;
 
-  RUC: string;
+  ruc: string;
   descripcion: string;
   codigoUbigeo: string;
 
@@ -36,7 +36,7 @@ export class Proveedor {
     this.idProveedor = proveedor.idProveedor || 0;
     this.persona_idpersona = proveedor.persona_idpersona || 0;
 
-    this.RUC = proveedor.RUC || '';
+    this.ruc = proveedor.ruc || '';
     this.descripcion = proveedor.descripcion || '';
     this.codigoUbigeo = proveedor.codigoUbigeo || '';
 
@@ -74,7 +74,7 @@ export class Proveedor {
       idProveedor: casted['idProveedor'] as number,
       persona_idpersona: casted['persona_idpersona'] as number,
 
-      RUC: casted['RUC'] as string,
+      ruc: casted['ruc'] as string,
       descripcion: casted['descripcion'] as string,
       codigoUbigeo: casted['codigoUbigeo'] as string,
 
@@ -111,7 +111,7 @@ export class Proveedor {
       idProveedor: proveedor.idProveedor,
       persona_idpersona: proveedor.persona_idpersona,
 
-      RUC: proveedor.RUC,
+      RUC: proveedor.ruc,
       descripcion: proveedor.descripcion,
       codigoUbigeo: proveedor.codigoUbigeo,
 

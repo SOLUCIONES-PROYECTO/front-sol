@@ -21,7 +21,7 @@ import { ProductoService } from '../../../core/services/producto.service';
 import { TipoDocSalidaService } from '../../../core/services/tipoDocSalida.service';
 import { MetodoPagoService } from '../../../core/services/metodoPago.service';
 import { EmpleadoService } from '../../../core/services/empleado.service';
-import { AuthService } from '../../auth/services/auth.service';
+import { AuthService } from '../../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-egresos-form',
