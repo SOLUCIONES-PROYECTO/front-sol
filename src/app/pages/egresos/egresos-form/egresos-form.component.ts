@@ -45,7 +45,7 @@ export class EgresosFormComponent implements OnInit {
   empleadoLogueado: Empleado | undefined;
 
   // Tipos excluidos por ahora (Devolución pendiente de Fase futura)
-  tiposPermitidos = ['Boleta', 'Factura', 'Ticket', 'Merma', 'Uso interno'];
+  tiposPermitidos = ['Venta', 'Merma', 'Uso interno'];
 
   // — Detalle en memoria —
   detalles: any[] = [];
@@ -65,6 +65,33 @@ export class EgresosFormComponent implements OnInit {
     descripcionUso: ''
   };
 
+  guardando = false;
+
+  // — Modal de alerta (validación / éxito) —
+  showAlertModal = false;
+  alertTitle = '';
+  alertMessage = '';
+  alertType: 'error' | 'success' = 'error';
+
+  private mostrarAlerta(title: string, message: string, type: 'error' | 'success'): void {
+    this.alertTitle = title;
+    this.alertMessage = message;
+    this.alertType = type;
+    this.showAlertModal = true;
+    this.cdr.detectChanges();
+  }
+
+  onCerrarAlerta(): void {
+    this.showAlertModal = false;
+    const fueExito = this.alertType === 'success';
+    this.cdr.detectChanges();
+
+    if (fueExito) {
+      this.router.navigate(['/egresos']);
+    }
+  }
+
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -79,7 +106,7 @@ export class EgresosFormComponent implements OnInit {
     private empleadoService: EmpleadoService,
     private authService: AuthService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
 
@@ -89,6 +116,8 @@ export class EgresosFormComponent implements OnInit {
 
     const idParam = this.route.snapshot.paramMap.get('id');
     this.idDocSalida = idParam ? Number(idParam) : null;
+
+    console.log('idParam:', idParam, '| idDocSalida:', this.idDocSalida);
 
     forkJoin({
       productos: this.productoService.listarProductos(),
@@ -144,6 +173,54 @@ export class EgresosFormComponent implements OnInit {
       next: (data) => {
         this.docSalida = data;
         this.cdr.detectChanges();
+
+        if (this.modoEdicion || this.modoVista) {
+          this.cargarDetallesExistentes(id);
+        }
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  cargarDetallesExistentes(idDocSalida: number): void {
+    this.detalleSalidaService.listar().subscribe({
+      next: (todosDetalles) => {
+        const detallesDelDoc = todosDetalles.filter(d => d.idDocSalida === idDocSalida);
+
+        if (this.mostrarMerma) {
+          this.detalleMermaService.listar().subscribe({
+            next: (todasMermas) => {
+              this.detalles = detallesDelDoc.map(d => {
+                const merma = todasMermas.find(m => m.idDetalleSalida === d.idDetalleSalida);
+                return {
+                  ...d,
+                  motivoMerma: merma?.motivoMerma ?? '',
+                  descripcionMerma: merma?.descripcion ?? ''
+                };
+              });
+              this.cdr.detectChanges();
+            },
+            error: (err) => console.error(err)
+          });
+        } else if (this.mostrarUsoInterno) {
+          this.detalleUsoInternoService.listar().subscribe({
+            next: (todosUsos) => {
+              this.detalles = detallesDelDoc.map(d => {
+                const uso = todosUsos.find(u => u.idDetalleSalida === d.idDetalleSalida);
+                return {
+                  ...d,
+                  nombreAreaUsoInterno: uso?.nombreAreaUsoInterno ?? '',
+                  descripcionUso: uso?.descripcion ?? ''
+                };
+              });
+              this.cdr.detectChanges();
+            },
+            error: (err) => console.error(err)
+          });
+        } else {
+          this.detalles = detallesDelDoc;
+          this.cdr.detectChanges();
+        }
       },
       error: (err) => console.error(err)
     });
@@ -160,7 +237,7 @@ export class EgresosFormComponent implements OnInit {
   }
 
   get mostrarCliente(): boolean {
-    return ['Boleta', 'Factura', 'Ticket'].includes(this.tipoSeleccionadoNombre);
+    return ['Venta'].includes(this.tipoSeleccionadoNombre);
   }
 
   get mostrarMerma(): boolean {
@@ -184,6 +261,14 @@ export class EgresosFormComponent implements OnInit {
   onTipoEgresoChange(): void {
     // Si cambias el tipo, limpiamos cualquier detalle ya agregado para evitar mezclar estructuras distintas
     this.detalles = [];
+
+    // Auto-seleccionar "No Aplica" para Merma y Uso interno
+    if (this.mostrarMerma || this.mostrarUsoInterno) {
+      const noAplica = this.metodosPago.find(m => m.nombre === 'No Aplica');
+      if (noAplica) {
+        this.docSalida.idMetodoPago = noAplica.idMetodoPago;
+      }
+    }
   }
 
   // — Modal —
@@ -257,6 +342,8 @@ export class EgresosFormComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
+
+
   // — Resumen en vivo —
   get totalProductosDetalle(): number {
     return this.detalles.length;
@@ -278,21 +365,42 @@ export class EgresosFormComponent implements OnInit {
 
   guardar(): void {
 
+    const errores = this.validarCamposObligatorios();
+
+    if (errores.length > 0) {
+      this.mostrarAlerta(
+        'Faltan datos por completar',
+        'Por favor revisa los siguientes campos:\n• ' + errores.join('\n• '),
+        'error'
+      );
+      return;
+    }
+
     if (!this.modoEdicion && !this.docSalida.idEmpleado) {
-      alert('No se pudo identificar al empleado logueado. Vuelve a iniciar sesión.');
+      this.mostrarAlerta(
+        'No se pudo identificar al empleado',
+        'Vuelve a iniciar sesión e inténtalo nuevamente.',
+        'error'
+      );
       return;
     }
 
     this.docSalida.totalSalida = this.totalEgresoDetalle;
     this.docSalida.fechaRegistro = this.obtenerFechaRegistroActual();
 
+    this.guardando = true;
+
     if (this.modoEdicion) {
       this.docSalidaService.actualizar(this.idDocSalida!, this.docSalida).subscribe({
         next: () => {
-          alert('Egreso actualizado');
-          this.router.navigate(['/egresos']);
+          this.guardando = false;
+          this.mostrarAlerta('Egreso actualizado', 'Los cambios se guardaron correctamente.', 'success');
         },
-        error: (err) => console.error(err)
+        error: (err) => {
+          this.guardando = false;
+          console.error(err);
+          this.mostrarAlerta('Ocurrió un error', 'No se pudo actualizar el egreso. Inténtalo de nuevo.', 'error');
+        }
       });
       return;
     }
@@ -302,8 +410,8 @@ export class EgresosFormComponent implements OnInit {
       next: (docCreado) => {
 
         if (this.detalles.length === 0) {
-          alert('Egreso registrado');
-          this.router.navigate(['/egresos']);
+          this.guardando = false;
+          this.mostrarAlerta('Egreso registrado', 'El egreso se registró correctamente.', 'success');
           return;
         }
 
@@ -345,17 +453,56 @@ export class EgresosFormComponent implements OnInit {
 
         forkJoin(peticiones).subscribe({
           next: () => {
-            alert('Egreso registrado');
-            this.router.navigate(['/egresos']);
+            this.guardando = false;
+            this.mostrarAlerta('Egreso registrado', 'El egreso y sus productos se guardaron correctamente.', 'success');
           },
           error: (err) => {
+            this.guardando = false;
             console.error('Error al guardar el detalle', err);
-            alert('El egreso se creó, pero hubo un error guardando algunos productos.');
-            this.router.navigate(['/egresos']);
+            this.mostrarAlerta(
+              'Egreso creado con errores',
+              'El egreso se registró, pero hubo un problema al guardar algunos productos.',
+              'error'
+            );
           }
         });
       },
-      error: (err) => console.error(err)
+      error: (err) => {
+        this.guardando = false;
+        console.error(err);
+        this.mostrarAlerta('Ocurrió un error', 'No se pudo registrar el egreso. Inténtalo de nuevo.', 'error');
+      }
     });
-  }
 }
+
+  esMermaOUsoInterno(): boolean {
+    return this.mostrarMerma || this.mostrarUsoInterno;
+  }
+
+  metodosPagoFiltrados(): MetodoPago[] {
+    if (this.mostrarCliente) { // true solo cuando es 'Venta'
+      return this.metodosPago.filter(m => m.nombre !== 'No Aplica');
+    }
+    return this.metodosPago;
+  }
+
+
+  private validarCamposObligatorios(): string[] {
+  const errores: string[] = [];
+
+  if (!this.docSalida.idTipoDocSalida) errores.push('Tipo de egreso');
+  if (!this.docSalida.idMetodoPago) errores.push('Método de pago');
+  if (this.detalles.length === 0) errores.push('Debe agregar al menos un producto');
+
+  if (this.mostrarCliente) {
+    if (!this.docSalida.nombreCliente) errores.push('Nombre del cliente');
+    if (!this.docSalida.apellidoCliente) errores.push('Apellido del cliente');
+    if (!this.docSalida.dniCliente) errores.push('DNI del cliente');
+  }
+
+  return errores;
+}
+
+
+}
+

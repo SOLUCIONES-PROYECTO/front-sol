@@ -99,10 +99,10 @@
               <td class="px-4 py-4 font-medium text-gray-800">{{ d.nombreProducto }}</td>
               <td class="px-4 py-4 text-gray-500">{{ d.cantidadSolicitada }}</td>
               <td class="px-4 py-4 text-gray-500">
-                {{ d.precioUnitario | currency:'PEN':'symbol-narrow':'1.2-2' }}
+                {{ d.precioUnitario | currency:'S/.':'symbol-narrow':'1.2-2' }}
               </td>
               <td class="px-4 py-4 text-gray-500">
-                {{ d.subTotal | currency:'PEN':'symbol-narrow':'1.2-2' }}
+                {{ d.subTotal | currency:'S/.':'symbol-narrow':'1.2-2' }}
               </td>
               <td class="px-4 py-4 text-gray-500 text-xs">
                 {{ d.fechaVencimientoEsperada || '—' }}
@@ -127,12 +127,12 @@
       </div>
     </section>
 
-    <section *ngIf="modoEdicion" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
       <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Estado de la orden</h3>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Estado</label>
-          <select [(ngModel)]="ordenCompra.idEstadoOc"
+          <select [(ngModel)]="ordenCompra.idEstadoOc" [disabled]="modoVista"
             class="w-full bg-white border border-gray-200 p-2.5 rounded-lg appearance-none">
             <option *ngFor="let e of estadosOc" [ngValue]="e.idestadoOc">{{ e.nombre }}</option>
           </select>
@@ -181,20 +181,20 @@
         <div class="flex justify-between text-sm">
           <span class="text-gray-500">Subtotal</span>
           <span class="font-semibold text-gray-800">
-            {{ subtotalDetalle | currency:'PEN':'symbol-narrow':'1.2-2' }}
+            {{ subtotalDetalle | currency:'S/.':'symbol-narrow':'1.2-2' }}
           </span>
         </div>
         <div class="flex justify-between text-sm">
           <span class="text-gray-500">IGV (18%)</span>
           <span class="font-semibold text-gray-800">
-            {{ igvDetalle | currency:'PEN':'symbol-narrow':'1.2-2' }}
+            {{ igvDetalle | currency:'S/.':'symbol-narrow':'1.2-2' }}
           </span>
         </div>
         <hr class="border-gray-100" />
         <div class="flex justify-between items-center pt-2">
           <span class="text-gray-500 text-sm">Total</span>
           <span class="text-xl font-bold text-[#1F090A]">
-            {{ totalDetalle | currency:'PEN':'symbol-narrow':'1.2-2' }}
+            {{ totalDetalle | currency:'S/.':'symbol-narrow':'1.2-2' }}
           </span>
         </div>
       </div>
@@ -266,7 +266,7 @@
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Precio de compra</label>
           <input type="text"
-            [value]="nuevoDetalle.precioUnitario | currency:'PEN':'symbol-narrow':'1.2-2'"
+            [value]="nuevoDetalle.precioUnitario | currency:'S/.':'symbol-narrow':'1.2-2'"
             disabled
             class="w-full bg-gray-50 border-none p-2.5 rounded-lg text-gray-500" />
         </div>
@@ -318,7 +318,7 @@
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Subtotal</label>
           <input type="text"
-            [value]="nuevoDetalle.subTotal | currency:'PEN':'symbol-narrow':'1.2-2'"
+            [value]="nuevoDetalle.subTotal | currency:'S/.':'symbol-narrow':'1.2-2'"
             disabled
             class="w-full bg-gray-50 border-none p-2.5 rounded-lg text-gray-500 font-semibold" />
         </div>

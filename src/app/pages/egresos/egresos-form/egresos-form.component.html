@@ -9,9 +9,11 @@
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-500">N° Documento</label>
-          <input type="text" [(ngModel)]="docSalida.numeroDocumento" [disabled]="modoVista"
-            placeholder="#007"
+          <input type="text" [(ngModel)]="docSalida.numeroDocumento" [disabled]="true" placeholder="Automático"
             class="w-full bg-white border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+          <span class="text-xs text-gray-400" *ngIf="!modoVista">
+            Este número se genera automáticamente según el tipo de documento.
+          </span>
         </div>
 
         <div class="flex flex-col gap-1.5">
@@ -22,41 +24,13 @@
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-500">Tipo de egreso</label>
-
-          <select *ngIf="!modoEdicion && !modoVista" [(ngModel)]="docSalida.idTipoDocSalida"
+          <select [(ngModel)]="docSalida.idTipoDocSalida" [disabled]="modoVista || modoEdicion"
             (ngModelChange)="onTipoEgresoChange()"
-            class="w-full bg-white border border-gray-200 p-2.5 rounded-lg appearance-none">
+            class="w-full bg-white border border-gray-200 p-2.5 rounded-lg appearance-none disabled:opacity-60 disabled:cursor-not-allowed">
             <option [ngValue]="0">Selecciona</option>
             <option *ngFor="let t of tiposDocSalida" [ngValue]="t.idTipoDocSalida">{{ t.nombre }}</option>
           </select>
-
-          <input *ngIf="modoEdicion || modoVista" type="text" [value]="docSalida.tipoDocSalida" disabled
-            class="w-full bg-gray-50 border-none p-2.5 rounded-lg text-gray-500" />
         </div>
-
-        <!-- Cliente: solo visible para Boleta/Factura/Ticket -->
-        <ng-container *ngIf="mostrarCliente">
-          <div class="flex flex-col gap-1.5">
-            <label class="text-sm font-medium text-gray-500">Nombre del cliente</label>
-            <input *ngIf="!modoEdicion && !modoVista" type="text" [(ngModel)]="docSalida.nombreCliente"
-              class="w-full bg-white border border-gray-200 p-2.5 rounded-lg" />
-            <input *ngIf="modoEdicion || modoVista" type="text" [value]="docSalida.cliente" disabled
-              class="w-full bg-gray-50 border-none p-2.5 rounded-lg text-gray-500" />
-          </div>
-
-          <ng-container *ngIf="!modoEdicion && !modoVista">
-            <div class="flex flex-col gap-1.5">
-              <label class="text-sm font-medium text-gray-500">Apellido del cliente</label>
-              <input type="text" [(ngModel)]="docSalida.apellidoCliente"
-                class="w-full bg-white border border-gray-200 p-2.5 rounded-lg" />
-            </div>
-            <div class="flex flex-col gap-1.5">
-              <label class="text-sm font-medium text-gray-500">DNI del cliente</label>
-              <input type="text" [(ngModel)]="docSalida.dniCliente" maxlength="8"
-                class="w-full bg-white border border-gray-200 p-2.5 rounded-lg" />
-            </div>
-          </ng-container>
-        </ng-container>
 
       </div>
     </section>
@@ -65,10 +39,15 @@
     <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
       <div class="flex justify-between items-center mb-6">
         <h3 class="text-lg font-bold text-[#1F090A]">Productos</h3>
-        <button *ngIf="!soloLecturaDetalle" (click)="abrirModalProducto()" [disabled]="!docSalida.idTipoDocSalida"
-          class="bg-[#531E1E] text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed">
-          + Agregar Producto
-        </button>
+        <div class="flex flex-col items-end gap-1">
+          <button *ngIf="!soloLecturaDetalle" (click)="abrirModalProducto()" [disabled]="!docSalida.idTipoDocSalida"
+            class="bg-[#531E1E] text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed">
+            + Agregar Producto
+          </button>
+          <span *ngIf="!soloLecturaDetalle && !docSalida.idTipoDocSalida" class="text-xs text-gray-400">
+            Selecciona un tipo de egreso primero
+          </span>
+        </div>
       </div>
 
       <div class="overflow-x-auto">
@@ -79,6 +58,8 @@
               <th class="px-4 py-3">Cantidad</th>
               <th class="px-4 py-3">Precio Unitario</th>
               <th class="px-4 py-3">Subtotal</th>
+              <th class="px-4 py-3" *ngIf="mostrarMerma">Motivo</th>
+              <th class="px-4 py-3" *ngIf="mostrarUsoInterno">Área</th>
               <th class="px-4 py-3" *ngIf="!soloLecturaDetalle"></th>
             </tr>
           </thead>
@@ -86,20 +67,16 @@
             <tr *ngFor="let d of detalles; let i = index">
               <td class="px-4 py-4 font-medium text-gray-800">{{ d.nombreProducto }}</td>
               <td class="px-4 py-4">{{ d.cantidad }}</td>
-              <td class="px-4 py-4">{{ d.precioUnitario | currency:'PEN':'symbol-narrow':'1.2-2' }}</td>
-              <td class="px-4 py-4">{{ d.subtotal | currency:'PEN':'symbol-narrow':'1.2-2' }}</td>
+              <td class="px-4 py-4">{{ d.precioUnitario | currency:'S/.':'symbol-narrow':'1.2-2' }}</td>
+              <td class="px-4 py-4">{{ d.subtotal | currency:'S/.':'symbol-narrow':'1.2-2' }}</td>
+              <td class="px-4 py-4" *ngIf="mostrarMerma">{{ d.motivoMerma }}</td>
+              <td class="px-4 py-4" *ngIf="mostrarUsoInterno">{{ d.nombreAreaUsoInterno }}</td>
               <td class="px-4 py-4" *ngIf="!soloLecturaDetalle">
                 <button (click)="eliminarDetalle(i)" class="text-red-400 hover:text-red-600 transition">
                   <lucide-icon name="trash" class="w-4 h-4"></lucide-icon>
                 </button>
               </td>
             </tr>
-            <tr *ngIf="detalles.length === 0">
-              <td colspan="5" class="px-4 py-8 text-center text-gray-400 text-sm">
-                Aún no se han agregado productos a este egreso.
-              </td>
-            </tr>
-          </tbody>
         </table>
       </div>
     </section>
@@ -110,10 +87,10 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-500">Método de pago</label>
-          <select [(ngModel)]="docSalida.idMetodoPago" [disabled]="modoVista"
+          <select [(ngModel)]="docSalida.idMetodoPago" [disabled]="modoVista || esMermaOUsoInterno()"
             class="w-full bg-white border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed">
             <option [ngValue]="0">Selecciona</option>
-            <option *ngFor="let m of metodosPago" [ngValue]="m.idMetodoPago">{{ m.nombre }}</option>
+            <option *ngFor="let m of metodosPagoFiltrados()" [ngValue]="m.idMetodoPago">{{ m.nombre }}</option>
           </select>
         </div>
       </div>
@@ -138,6 +115,35 @@
       </div>
     </div>
 
+    <!-- NUEVO: Información del cliente -->
+    <div *ngIf="mostrarCliente" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Información del cliente</h3>
+      <div class="space-y-4">
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-500">Nombre</label>
+          <input *ngIf="!modoEdicion && !modoVista" type="text" [(ngModel)]="docSalida.nombreCliente"
+            class="w-full bg-white border border-gray-200 p-2.5 rounded-lg" />
+          <input *ngIf="modoEdicion || modoVista" type="text" [value]="docSalida.cliente" disabled
+            class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg text-gray-500" />
+        </div>
+
+        <ng-container *ngIf="!modoEdicion && !modoVista">
+          <div class="flex flex-col gap-1.5">
+            <label class="text-sm font-medium text-gray-500">Apellido</label>
+            <input type="text" [(ngModel)]="docSalida.apellidoCliente"
+              class="w-full bg-white border border-gray-200 p-2.5 rounded-lg" />
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="text-sm font-medium text-gray-500">DNI</label>
+            <input type="text" [(ngModel)]="docSalida.dniCliente" maxlength="8"
+              class="w-full bg-white border border-gray-200 p-2.5 rounded-lg" />
+          </div>
+        </ng-container>
+
+      </div>
+    </div>
+    
     <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
       <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Resumen de egreso</h3>
       <div class="space-y-4">
@@ -153,32 +159,35 @@
         <div class="flex justify-between items-center pt-2">
           <span class="text-gray-500 text-sm">Total de egreso</span>
           <span class="text-xl font-bold text-[#1F090A]">
-            {{ totalEgresoDetalle | currency:'PEN':'symbol-narrow':'1.2-2' }}
+            {{ totalEgresoDetalle | currency:'S/.':'symbol-narrow':'1.2-2' }}
           </span>
         </div>
       </div>
     </div>
   </div>
 
-  <div actions>
-    <button class="px-8 py-2.5 rounded-lg border border-gray-300 text-gray-500 font-medium hover:bg-gray-50 transition-colors" (click)="Regresar()">
+  <div actions class="flex items-center justify-end gap-3">
+    <button
+      class="px-8 py-2.5 rounded-lg border border-gray-300 text-gray-500 font-medium hover:bg-gray-50 transition-colors"
+      (click)="Regresar()">
       {{ modoVista ? 'Regresar' : 'Cancelar' }}
     </button>
-    <button *ngIf="!modoVista" (click)="guardar()" class="px-8 py-2.5 rounded-lg bg-[#531E1E] text-white font-medium hover:opacity-95 transition-colors">
-      {{ modoEdicion ? 'Guardar Cambios' : 'Registrar Egreso' }}
+    <button *ngIf="!modoVista" (click)="guardar()" [disabled]="guardando"
+      class="px-8 py-2.5 rounded-lg bg-[#531E1E] text-white font-medium hover:opacity-95 transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+      <svg *ngIf="guardando" class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+      </svg>
+      {{ guardando ? 'Guardando...' : (modoEdicion ? 'Guardar Cambios' : 'Registrar Egreso') }}
     </button>
-  </div>
+</div>
 
 </app-form-layout>
 
 <!-- Modal dinámico de Agregar Producto -->
-<app-modal-form
-  [visible]="showModalProducto"
-  title="Agregar Producto al Egreso"
-  confirmText="Agregar"
-  cancelText="Cancelar"
-  [confirmDisabled]="nuevoDetalleInvalido"
-  (confirm)="agregarDetalle()"
+<app-modal-form [visible]="showModalProducto" title="Agregar Producto al Egreso" confirmText="Agregar"
+  cancelText="Cancelar" [confirmDisabled]="nuevoDetalleInvalido" (confirm)="agregarDetalle()"
   (cancel)="cerrarModalProducto()">
 
   <div class="space-y-6">
@@ -214,13 +223,13 @@
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Precio de Venta</label>
-          <input type="text" [value]="nuevoDetalle.precioUnitario | currency:'PEN':'symbol-narrow':'1.2-2'" disabled
+          <input type="text" [value]="nuevoDetalle.precioUnitario | currency:'S/.':'symbol-narrow':'1.2-2'" disabled
             class="w-full bg-gray-50 border-none p-2.5 rounded-lg text-gray-500" />
         </div>
 
         <div class="flex flex-col gap-1.5 col-span-2">
           <label class="text-sm font-medium text-gray-600">Subtotal</label>
-          <input type="text" [value]="nuevoDetalle.subtotal | currency:'PEN':'symbol-narrow':'1.2-2'" disabled
+          <input type="text" [value]="nuevoDetalle.subtotal | currency:'S/.':'symbol-narrow':'1.2-2'" disabled
             class="w-full bg-gray-50 border-none p-2.5 rounded-lg text-gray-500 font-semibold" />
         </div>
 
@@ -233,8 +242,7 @@
       <div class="grid grid-cols-1 gap-4">
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Motivo de la merma</label>
-          <input type="text" [(ngModel)]="nuevoDetalle.motivoMerma"
-            placeholder="Ej. Producto dañado, vencido, roto..."
+          <input type="text" [(ngModel)]="nuevoDetalle.motivoMerma" placeholder="Ej. Producto dañado, vencido, roto..."
             class="w-full border border-gray-200 p-2.5 rounded-lg" />
         </div>
         <div class="flex flex-col gap-1.5">
@@ -268,3 +276,7 @@
   </div>
 
 </app-modal-form>
+
+<app-alert-modal [visible]="showAlertModal" [title]="alertTitle" [message]="alertMessage" [type]="alertType"
+  (close)="onCerrarAlerta()">
+</app-alert-modal>

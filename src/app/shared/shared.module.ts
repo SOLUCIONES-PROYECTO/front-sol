@@ -13,6 +13,7 @@ import { FilterPanelComponent } from './components/filter-panel/filter-panel.com
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 import { ModalFormComponent } from './components/modal-form/modal-form.component';
+import { AlertModalComponent } from './components/alert-modal/alert-modal.component';
 @NgModule({
   declarations: [
     CrudTableComponent,
@@ -23,7 +24,8 @@ import { ModalFormComponent } from './components/modal-form/modal-form.component
     FilterPanelComponent,
     SearchBarComponent,
     ConfirmModalComponent,
-    ModalFormComponent
+    ModalFormComponent,
+    AlertModalComponent
   ],
 
   imports: [
@@ -40,7 +42,8 @@ import { ModalFormComponent } from './components/modal-form/modal-form.component
     FormLayoutComponent,
     FilterPanelComponent,
     ConfirmModalComponent,
-    ModalFormComponent
+    ModalFormComponent,
+    AlertModalComponent
   ]
 })
 export class SharedModule {}

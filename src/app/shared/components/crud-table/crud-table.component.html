@@ -66,17 +66,29 @@
                   class="w-10 h-10 rounded-lg object-cover border border-gray-100" />
                 <span *ngIf="!item[column.key]" class="text-xs text-gray-400">Sin imagen</span>
               </ng-container>
-
               <ng-template #checkBadge>
                 <ng-container *ngIf="column.type === 'badge'; else normalValue">
                   <span class="px-3 py-1 rounded-full text-xs font-medium" [ngClass]="{
-                  'bg-[var(--color-badge-pagado-bg)]        text-[var(--color-badge-pagado-text)]':        item[column.key] === 'Pagado',
-                  'bg-[var(--color-badge-agotado-bg)]     text-[var(--color-badge-agotado-text)]':     item[column.key] === 'Agotado',
-                  'bg-[var(--color-badge-transferencia-bg)] text-[var(--color-badge-transferencia-text)]': item[column.key] === 'Transferencia',
+                  'bg-[var(--color-badge-recibido-bg)]      text-[var(--color-badge-recibido-text)]':      item[column.key] === 'Recibido',
+                  'bg-[var(--color-badge-devuelto-bg)]      text-[var(--color-badge-devuelto-text)]':      item[column.key] === 'Devuelto',
+                  'bg-[var(--color-badge-observado-bg)]     text-[var(--color-badge-observado-text)]':     item[column.key] === 'Observado',
+
+          
+                  'bg-[var(--color-badge-tarjeta-bg)]       text-[var(--color-badge-tarjeta-text)]':       item[column.key] === 'Tarjeta',
                   'bg-[var(--color-badge-yape-bg)]          text-[var(--color-badge-yape-text)]':          item[column.key] === 'Yape',
                   'bg-[var(--color-badge-efectivo-bg)]      text-[var(--color-badge-efectivo-text)]':      item[column.key] === 'Efectivo',
-                  'bg-[var(--color-badge-disponible-bg)]      text-[var(--color-badge-disponible-text)]':  item[column.key] === 'Disponible',
-                  'bg-[var(--color-badge-recibido-bg)]      text-[var(--color-badge-recibido-text)]':  item[column.key] === 'Recibido'
+
+           
+                  'bg-[var(--color-badge-disponible-bg)]    text-[var(--color-badge-disponible-text)]':    item[column.key] === 'Disponible',
+                  'bg-[var(--color-badge-agotado-bg)]       text-[var(--color-badge-agotado-text)]':       item[column.key] === 'Agotado',
+                  'bg-[var(--color-badge-vencido-bg)]       text-[var(--color-badge-vencido-text)]':       item[column.key] === 'Vencido',
+
+          
+                  'bg-[var(--color-badge-aprobada-bg)]      text-[var(--color-badge-aprobada-text)]':      item[column.key] === 'Aprobada',
+                  'bg-[var(--color-badge-borrador-bg)]      text-[var(--color-badge-borrador-text)]':      item[column.key] === 'Borrador',
+                  'bg-[var(--color-badge-enviada-bg)]       text-[var(--color-badge-enviada-text)]':       item[column.key] === 'Enviada',
+                  'bg-[var(--color-badge-recibida-bg)]      text-[var(--color-badge-recibida-text)]':      item[column.key] === 'Recibida',
+                  'bg-[var(--color-badge-anulada-bg)]       text-[var(--color-badge-anulada-text)]':       item[column.key] === 'Anulada'
                 }">
                     {{ item[column.key] }}
                   </span>

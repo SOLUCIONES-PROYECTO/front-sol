@@ -12,6 +12,13 @@ export class DetalleUsoInternoService {
 
   constructor(private http: HttpClient) {}
 
+  // DetalleUsoInternoService
+listar(): Observable<DetalleUsoInterno[]> {
+  return this.http.get<unknown[]>(this.baseUrl).pipe(
+    map(data => data.map(item => DetalleUsoInterno.fromJson(item)))
+  );
+}
+
   crear(detalleUsoInterno: DetalleUsoInterno): Observable<DetalleUsoInterno> {
     return this.http.post<unknown>(this.baseUrl, DetalleUsoInterno.toJson(detalleUsoInterno)).pipe(
       map(data => DetalleUsoInterno.fromJson(data))

@@ -67,6 +67,7 @@ export class EgresosComponent implements OnInit {
 
       next: (egresos) => {
         this.data = egresos.map((d: DocSalida) => ({
+          id: d.iddocsalida,           // ← NUEVO: id real para navegación/eliminación
           documento: d.numeroDocumento,
           fecha: d.fechaEgreso,
           cliente: d.cliente,
@@ -84,7 +85,6 @@ export class EgresosComponent implements OnInit {
         );
 
         this.cdr.detectChanges();
-        console.log('DATA EGRESOS:', this.data);
 
       },
 
@@ -93,7 +93,7 @@ export class EgresosComponent implements OnInit {
       }
     });
 
-  }
+}
 
   buscar(texto: string): void {
     this.searchText = texto.toLowerCase();
@@ -131,15 +131,16 @@ export class EgresosComponent implements OnInit {
     this.router.navigate(['/egresos/nuevo']);
   }
   editarEgreso(item: any): void {
-    this.router.navigate(['/egresos/editar', item.documento]);
-  }
-  verEgreso(item: any): void {
-    this.router.navigate(['/egresos/ver', item.documento]);
-  }
+    this.router.navigate(['/egresos/editar', item.id]);
+}
 
-  eliminarEgresos(items: any[]): void {
+verEgreso(item: any): void {
+    this.router.navigate(['/egresos/ver', item.id]);
+}
+
+eliminarEgresos(items: any[]): void {
     const peticiones = items.map(item =>
-      this.egresosService.eliminarEgreso(item.documento)
+      this.egresosService.eliminarEgreso(item.id)
     );
 
     forkJoin(peticiones).subscribe({
@@ -152,7 +153,7 @@ export class EgresosComponent implements OnInit {
         console.error('Error al eliminar', err);
       }
     });
-  }
+}
 
   puedeEliminar = (item: any): boolean => true; // siempre permite intentar; el backend decide
 }
