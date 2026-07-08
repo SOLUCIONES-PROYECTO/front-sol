@@ -17,10 +17,7 @@
           <select [(ngModel)]="producto.categoria" [disabled]="modoVista"
             class="w-full bg-[#F3F4F9] border-none p-3 rounded-lg appearance-none disabled:opacity-60 disabled:cursor-not-allowed">
             <option value="">Selecciona</option>
-            <option value="Abarrotes">Abarrotes</option>
-            <option value="Lácteos">Lácteos</option>
-            <option value="Limpieza">Limpieza</option>
-            <option value="Bebidas">Bebidas</option>
+            <option *ngFor="let c of categorias" [value]="c.nombre">{{ c.nombre }}</option>
           </select>
         </div>
 

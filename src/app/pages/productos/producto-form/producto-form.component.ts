@@ -10,6 +10,7 @@ import { ProductoService } from '../../../core/services/producto.service';
 import { ProveedorService } from '../../../core/services/proveedores.service';
 import { EstadoProductoService } from '../../../core/services/estadoProducto.service';
 import { UnidadMedidaService } from '../../../core/services/unidadMedida.service';
+import { CategoriaProductoService } from '../../../core/services/categoriaProducto.service';
 
 @Component({
   selector: 'app-producto-form',
@@ -28,6 +29,7 @@ export class ProductoFormComponent implements OnInit {
   proveedores: Proveedor[] = [];
   estados: EstadoProducto[] = [];
   unidadesMedida: UnidadMedida[] = [];
+  categorias: { idCategoria: number; nombre: string; descripcion: string }[] = [];
 
   constructor(
     private router: Router,
@@ -36,7 +38,9 @@ export class ProductoFormComponent implements OnInit {
     private proveedorService: ProveedorService,
     private estadoProductoService: EstadoProductoService,
     private unidadMedidaService: UnidadMedidaService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private categoriaProductoService: CategoriaProductoService
+
   ) {}
 
   ngOnInit(): void {
@@ -61,10 +65,19 @@ export class ProductoFormComponent implements OnInit {
   }
 
   cargarListas(): void {
-  this.proveedorService.listarProveedores().subscribe({
+
+  this.categoriaProductoService.listar().subscribe({
+  next: (data) => {
+    this.categorias = data;
+    this.cdr.detectChanges();
+  },
+  error: (err) => console.error(err)
+});
+
+  this.proveedorService.listarProveedor().subscribe({
     next: (data) => {
       this.proveedores = data;
-      this.cdr.detectChanges();  
+      this.cdr.detectChanges();
     },
     error: (err) => console.error(err)
   });
@@ -72,7 +85,7 @@ export class ProductoFormComponent implements OnInit {
   this.estadoProductoService.listar().subscribe({
     next: (data) => {
       this.estados = data;
-      this.cdr.detectChanges();  
+      this.cdr.detectChanges();
     },
     error: (err) => console.error(err)
   });
@@ -80,7 +93,7 @@ export class ProductoFormComponent implements OnInit {
   this.unidadMedidaService.listar().subscribe({
     next: (data) => {
       this.unidadesMedida = data;
-      this.cdr.detectChanges();  
+      this.cdr.detectChanges();
     },
     error: (err) => console.error(err)
   });

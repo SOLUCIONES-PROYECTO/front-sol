@@ -39,8 +39,8 @@ export class RegisterFormPresenter extends StepPresenter<Register> {
     this.usuarioSistema = new FormControl(null, [Validators.required, Validators.minLength(4),Validators.pattern(/^[a-zA-Z0-9._]+$/)]);
     this.password = new FormControl(null, [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._#])[A-Za-z\d@$!%*?&._#]{8,}$/)]);
     this.confirmarPassword = new FormControl(null, [Validators.required]);
-    this.cargo = new FormControl('Sin asignar');
-    this.area = new FormControl('Sin asignar');
+    this.cargo = new FormControl(null, [Validators.required]);
+    this.area = new FormControl(null, [Validators.required]);
   }
 
   public createForm(): void {

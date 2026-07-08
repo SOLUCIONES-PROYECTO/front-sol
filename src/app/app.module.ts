@@ -62,8 +62,10 @@ import {
   BadgeCheck,
   ShoppingCart,
   LogIn,
+  CircleAlert,
+  AlertCircle,
+  CheckCircle,
 } from 'lucide-angular';
-
 
 @NgModule({
   declarations: [
@@ -126,7 +128,10 @@ import {
         ShieldCheck, 
         BadgeCheck,
         ShoppingCart,
-        LogIn
+        LogIn,
+        CircleAlert,
+        AlertCircle,
+        CheckCircle
       }),
   ],
   providers: [

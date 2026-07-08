@@ -55,6 +55,10 @@ export class DocSalida {
 
       iddocsalida: d['iddocsalida'] as number,
 
+      idTipoDocSalida: d['idTipoDocSalida'] as number,
+      idMetodoPago: d['idMetodoPago'] as number,
+      idEmpleado: d['idEmpleado'] as number,
+
       tipoDocSalida: d['tipoDocSalida'] as string,
       cliente: d['cliente'] as string,
       empleado: d['empleado'] as string,
@@ -67,7 +71,7 @@ export class DocSalida {
       totalSalida: d['totalSalida'] as number,
     });
 
-  }
+}
 
   static toJson(docSalida: DocSalida): unknown {
 

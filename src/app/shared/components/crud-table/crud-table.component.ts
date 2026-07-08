@@ -1,17 +1,17 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
-
+import { Component, Input, EventEmitter, Output, OnChanges, SimpleChanges } from '@angular/core';
 @Component({
   selector: 'app-crud-table',
   standalone: false,
   templateUrl: './crud-table.component.html',
   styleUrls: ['./crud-table.component.css'],
 })
-export class CrudTableComponent {
+export class CrudTableComponent implements OnChanges {
 
   // — Configuración general —
   @Input() title = '';
   @Input() addButtonText = 'Agregar';
   @Input() keyField = 'id';
+  @Input() canAdd = true;
 
   // — Datos de la tabla —
   @Input() columns: { key: string; label: string; type?: string }[] = [];
@@ -27,6 +27,7 @@ export class CrudTableComponent {
   // — Regla de eliminación (ya NO bloquea el checkbox; se valida al eliminar) —
   @Input() canDeleteItem: (item: any) => boolean = () => true;
   @Input() cannotDeleteMessage = 'Algunos de los registros seleccionados no se pueden eliminar.';
+  @Input() readOnly = false;
 
   // — Eventos hacia el componente padre —
   @Output() onAdd = new EventEmitter<void>();
@@ -44,8 +45,8 @@ export class CrudTableComponent {
   }
 
   get allSelected(): boolean {
-    return this.data.length > 0 &&
-      this.data.every(item => this.selectedKeys.has(item[this.keyField]));
+    return this.paginatedData.length > 0 &&
+      this.paginatedData.every(item => this.selectedKeys.has(item[this.keyField]));
   }
 
   get canEdit(): boolean {
@@ -54,9 +55,9 @@ export class CrudTableComponent {
 
   toggleSelectAll(): void {
     if (this.allSelected) {
-      this.selectedKeys.clear();
+      this.paginatedData.forEach(item => this.selectedKeys.delete(item[this.keyField]));
     } else {
-      this.data.forEach(item => this.selectedKeys.add(item[this.keyField]));
+      this.paginatedData.forEach(item => this.selectedKeys.add(item[this.keyField]));
     }
   }
 
@@ -123,6 +124,51 @@ export class CrudTableComponent {
 
   //Visualización
   viewItem(item: any): void {
-  this.onView.emit(item);
-}
+    this.onView.emit(item);
+  }
+
+  // — Paginación —
+  pageSize = 15;
+  currentPage = 1;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['data']) {
+      this.currentPage = 1; // vuelve a la página 1 cada vez que cambian los datos (búsqueda/filtro)
+    }
+  }
+
+  get totalPages(): number {
+    return Math.max(1, Math.ceil(this.data.length / this.pageSize));
+  }
+
+  get paginatedData(): any[] {
+    const inicio = (this.currentPage - 1) * this.pageSize;
+    return this.data.slice(inicio, inicio + this.pageSize);
+  }
+
+  get pageNumbers(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  get rangoInicio(): number {
+    if (this.data.length === 0) return 0;
+    return (this.currentPage - 1) * this.pageSize + 1;
+  }
+
+  get rangoFin(): number {
+    return Math.min(this.currentPage * this.pageSize, this.data.length);
+  }
+
+  irAPagina(pagina: number): void {
+    if (pagina < 1 || pagina > this.totalPages) return;
+    this.currentPage = pagina;
+  }
+
+  paginaAnterior(): void {
+    this.irAPagina(this.currentPage - 1);
+  }
+
+  paginaSiguiente(): void {
+    this.irAPagina(this.currentPage + 1);
+  }
 }

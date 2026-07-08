@@ -1,13 +1,13 @@
 <app-crud-table
-  [title]="'Proveedores'"
+  [title]="'Ajustes Globales'"
   [columns]="columns"
   [data]="data"
   [filters]="filters"
   keyField="id"
+  [canAdd]="false"
   (searchChange)="buscar($event)"
   (filterChange)="filtrar($event)"
-  (onAdd)="onAddProveedores()"
-  (onEdit)="editarProveedor($event)"
-  (onDelete)="eliminarProveedores($event)"
-  (onView)="verProveedor($event)">
+  (onEdit)="onEditar($event)"
+  (onDelete)="onEliminar($event)"
+  (onView)="onVer($event)">
 </app-crud-table>

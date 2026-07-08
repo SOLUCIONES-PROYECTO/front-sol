@@ -3,6 +3,7 @@ import { ProveedorService } from '../../core/services/proveedores.service';
 import { Proveedor } from '../../core/class/models/proveedores';
 import { SidebarCounterService } from '../../shared/services/sidebar-counter.service';
 import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 @Component({
   selector: 'app-proveedores',
   standalone: false,
@@ -20,7 +21,7 @@ export class ProveedoresComponent implements OnInit {
     { key: 'correo', label: 'Correo Empresa' },
     { key: 'calificacion', label: 'Calificación', type: 'badge' },
   ];
-    activeFilters: Record<string, string> = {};
+  activeFilters: Record<string, string> = {};
 
   data: any[] = [];
   dataOriginal: any[] = [];
@@ -39,18 +40,19 @@ export class ProveedoresComponent implements OnInit {
     private proveedorService: ProveedorService,
     private cdr: ChangeDetectorRef,
     private sidebarCounter: SidebarCounterService,
-    private router:Router
-  ) {}
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.cargarProveedores();
   }
 
   cargarProveedores(): void {
-    this.proveedorService.listarProveedores().subscribe({
+    this.proveedorService.listarProveedor().subscribe({
       next: (proveedores) => {
 
         this.data = proveedores.map((p: Proveedor) => ({
+          id: p.idProveedor,
           nombre: p.descripcion,
           ruc: p.ruc,
           sectorista: p.nombreSectorista,
@@ -63,8 +65,8 @@ export class ProveedoresComponent implements OnInit {
         this.dataOriginal = [...this.data];
 
         this.sidebarCounter.proveedoresCount.next(
-        proveedores.length
-      );
+          proveedores.length
+        );
 
         this.cdr.detectChanges();
       },
@@ -107,7 +109,30 @@ export class ProveedoresComponent implements OnInit {
 
   }
   onAddProveedores(): void {
-    this.router.navigate(['/proveedor/nuevo']);
+    this.router.navigate(['/proveedores/nuevo']);
   }
-  
+
+  editarProveedor(item: any): void {
+    this.router.navigate(['/proveedores/editar', item.id]);
+  }
+
+  verProveedor(item: any): void {
+    this.router.navigate(['/proveedores/ver', item.id]);
+  }
+
+  eliminarProveedores(items: any[]): void {
+    const peticiones = items.map(item =>
+      this.proveedorService.eliminarProveedor(item.id) // ajusta si tu service tiene otro nombre de método
+    );
+
+    forkJoin(peticiones).subscribe({
+      next: () => this.cargarProveedores(),
+      error: (err) => {
+        const mensaje = err.error?.mensaje || 'No se pudo eliminar el proveedor';
+        alert(mensaje);
+        console.error('Error al eliminar', err);
+      }
+    });
+  }
+
 }

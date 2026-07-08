@@ -12,6 +12,13 @@ export class DetalleMermaService {
 
   constructor(private http: HttpClient) {}
 
+  // DetalleMermaService
+listar(): Observable<DetalleMerma[]> {
+  return this.http.get<unknown[]>(this.baseUrl).pipe(
+    map(data => data.map(item => DetalleMerma.fromJson(item)))
+  );
+}
+
   crear(detalleMerma: DetalleMerma): Observable<DetalleMerma> {
     return this.http.post<unknown>(this.baseUrl, DetalleMerma.toJson(detalleMerma)).pipe(
       map(data => DetalleMerma.fromJson(data))

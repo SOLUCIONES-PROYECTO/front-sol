@@ -81,7 +81,7 @@ export class IngresosFormComponent implements OnInit {
     private authService: AuthService,
     private ordenCompraService: OrdenCompraService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const modo = this.route.snapshot.data['modo'] || 'nuevo';
@@ -92,7 +92,7 @@ export class IngresosFormComponent implements OnInit {
     this.idDocEntrada = idParam ? Number(idParam) : null;
 
     forkJoin({
-      proveedores: this.proveedorService.listarProveedores(),
+      proveedores: this.proveedorService.listarProveedor(),
       productos: this.productoService.listarProductos(),
       tiposDocEntrada: this.tipoDocEntradaService.listar(),
       metodosPago: this.metodoPagoService.listar(),
@@ -105,7 +105,7 @@ export class IngresosFormComponent implements OnInit {
         this.proveedores = resultado.proveedores;
         this.productosDisponibles = resultado.productos;
         this.tiposDocEntrada = resultado.tiposDocEntrada;
-        this.metodosPago = resultado.metodosPago;
+        this.metodosPago = resultado.metodosPago.filter(m => m.nombre !== 'No Aplica'); // ← cambio aquí
         this.estadosPago = resultado.estadosPago;
         this.estadosIngreso = resultado.estadosIngreso;
         this.ordenesCompra = resultado.ordenesCompra;
@@ -136,39 +136,39 @@ export class IngresosFormComponent implements OnInit {
   }
 
   get empleadoMostrado(): Empleado | undefined {
-  if (this.modoEdicion || this.modoVista) {
-    return this.empleados.find(e => e.idEmpleado === this.docEntrada.idEmpleado);
+    if (this.modoEdicion || this.modoVista) {
+      return this.empleados.find(e => e.idEmpleado === this.docEntrada.idEmpleado);
+    }
+    return this.empleadoLogueado;
   }
-  return this.empleadoLogueado;
-}
 
   cargarDocEntrada(id: number): void {
-  this.docEntradaService.obtenerIngreso(id).subscribe({
-    next: (data) => {
-      this.docEntrada = data;
-      this.cdr.detectChanges();
+    this.docEntradaService.obtenerIngreso(id).subscribe({
+      next: (data) => {
+        this.docEntrada = data;
+        this.cdr.detectChanges();
 
-      if (this.modoEdicion || this.modoVista) {
-        this.cargarDetallesExistentes(id);
-      }
-    },
-    error: (err) => console.error(err)
-  });
-}
+        if (this.modoEdicion || this.modoVista) {
+          this.cargarDetallesExistentes(id);
+        }
+      },
+      error: (err) => console.error(err)
+    });
+  }
 
-cargarDetallesExistentes(idDocEntrada: number): void {
-  this.detalleEntradaService.listar().subscribe({
-    next: (todos) => {
-      this.detalles = todos.filter(d => d.idDocEntrada === idDocEntrada);
-      this.cdr.detectChanges();
-    },
-    error: (err) => console.error(err)
-  });
-}
+  cargarDetallesExistentes(idDocEntrada: number): void {
+    this.detalleEntradaService.listar().subscribe({
+      next: (todos) => {
+        this.detalles = todos.filter(d => d.idDocEntrada === idDocEntrada);
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error(err)
+    });
+  }
 
-get soloLecturaDetalle(): boolean {
-  return this.modoVista || this.modoEdicion;
-}
+  get soloLecturaDetalle(): boolean {
+    return this.modoVista || this.modoEdicion;
+  }
 
   // — Filtros en cascada: proveedor (header) → categoría → producto —
 
@@ -200,8 +200,8 @@ get soloLecturaDetalle(): boolean {
     }
 
     console.log('idProveedor seleccionado:', this.docEntrada.idProveedor);
-  console.log('productos disponibles:', this.productosDisponibles);
-  console.log('productos de ese proveedor:', this.productosDelProveedor);
+    console.log('productos disponibles:', this.productosDisponibles);
+    console.log('productos de ese proveedor:', this.productosDelProveedor);
 
     if (this.productosDelProveedor.length === 0) {
       alert('Este proveedor no tiene productos registrados. Regístralos primero en Productos.');
@@ -329,22 +329,53 @@ get soloLecturaDetalle(): boolean {
     this.router.navigate(['/ingresos']);
   }
 
-  guardar(): void {
+  private validarCamposObligatorios(): string[] {
+  const errores: string[] = [];
+
+  if (!this.docEntrada.idProveedor) errores.push('Proveedor');
+  if (!this.docEntrada.idTipoDocEntrada) errores.push('Tipo de ingreso');
+  if (!this.docEntrada.fechaIngreso) errores.push('Fecha de ingreso');
+  if (!this.docEntrada.idMetodoPago) errores.push('Método de pago');
+  if (!this.docEntrada.idEstadoPago) errores.push('Estado de pago');
+  if (!this.docEntrada.idEstadoIngreso) errores.push('Estado de ingreso');
+  if (this.detalles.length === 0) errores.push('Debe agregar al menos un producto');
+
+  return errores;
+}
+
+guardar(): void {
+
+  const errores = this.validarCamposObligatorios();
+
+  if (errores.length > 0) {
+    this.mostrarAlerta(
+      'Faltan datos por completar',
+      'Por favor revisa los siguientes campos:\n• ' + errores.join('\n• '),
+      'error'
+    );
+    return;
+  }
 
   this.docEntrada.precioTotal = this.totalIngresoDetalle;
 
   if (!this.modoEdicion && !this.docEntrada.idEmpleado) {
-    alert('No se pudo identificar al empleado logueado. Por favor, vuelve a iniciar sesión.');
+    this.mostrarAlerta(
+      'No se pudo identificar al empleado',
+      'Vuelve a iniciar sesión e inténtalo nuevamente.',
+      'error'
+    );
     return;
   }
 
   if (this.modoEdicion) {
     this.docEntradaService.actualizarIngreso(this.idDocEntrada!, this.docEntrada).subscribe({
       next: () => {
-        alert('Ingreso actualizado');
-        this.router.navigate(['/ingresos']);
+        this.mostrarAlerta('Ingreso actualizado', 'Los cambios se guardaron correctamente.', 'success');
       },
-      error: (err) => console.error(err)
+      error: (err) => {
+        console.error(err);
+        this.mostrarAlerta('Ocurrió un error', 'No se pudo actualizar el ingreso. Inténtalo de nuevo.', 'error');
+      }
     });
     return;
   }
@@ -354,8 +385,7 @@ get soloLecturaDetalle(): boolean {
     next: (docCreado) => {
 
       if (this.detalles.length === 0) {
-        alert('Ingreso registrado');
-        this.router.navigate(['/ingresos']);
+        this.mostrarAlerta('Ingreso registrado', 'El ingreso se registró correctamente.', 'success');
         return;
       }
 
@@ -366,17 +396,46 @@ get soloLecturaDetalle(): boolean {
 
       forkJoin(peticionesDetalle).subscribe({
         next: () => {
-          alert('Ingreso registrado');
-          this.router.navigate(['/ingresos']);
+          this.mostrarAlerta('Ingreso registrado', 'El ingreso y sus productos se guardaron correctamente.', 'success');
         },
         error: (err) => {
           console.error('Error al guardar el detalle', err);
-          alert('El ingreso se creó, pero hubo un error guardando algunos productos.');
-          this.router.navigate(['/ingresos']);
+          this.mostrarAlerta(
+            'Ingreso creado con errores',
+            'El ingreso se registró, pero hubo un problema al guardar algunos productos.',
+            'error'
+          );
         }
       });
     },
-    error: (err) => console.error(err)
+    error: (err) => {
+      console.error(err);
+      this.mostrarAlerta('Ocurrió un error', 'No se pudo registrar el ingreso. Inténtalo de nuevo.', 'error');
+    }
   });
 }
+
+  // — Modal de alerta (validación / éxito) —
+  showAlertModal = false;
+  alertTitle = '';
+  alertMessage = '';
+  alertType: 'error' | 'success' = 'error';
+
+  private mostrarAlerta(title: string, message: string, type: 'error' | 'success'): void {
+    this.alertTitle = title;
+    this.alertMessage = message;
+    this.alertType = type;
+    this.showAlertModal = true;
+    this.cdr.detectChanges();
+  }
+
+  onCerrarAlerta(): void {
+    this.showAlertModal = false;
+    const fueExito = this.alertType === 'success';
+    this.cdr.detectChanges();
+
+    if (fueExito) {
+      this.router.navigate(['/ingresos']);
+    }
+  }
 }

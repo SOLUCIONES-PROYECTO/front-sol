@@ -1,9 +1,11 @@
-
 <app-crud-table
   [title]="'Almacen'"
   [columns]="columns"
   [data]="data"
   [filters]="filters"
+  keyField="id"
+  [readOnly]="true"
   (searchChange)="buscar($event)"
-  (filterChange)="filtrar($event)">
+  (filterChange)="filtrar($event)"
+  (onView)="onVer($event)">
 </app-crud-table>

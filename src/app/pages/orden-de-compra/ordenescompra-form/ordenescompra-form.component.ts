@@ -77,7 +77,7 @@ export class OrdenesCompraFormComponent implements OnInit {
     this.idOrdenCompra = idParam ? Number(idParam) : null;
 
     forkJoin({
-      proveedores: this.proveedorService.listarProveedores(),
+      proveedores: this.proveedorService.listarProveedor(),
       productos:   this.productoService.listarProductos(),
       metodosPago: this.metodoPagoService.listar(),
       estadosOc:   this.estadoOcService.listar(),

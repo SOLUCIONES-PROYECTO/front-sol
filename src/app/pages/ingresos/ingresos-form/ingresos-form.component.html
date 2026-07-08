@@ -7,9 +7,12 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
 
         <div class="flex flex-col gap-1.5">
-          <label class="text-sm font-medium text-gray-600">N° Documento</label>
-          <input type="text" [(ngModel)]="docEntrada.numeroDocumento" [disabled]="modoVista" placeholder="#007"
-            class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg focus:ring-2 focus:ring-brown-500 disabled:opacity-60 disabled:cursor-not-allowed" />
+          <label class="text-sm font-medium text-gray-500">N° Documento</label>
+          <input type="text" [(ngModel)]="docEntrada.numeroDocumento" [disabled]="true" placeholder="Automático"
+            class="w-full bg-white border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+          <span class="text-xs text-gray-400" *ngIf="!modoVista">
+            Este número se genera automáticamente según el tipo de documento.
+          </span>
         </div>
 
         <div class="flex flex-col gap-1.5">
@@ -73,8 +76,8 @@
               <td class="px-4 py-4 text-gray-500 text-xs">{{ d.loteProducto }}</td>
               <td class="px-4 py-4 text-gray-500 text-xs">{{ d.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
               <td class="px-4 py-4 text-gray-500">{{ d.cantidad }}</td>
-              <td class="px-4 py-4 text-gray-500">{{ d.precioUnitario | currency:'PEN':'symbol-narrow':'1.2-2' }}</td>
-              <td class="px-4 py-4 text-gray-500">{{ d.subtotal | currency:'PEN':'symbol-narrow':'1.2-2' }}</td>
+              <td class="px-4 py-4 text-gray-500">{{ d.precioUnitario | currency:'S/.':'symbol-narrow':'1.2-2' }}</td>
+              <td class="px-4 py-4 text-gray-500">{{ d.subtotal | currency:'S/.':'symbol-narrow':'1.2-2' }}</td>
               <td class="px-4 py-4" *ngIf="!soloLecturaDetalle">
                 <button (click)="eliminarDetalle(i)" class="text-red-400 hover:text-red-600 transition">
                   <lucide-icon name="trash" class="w-4 h-4"></lucide-icon>
@@ -159,7 +162,7 @@
         <div class="flex justify-between items-center pt-2">
           <span class="text-gray-500 text-sm">Total de ingreso</span>
           <span class="text-xl font-bold text-[#1F090A]">
-            {{ totalIngresoDetalle | currency:'PEN':'symbol-narrow':'1.2-2' }}
+            {{ totalIngresoDetalle | currency:'S/.':'symbol-narrow':'1.2-2' }}
           </span>
         </div>
       </div>
@@ -258,13 +261,13 @@
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Precio de Compra</label>
-          <input type="text" [value]="nuevoDetalle.precioCompra | currency:'PEN':'symbol-narrow':'1.2-2'" disabled
+          <input type="text" [value]="nuevoDetalle.precioCompra | currency:'S/.':'symbol-narrow':'1.2-2'" disabled
             class="w-full bg-gray-50 border-none p-2.5 rounded-lg text-gray-500" />
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Subtotal</label>
-          <input type="text" [value]="nuevoDetalle.subtotal | currency:'PEN':'symbol-narrow':'1.2-2'" disabled
+          <input type="text" [value]="nuevoDetalle.subtotal | currency:'S/.':'symbol-narrow':'1.2-2'" disabled
             class="w-full bg-gray-50 border-none p-2.5 rounded-lg text-gray-500 font-semibold" />
         </div>
 
