@@ -22,6 +22,9 @@ import { EstadoIngresoService } from '../../../core/services/estadoIngreso.servi
 import { DetalleEntradaService } from '../../../core/services/detalleEntrada.service';
 import { EmpleadoService } from '../../../core/services/empleado.service';
 import { AuthService } from '../../../core/services/auth/auth.service';
+import { OrdenCompra } from '../../../core/class/models/ordencompra';
+import { OrdenCompraService } from '../../../core/services/ordenCompra.service';
+
 
 @Component({
   selector: 'app-ingresos-form',
@@ -43,8 +46,8 @@ export class IngresosFormComponent implements OnInit {
   estadosPago: EstadoPago[] = [];
   estadosIngreso: EstadoIngreso[] = [];
   productosDisponibles: Producto[] = [];
-
-  // — Detalle de productos del ingreso (en memoria, Fase C1) —
+  ordenesCompra: any[] = [];
+  ordenSeleccionada: any = [];
   detalles: DetalleEntrada[] = [];
   showModalProducto = false;
 
@@ -76,6 +79,7 @@ export class IngresosFormComponent implements OnInit {
     private detalleEntradaService: DetalleEntradaService,
     private empleadoService: EmpleadoService,
     private authService: AuthService,
+    private ordenCompraService: OrdenCompraService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -94,6 +98,7 @@ export class IngresosFormComponent implements OnInit {
       metodosPago: this.metodoPagoService.listar(),
       estadosPago: this.estadoPagoService.listar(),
       estadosIngreso: this.estadoIngresoService.listar(),
+      ordenesCompra: this.ordenCompraService.listar(),
       empleados: this.empleadoService.listar()
     }).subscribe({
       next: (resultado) => {
@@ -103,14 +108,13 @@ export class IngresosFormComponent implements OnInit {
         this.metodosPago = resultado.metodosPago;
         this.estadosPago = resultado.estadosPago;
         this.estadosIngreso = resultado.estadosIngreso;
+        this.ordenesCompra = resultado.ordenesCompra;
         this.empleados = resultado.empleados;
 
-        // Identifica al empleado logueado por su usuario de sistema
     this.empleadoLogueado = this.empleados.find(
       e => e.usuarioSistema === this.authService.getUsuarioSistema()
     );
 
-    // Solo en modo "nuevo" se asigna automáticamente
     if (!this.modoEdicion && !this.modoVista && this.empleadoLogueado) {
       this.docEntrada.idEmpleado = this.empleadoLogueado.idEmpleado;
     }
@@ -247,9 +251,19 @@ get soloLecturaDetalle(): boolean {
       this.nuevoDetalle.codigo = producto.idproducto;
       this.nuevoDetalle.unidadMedida = producto.unidadMedida;
       this.nuevoDetalle.precioCompra = producto.precioCompra;
+      if (this.ordenSeleccionada?.detalles) {
+        const detalleOrden = this.ordenSeleccionada.detalles.find(
+          (d: any) => d.idProducto === this.nuevoDetalle.idProducto
+      );
+      this.nuevoDetalle.loteProducto = detalleOrden?.loteEsperado || '';
+    }
     }
 
     this.recalcularSubtotal();
+  }
+
+  onOrdenCompraChange(idOrden: number): void {
+    this.ordenSeleccionada = this.ordenesCompra.find(o => o.idordenCompra === idOrden) || null;
   }
 
   recalcularSubtotal(): void {
@@ -323,7 +337,7 @@ get soloLecturaDetalle(): boolean {
     alert('No se pudo identificar al empleado logueado. Por favor, vuelve a iniciar sesión.');
     return;
   }
-  
+
   if (this.modoEdicion) {
     this.docEntradaService.actualizarIngreso(this.idDocEntrada!, this.docEntrada).subscribe({
       next: () => {

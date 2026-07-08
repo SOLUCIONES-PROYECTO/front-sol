@@ -230,8 +230,12 @@
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">N° de Lote</label>
           <input type="text" [(ngModel)]="nuevoDetalle.loteProducto"
-            class="w-full border border-gray-200 p-2.5 rounded-lg" />
-        </div>
+            [disabled]="!!ordenSeleccionada && !!nuevoDetalle.loteProducto"
+            class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60" />
+            <p *ngIf="ordenSeleccionada && nuevoDetalle.loteProducto" class="text-xs text-gray-400 mt-1">
+                Asignado desde la orden {{ ordenSeleccionada?.numeroOrden }}
+            </p>
+          </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Fecha de Vencimiento</label>
