@@ -33,4 +33,13 @@ logout() {
     {}
   );
 }
+
+getAreas(): Observable<{ idArea: number; nombre: string }[]> {
+    return this.http.get<{ idArea: number; nombre: string }[]>(`${this.baseUrl}/areas`);
+  }
+
+  getCargos(): Observable<{ idCargo: number; nombre: string }[]> {
+    return this.http.get<{ idCargo: number; nombre: string }[]>(`${this.baseUrl}/cargos`);
+  }
+
 }
