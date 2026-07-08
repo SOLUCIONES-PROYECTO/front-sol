@@ -73,6 +73,13 @@ const routes: Routes = [
             (m) => m.OrdenDeCompraModule
           ),
       },
+      {
+        path: 'ajustes-globales',
+        loadChildren: () =>
+          import('./pages/ajustes-globales/ajustes-globales.module').then(
+            (m) => m.AjustesGlobalesModule
+          ),
+      },
     ],
   },
   {

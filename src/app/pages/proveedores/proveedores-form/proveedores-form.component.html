@@ -1,1 +1,269 @@
-<p>proveedores-form.component works!</p>
+<app-form-layout [title]="tituloFormulario" (onBack)="Regresar()">
+
+  <div general class="space-y-6">
+
+    <!-- Información general de la Empresa -->
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Información general de la Empresa</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Nombre de la Empresa</label>
+          <input type="text" [(ngModel)]="proveedor.descripcion" [disabled]="modoVista"
+            placeholder="Empresa SAC 1"
+            class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">RUC</label>
+          <input type="text" [(ngModel)]="proveedor.ruc" [disabled]="modoVista"
+            placeholder="Ej. 20948456123" maxlength="11"
+            class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Ubicación -->
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Ubicación</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+
+        <!-- Código de Ubigeo — manual siempre -->
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Código de Ubigeo</label>
+          <input type="text" [(ngModel)]="proveedor.codigoUbigeo" [disabled]="modoVista"
+            placeholder="Ej. 150101"
+            class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+        </div>
+
+        <!-- Dirección con autocompletado OSM -->
+        <div class="flex flex-col gap-1.5 relative">
+          <label class="text-sm font-medium text-gray-600">Dirección</label>
+          <div class="relative">
+            <input type="text"
+              [(ngModel)]="busquedaDireccion"
+              (input)="onDireccionInput()"
+              (blur)="cerrarSugerencias()"
+              [disabled]="modoVista"
+              placeholder="Busca tu dirección..."
+              class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+
+            <div *ngIf="buscandoDireccion"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">
+              Buscando...
+            </div>
+          </div>
+
+          <!-- Sugerencias OSM -->
+          <div *ngIf="sugerencias.length > 0"
+            class="absolute top-full left-0 right-0 z-50 bg-white border border-gray-200 rounded-xl shadow-lg mt-1 overflow-hidden">
+            <button *ngFor="let s of sugerencias"
+              type="button"
+              (click)="seleccionarDireccion(s)"
+              class="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-[var(--color-primary-100)] transition border-b border-gray-50 last:border-0">
+              {{ s.display_name }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Campos autocompletados por OSM -->
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Departamento</label>
+          <input type="text" [(ngModel)]="proveedor.departamento" [disabled]="modoVista"
+            class="w-full bg-gray-50 border border-gray-100 p-2.5 rounded-lg text-gray-500 disabled:cursor-not-allowed" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Ciudad</label>
+          <input type="text" [(ngModel)]="proveedor.ciudad" [disabled]="modoVista"
+            class="w-full bg-gray-50 border border-gray-100 p-2.5 rounded-lg text-gray-500 disabled:cursor-not-allowed" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Distrito</label>
+          <input type="text" [(ngModel)]="proveedor.distrito" [disabled]="modoVista"
+            class="w-full bg-gray-50 border border-gray-100 p-2.5 rounded-lg text-gray-500 disabled:cursor-not-allowed" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Código Postal</label>
+          <input type="text" [(ngModel)]="proveedor.codigoPostal" [disabled]="modoVista"
+            class="w-full bg-gray-50 border border-gray-100 p-2.5 rounded-lg text-gray-500 disabled:cursor-not-allowed" />
+        </div>
+
+        <div class="flex flex-col gap-1.5 md:col-span-2">
+          <label class="text-sm font-medium text-gray-600">Referencia (Opcional)</label>
+          <input type="text" [(ngModel)]="proveedor.referenciaUbicacion" [disabled]="modoVista"
+            placeholder="Ej. Frente al parque, edificio azul..."
+            class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Clasificación / Etiquetas -->
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Clasificación / Etiquetas</h3>
+
+      <div *ngIf="!modoVista" class="flex items-center gap-2 mb-3">
+        <input type="text"
+          [(ngModel)]="nuevaEtiqueta"
+          (keydown)="agregarEtiquetaConEnter($event)"
+          placeholder="Introducir nombre de la Etiqueta"
+          class="flex-1 bg-[#F3F4F9] border-none p-2.5 rounded-lg text-sm" />
+        <button type="button" (click)="agregarEtiqueta()"
+          class="bg-[var(--color-primary-600)] text-white px-4 py-2.5 rounded-lg text-sm hover:opacity-90 transition">
+          Añadir
+        </button>
+      </div>
+
+      <div class="flex flex-wrap gap-2 mt-2">
+        <span *ngFor="let etiqueta of etiquetasArray; let i = index"
+          class="flex items-center gap-1.5 bg-[var(--color-primary-100)] text-[var(--color-primary-700)] text-sm px-3 py-1 rounded-full font-medium">
+          {{ etiqueta }}
+          <button *ngIf="!modoVista" type="button" (click)="eliminarEtiqueta(i)"
+            class="hover:text-[var(--color-primary-500)] transition text-xs font-bold">
+            ×
+          </button>
+        </span>
+        <span *ngIf="etiquetasArray.length === 0" class="text-sm text-gray-400 italic">
+          Sin etiquetas
+        </span>
+      </div>
+    </section>
+
+    <!-- Notas e incidencias -->
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Notas e incidencias</h3>
+      <div class="flex flex-col gap-1.5">
+        <label class="text-sm font-medium text-gray-600">Descripción sobre alguna incidencia</label>
+        <textarea rows="4" [(ngModel)]="proveedor.incidencias" [disabled]="modoVista"
+          placeholder="Ingrese una breve descripción"
+          class="w-full border border-gray-200 rounded-lg p-3 disabled:opacity-60 disabled:cursor-not-allowed"></textarea>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <div sidebar class="space-y-6">
+
+    <!-- Contacto de la Empresa -->
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Contacto de la Empresa</h3>
+      <div class="space-y-4">
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">
+            Correo electrónico <span class="text-red-500">*</span>
+          </label>
+          <input type="email" [(ngModel)]="proveedor.correoEmpresa" [disabled]="modoVista"
+            class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">
+            Teléfono celular <span class="text-red-500">*</span>
+          </label>
+          <input type="tel" [(ngModel)]="proveedor.telefonoEmpresa" [disabled]="modoVista"
+            class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Teléfono fijo (opcional)</label>
+          <input type="tel" [(ngModel)]="proveedor.telefonoFijoEmpresa" [disabled]="modoVista"
+            class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Página web (opcional)</label>
+          <input type="url" [(ngModel)]="proveedor.paginaWeb" [disabled]="modoVista"
+            placeholder="https://empresa.com"
+            class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Contacto del Sectorista -->
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Contacto del Sectorista</h3>
+      <div class="space-y-4">
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">
+            Nombre del sectorista <span class="text-red-500">*</span>
+          </label>
+          <input type="text" [(ngModel)]="proveedor.nombreSectorista" [disabled]="modoVista"
+            class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">
+            Correo electrónico <span class="text-red-500">*</span>
+          </label>
+          <input type="email" [(ngModel)]="proveedor.correoSectorista" [disabled]="modoVista"
+            class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">
+            Teléfono celular <span class="text-red-500">*</span>
+          </label>
+          <input type="tel" [(ngModel)]="proveedor.celularSectorista" [disabled]="modoVista"
+            class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Teléfono fijo (opcional)</label>
+          <input type="tel" [(ngModel)]="proveedor.telefonoFijoSectorista" [disabled]="modoVista"
+            class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Condiciones comerciales -->
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Condiciones comerciales</h3>
+      <div class="space-y-4">
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Condiciones de pago</label>
+          <input type="text" [(ngModel)]="proveedor.condicionesPago" [disabled]="modoVista"
+            placeholder="Ej. 30 días, contado..."
+            class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Calificación</label>
+          <select [(ngModel)]="proveedor.calificacion" [disabled]="modoVista"
+            class="w-full border border-gray-200 p-2.5 rounded-lg appearance-none disabled:opacity-60 disabled:cursor-not-allowed">
+            <option value="">Selecciona</option>
+            <option value="Buena">Buena</option>
+            <option value="Regular">Regular</option>
+            <option value="Mala">Mala</option>
+          </select>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ACCIONES -->
+  <div actions>
+    <button type="button"
+      class="px-8 py-2.5 rounded-lg border border-gray-300 text-gray-600 font-medium hover:bg-gray-50 transition-colors"
+      (click)="Regresar()">
+      {{ modoVista ? 'Regresar' : 'Cancelar' }}
+    </button>
+    <button *ngIf="!modoVista" type="button"
+      (click)="guardar()"
+      class="px-8 py-2.5 rounded-lg bg-[var(--color-primary-600)] text-white font-medium hover:opacity-95 transition-colors">
+      {{ modoEdicion ? 'Guardar Cambios' : 'Registrar Proveedor' }}
+    </button>
+  </div>
+
+</app-form-layout>

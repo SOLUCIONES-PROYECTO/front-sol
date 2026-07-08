@@ -2,7 +2,7 @@
 
 @theme {
   /* Paleta principal */
-  --color-primary:     #1E0909;
+  --color-primary: #1E0909;
   --color-primary-100: #EEE6E5;
   --color-primary-200: #D3ACAA;
   --color-primary-300: #926A69;
@@ -11,45 +11,51 @@
   --color-primary-600: #531E1E;
   --color-primary-700: #1E0909;
 
-  --color-badge-recibido-bg:        #D4EDDA;
-  --color-badge-recibido-text:      #276749;
+  --color-badge-recibido-bg: #D4EDDA;
+  --color-badge-recibido-text: #276749;
 
-  --color-badge-devuelto-bg:        #FFEDD5;
-  --color-badge-devuelto-text:      #9A3412;
+  --color-badge-devuelto-bg: #FFEDD5;
+  --color-badge-devuelto-text: #9A3412;
 
-  --color-badge-observado-bg:       #DBEAFE;
-  --color-badge-observado-text:     #1E40AF;
+  --color-badge-observado-bg: #DBEAFE;
+  --color-badge-observado-text: #1E40AF;
 
-  --color-badge-tarjeta-bg:   #FEF9C3;
+  --color-badge-tarjeta-bg: #FEF9C3;
   --color-badge-tarjeta-text: #92730A;
 
-  --color-badge-yape-bg:            #EDE9FE;
-  --color-badge-yape-text:          #6D28D9;
+  --color-badge-yape-bg: #EDE9FE;
+  --color-badge-yape-text: #6D28D9;
 
-  --color-badge-efectivo-bg:        #D4EDDA;
-  --color-badge-efectivo-text:      #276749;
+  --color-badge-efectivo-bg: #D4EDDA;
+  --color-badge-efectivo-text: #276749;
 
-  --color-badge-disponible-bg:      #D4EDDA;
-  --color-badge-disponible-text:    #276749;
+  --color-badge-disponible-bg: #D4EDDA;
+  --color-badge-disponible-text: #276749;
 
-  --color-badge-agotado-bg:        #E4E4E7; 
-  --color-badge-agotado-text:      #3F3F46;
+  --color-badge-agotado-bg: #E4E4E7;
+  --color-badge-agotado-text: #3F3F46;
 
-  --color-badge-vencido-bg:        #FDE2E2;
-  --color-badge-vencido-text:      #A32924;
+  --color-badge-vencido-bg: #FDE2E2;
+  --color-badge-vencido-text: #A32924;
 
-  --color-badge-aprobada-bg:       #D4EDDA;
-  --color-badge-aprobada-text:     #276749;
+  --color-badge-aprobada-bg: #D4EDDA;
+  --color-badge-aprobada-text: #276749;
 
-  --color-badge-borrador-bg:       #F3F4F6; 
-  --color-badge-borrador-text:     #6B7280;
+  --color-badge-borrador-bg: #F3F4F6;
+  --color-badge-borrador-text: #6B7280;
 
-  --color-badge-enviada-bg:        #DBEAFE;
-  --color-badge-enviada-text:      #1D4ED8;
+  --color-badge-enviada-bg: #DBEAFE;
+  --color-badge-enviada-text: #1D4ED8;
 
-  --color-badge-recibida-bg:       #FAE0D6;
-  --color-badge-recibida-text:     #A0522D;
+  --color-badge-recibida-bg: #FAE0D6;
+  --color-badge-recibida-text: #A0522D;
 
-  --color-badge-anulada-bg:        #FEE2E2; 
-  --color-badge-anulada-text:      #B91C1C;
+  --color-badge-anulada-bg: #FEE2E2;
+  --color-badge-anulada-text: #B91C1C;
+
+  --color-badge-activo-bg: #D4EDDA;
+  --color-badge-activo-text: #276749;
+
+  --color-badge-inactivo-bg: #FEE2E2;
+  --color-badge-inactivo-text: #B91C1C;
 }

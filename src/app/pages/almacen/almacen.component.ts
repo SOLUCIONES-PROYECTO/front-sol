@@ -61,15 +61,15 @@ export class AlmacenComponent implements OnInit {
 
       next: ({ productos, detalles }) => {
 
-        // Mapa: idProducto -> fecha de vencimiento más próxima
         const vencimientoPorProducto = this.obtenerFechaMasProximaPorProducto(detalles);
 
         this.data = productos.map((p: Producto) => ({
+          id: p.idproducto,          // ← NUEVO: necesario para navegar al detalle
           producto: p.nombre,
           categoria: p.categoria,
           stockActual: p.stockActual,
           stockMinimo: p.stockMinimo,
-          estado:p.estado,
+          estado: p.estado,
           fechaVencimiento: this.formatearFecha(
             vencimientoPorProducto.get(p.idproducto)
           ),
@@ -80,13 +80,16 @@ export class AlmacenComponent implements OnInit {
         this.sidebarCounter.almacenCount.next(productos.length);
 
         this.cdr.detectChanges();
-        console.log('DATA ALMACEN:', this.data);
       },
 
       error: (err) => {
         console.error('Error al obtener almacén', err);
       }
     });
+  }
+
+  onVer(item: any): void {
+    this.router.navigate(['/almacen/ver', item.id]);
   }
 
   // Por cada producto, busca el lote con la fecha de vencimiento MÁS PRÓXIMA (FEFO)

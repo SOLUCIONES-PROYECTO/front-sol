@@ -74,7 +74,7 @@ export class ProductoFormComponent implements OnInit {
   error: (err) => console.error(err)
 });
 
-  this.proveedorService.listarProveedores().subscribe({
+  this.proveedorService.listarProveedor().subscribe({
     next: (data) => {
       this.proveedores = data;
       this.cdr.detectChanges();

@@ -1,11 +1,175 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+
+import { Proveedor } from '../../../core/class/models/proveedores';
+import { ProveedorService } from '../../../core/services/proveedores.service';
 
 @Component({
-  selector: 'app-proveedores-form.component',
+  selector: 'app-proveedor-form',
   standalone: false,
   templateUrl: './proveedores-form.component.html',
   styleUrl: './proveedores-form.component.css',
 })
-export class ProveedoresFormComponent {
+export class ProveedoresFormComponent implements OnInit {
 
+  proveedor: Proveedor = new Proveedor();
+
+  modoEdicion = false;
+  modoVista = false;
+  idProveedor: number | null = null;
+
+  // — Chips de etiquetas —
+  etiquetasArray: string[] = [];
+  nuevaEtiqueta = '';
+
+  // — OSM Autocompletado —
+  busquedaDireccion = '';
+  sugerencias: any[] = [];
+  buscandoDireccion = false;
+  private debounceTimer: any;
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private proveedorService: ProveedorService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+
+    const modo = this.route.snapshot.data['modo'] || 'nuevo';
+    this.modoEdicion = modo === 'editar';
+    this.modoVista = modo === 'ver';
+
+    const idParam = this.route.snapshot.paramMap.get('id');
+    this.idProveedor = idParam ? Number(idParam) : null;
+
+    if (this.idProveedor) {
+      this.cargarProveedor(this.idProveedor);
+    }
+  }
+
+  get tituloFormulario(): string {
+    if (this.modoVista) return 'Detalle del Proveedor';
+    if (this.modoEdicion) return 'Editar Proveedor';
+    return 'Registrar Proveedor';
+  }
+
+  cargarProveedor(id: number): void {
+    this.proveedorService.obtenerProveedor(id).subscribe({
+      next: (data) => {
+        this.proveedor = data;
+        this.busquedaDireccion = data.direccion;
+
+        // Reconstruir chips desde el string guardado
+        this.etiquetasArray = data.etiquetas
+          ? data.etiquetas.split(',').map(e => e.trim()).filter(e => e)
+          : [];
+
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  // — OSM: buscar dirección con debounce —
+  onDireccionInput(): void {
+    clearTimeout(this.debounceTimer);
+
+    if (this.busquedaDireccion.length < 3) {
+      this.sugerencias = [];
+      return;
+    }
+
+    this.buscandoDireccion = true;
+
+    this.debounceTimer = setTimeout(() => {
+      this.buscarEnOSM(this.busquedaDireccion);
+    }, 400); // espera 400ms después de que el usuario deje de escribir
+  }
+
+  private buscarEnOSM(texto: string): void {
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(texto)}&countrycodes=pe&format=json&addressdetails=1&limit=5`;
+
+    fetch(url, {
+      headers: { 'Accept-Language': 'es' }
+    })
+      .then(res => res.json())
+      .then((resultados: any[]) => {
+        this.sugerencias = resultados;
+        this.buscandoDireccion = false;
+        this.cdr.detectChanges();
+      })
+      .catch(() => {
+        this.buscandoDireccion = false;
+        this.sugerencias = [];
+        this.cdr.detectChanges();
+      });
+  }
+
+  seleccionarDireccion(sugerencia: any): void {
+    const addr = sugerencia.address || {};
+
+    this.busquedaDireccion = sugerencia.display_name;
+    this.proveedor.direccion = sugerencia.display_name;
+
+    // Autocompletar campos — OSM puede tener distintos nombres según la zona
+    this.proveedor.departamento = addr.state ?? addr.region ?? '';
+    this.proveedor.ciudad = addr.city ?? addr.town ?? addr.municipality ?? addr.county ?? '';
+    this.proveedor.distrito = addr.suburb ?? addr.village ?? addr.neighbourhood ?? addr.district ?? '';
+    this.proveedor.codigoPostal = addr.postcode ?? '';
+    // codigoUbigeo queda editable manualmente — OSM no lo tiene
+
+    this.sugerencias = [];
+    this.cdr.detectChanges();
+  }
+
+  cerrarSugerencias(): void {
+    // Pequeño delay para que el click en una sugerencia alcance a ejecutarse antes de cerrar
+    setTimeout(() => {
+      this.sugerencias = [];
+      this.cdr.detectChanges();
+    }, 200);
+  }
+
+  // — Chips de etiquetas —
+  agregarEtiqueta(): void {
+    const etiqueta = this.nuevaEtiqueta.trim();
+    if (!etiqueta || this.etiquetasArray.includes(etiqueta)) return;
+
+    this.etiquetasArray.push(etiqueta);
+    this.proveedor.etiquetas = this.etiquetasArray.join(',');
+    this.nuevaEtiqueta = '';
+  }
+
+  agregarEtiquetaConEnter(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.agregarEtiqueta();
+    }
+  }
+
+  eliminarEtiqueta(index: number): void {
+    this.etiquetasArray.splice(index, 1);
+    this.proveedor.etiquetas = this.etiquetasArray.join(',');
+  }
+
+  // — Navegación —
+  Regresar(): void {
+    this.router.navigate(['/proveedores']);
+  }
+
+  guardar(): void {
+    const peticion = this.modoEdicion
+      ? this.proveedorService.actualizarProveedor(this.idProveedor!, this.proveedor)
+      : this.proveedorService.crearProveedor(this.proveedor);
+
+    peticion.subscribe({
+      next: () => {
+        alert(this.modoEdicion ? 'Proveedor actualizado' : 'Proveedor registrado');
+        this.router.navigate(['/proveedores']);
+      },
+      error: (err) => console.error(err)
+    });
+  }
 }

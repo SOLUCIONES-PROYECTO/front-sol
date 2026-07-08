@@ -88,7 +88,7 @@ export class IngresosFormComponent implements OnInit {
     this.idDocEntrada = idParam ? Number(idParam) : null;
 
     forkJoin({
-      proveedores: this.proveedorService.listarProveedores(),
+      proveedores: this.proveedorService.listarProveedor(),
       productos: this.productoService.listarProductos(),
       tiposDocEntrada: this.tipoDocEntradaService.listar(),
       metodosPago: this.metodoPagoService.listar(),

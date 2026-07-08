@@ -67,7 +67,6 @@ import {
   CheckCircle,
 } from 'lucide-angular';
 
-
 @NgModule({
   declarations: [
     AppComponent,

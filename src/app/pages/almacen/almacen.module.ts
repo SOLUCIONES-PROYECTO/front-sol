@@ -4,10 +4,12 @@ import { CommonModule } from '@angular/common';
 import { AlmacenRoutingModule } from './almacen-routing.module';
 import { AlmacenComponent } from './almacen.component';
 import {SharedModule} from "../../shared/shared.module";
+import { AlmacenFormComponent } from './almacen-form/almacen-form.component';
 
 @NgModule({
   declarations: [
-    AlmacenComponent
+    AlmacenComponent,
+    AlmacenFormComponent
   ],
   imports: [
     AlmacenRoutingModule,

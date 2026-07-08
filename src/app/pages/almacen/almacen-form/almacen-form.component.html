@@ -1,0 +1,119 @@
+<app-form-layout [title]="'Detalle de Almacén'" (onBack)="Regresar()">
+
+  <div general class="space-y-8">
+
+    <section>
+      <h3 class="text-xl font-bold mb-5 text-[#1F090A]">Información del producto</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-medium text-gray-500">Nombre del producto</label>
+          <input type="text" [value]="producto.nombre" disabled
+            class="w-full bg-[#F3F4F9] border-none p-3 rounded-lg text-gray-600" />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-medium text-gray-500">Categoría</label>
+          <input type="text" [value]="producto.categoria" disabled
+            class="w-full bg-[#F3F4F9] border-none p-3 rounded-lg text-gray-600" />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-medium text-gray-500">Unidad de medida</label>
+          <input type="text" [value]="producto.unidadMedida" disabled
+            class="w-full bg-[#F3F4F9] border-none p-3 rounded-lg text-gray-600" />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-medium text-gray-500">Proveedor</label>
+          <input type="text" [value]="producto.proveedor" disabled
+            class="w-full bg-[#F3F4F9] border-none p-3 rounded-lg text-gray-600" />
+        </div>
+
+      </div>
+    </section>
+
+    <section>
+      <h3 class="text-xl font-bold mb-5 text-[#1F090A]">Stock y disponibilidad</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-5">
+
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-medium text-gray-500">Stock actual</label>
+          <input type="text" [value]="producto.stockActual" disabled
+            class="w-full bg-white border border-gray-200 p-3 rounded-lg text-gray-600" />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-medium text-gray-500">Stock mínimo</label>
+          <input type="text" [value]="producto.stockMinimo" disabled
+            class="w-full bg-white border border-gray-200 p-3 rounded-lg text-gray-600" />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-medium text-gray-500">Fecha de vencimiento más próxima</label>
+          <input type="text" [value]="fechaVencimientoFormateada" disabled
+            class="w-full bg-white border border-gray-200 p-3 rounded-lg text-gray-600" />
+        </div>
+
+        <div class="flex flex-col gap-2 md:col-span-3">
+          <label class="text-sm font-medium text-gray-500">Disponibilidad</label>
+          <span class="w-fit px-3 py-1 rounded-full text-xs font-medium" [ngClass]="{
+              'bg-[var(--color-badge-disponible-bg)] text-[var(--color-badge-disponible-text)]': disponibilidad === 'Disponible',
+              'bg-[var(--color-badge-agotado-bg)] text-[var(--color-badge-agotado-text)]': disponibilidad === 'Agotado',
+              'bg-[var(--color-badge-vencido-bg)] text-[var(--color-badge-vencido-text)]': disponibilidad === 'Vencido'
+            }">
+            {{ disponibilidad }}
+          </span>
+        </div>
+
+      </div>
+    </section>
+
+    <section>
+      <label class="text-sm font-medium text-gray-500 block mb-2">Descripción del producto</label>
+      <textarea rows="4" [value]="producto.descripcion" disabled
+        class="w-full border border-gray-200 rounded-lg p-3 text-gray-600 bg-gray-50"></textarea>
+    </section>
+
+  </div>
+
+  <div sidebar>
+    <h3 class="text-xl font-bold mb-6 text-[#1F090A]">Precio</h3>
+    <div class="grid grid-cols-2 gap-4">
+      <div class="flex flex-col gap-2">
+        <label class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Precio Compra</label>
+        <input type="text" [value]="producto.precioCompra | currency:'S/.':'symbol-narrow':'1.2-2'" disabled
+          class="w-full border border-gray-200 p-2.5 rounded-lg bg-gray-50 text-gray-600" />
+      </div>
+      <div class="flex flex-col gap-2">
+        <label class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Precio Venta</label>
+        <input type="text" [value]="producto.precioVenta | currency:'S/.':'symbol-narrow':'1.2-2'" disabled
+          class="w-full border border-gray-200 p-2.5 rounded-lg bg-gray-50 text-gray-600" />
+      </div>
+      <div class="flex flex-col gap-2">
+        <label class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Margen</label>
+        <input type="text" [value]="producto.margen" disabled
+          class="w-full border border-gray-200 p-2.5 rounded-lg bg-gray-50 text-gray-600" />
+      </div>
+      <div class="flex flex-col gap-2">
+        <label class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Ganancia</label>
+        <input type="text" [value]="producto.ganancia" disabled
+          class="w-full border border-gray-200 p-2.5 rounded-lg bg-gray-50 text-gray-600" />
+      </div>
+    </div>
+
+    <div *ngIf="producto.imagen" class="mt-6">
+      <h4 class="text-sm font-semibold text-gray-500 mb-2">Imagen</h4>
+      <img [src]="producto.imagen" class="w-full max-h-[180px] object-contain rounded-lg border border-gray-100" />
+    </div>
+  </div>
+
+  <div actions>
+    <button
+      class="px-6 py-2.5 rounded-lg border border-[#531E1E] text-[#531E1E] font-medium hover:bg-gray-50 transition-colors"
+      (click)="Regresar()">
+      Regresar
+    </button>
+  </div>
+
+</app-form-layout>
