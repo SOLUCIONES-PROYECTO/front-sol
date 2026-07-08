@@ -148,6 +148,11 @@ export class OrdenesCompraFormComponent implements OnInit {
     return [...new Set(cats)];
   }
 
+  get lotePreview(): string {
+  if (!this.ordenCompra.numeroOrden) return 'LOT-' + new Date().getFullYear() + '-XXXX';
+  return this.ordenCompra.numeroOrden.replace('OC-', 'LOT-');
+  }
+
   get productosFiltradosPorCategoria(): Producto[] {
     if (!this.nuevoDetalle.categoria) return [];
     return this.productosDelProveedor.filter(

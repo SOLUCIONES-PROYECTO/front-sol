@@ -237,8 +237,8 @@
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Categoría</label>
-          <select [(ngModel)]="nuevoDetalle.categoria" (ngModelChange)="onCategoriaChange()"
-            class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg appearance-none">
+          <select [(ngModel)]="nuevoDetalle.categoria" [disabled]="modoVista"
+            class="w-full bg-[#F3F4F9] border-none p-3 rounded-lg appearance-none disabled:opacity-60 disabled:cursor-not-allowed">
             <option value="">Selecciona</option>
             <option *ngFor="let c of categoriasDelProveedor" [value]="c">{{ c }}</option>
           </select>
@@ -289,8 +289,8 @@
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Lote esperado</label>
-          <input type="text" [(ngModel)]="nuevoDetalle.loteEsperado"
-            class="w-full border border-gray-200 p-2.5 rounded-lg" />
+           <input type="text" [value]="lotePreview" disabled
+            class="w-full bg-gray-50 border-none p-2.5 rounded-lg text-gray-600 font-medium" />
         </div>
 
         <div class="flex flex-col gap-1.5">
