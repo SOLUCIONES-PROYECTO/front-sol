@@ -41,6 +41,9 @@ export class AjustesGlobalesFormComponent implements OnInit {
   alertMessage = '';
   alertType: 'error' | 'success' = 'error';
 
+  nuevaContrasena = '';
+confirmarContrasena = '';
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -165,4 +168,38 @@ export class AjustesGlobalesFormComponent implements OnInit {
       }
     });
   }
+
+  get contrasenasNoCoinciden(): boolean {
+  return this.nuevaContrasena.length > 0 && this.nuevaContrasena !== this.confirmarContrasena;
+}
+
+cambiarContrasena(): void {
+
+  if (!this.nuevaContrasena) {
+    this.mostrarAlerta('Campo vacío', 'Escribe una nueva contraseña antes de guardar.', 'error');
+    return;
+  }
+
+  if (this.nuevaContrasena.length < 8) {
+    this.mostrarAlerta('Contraseña muy corta', 'La contraseña debe tener al menos 8 caracteres.', 'error');
+    return;
+  }
+
+  if (this.contrasenasNoCoinciden) {
+    this.mostrarAlerta('Las contraseñas no coinciden', 'Verifica que ambos campos sean iguales.', 'error');
+    return;
+  }
+
+  this.empleadoService.cambiarContrasena(this.idEmpleado!, this.nuevaContrasena).subscribe({
+    next: () => {
+      this.nuevaContrasena = '';
+      this.confirmarContrasena = '';
+      this.mostrarAlerta('Contraseña actualizada', 'La contraseña se cambió correctamente.', 'success');
+    },
+    error: (err) => {
+      console.error(err);
+      this.mostrarAlerta('Ocurrió un error', 'No se pudo cambiar la contraseña. Inténtalo de nuevo.', 'error');
+    }
+  });
+}
 }

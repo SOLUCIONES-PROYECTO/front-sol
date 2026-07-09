@@ -45,7 +45,7 @@ export class EgresosFormComponent implements OnInit {
   empleadoLogueado: Empleado | undefined;
 
   // Tipos excluidos por ahora (Devolución pendiente de Fase futura)
-  tiposPermitidos = ['Venta', 'Merma', 'Uso interno'];
+  tiposPermitidos = ['Venta', 'Merma', 'Uso interno']; // 'Devolución' se mantiene para futuras fases, pero no se permite crear actualmente
 
   // — Detalle en memoria —
   detalles: any[] = [];

@@ -25,20 +25,24 @@ export class AuthService {
   login(response: LoginResponse): void {
     localStorage.setItem('token', response.token);
     localStorage.setItem('usuarioSistema', response.usuarioSistema);
-    localStorage.setItem('rol', response.rol);
+    localStorage.setItem('cargo', response.cargo); 
     this.loggedInSubject.next(true);
   }
 
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('usuarioSistema');
-    localStorage.removeItem('rol');
+    localStorage.removeItem('cargo'); 
     this.loggedInSubject.next(false);
 
     this.authApiService.logout().subscribe({
       next: () => this.router.navigate(['/auth/login']),
       error: () => this.router.navigate(['/auth/login']),
     });
+  }
+
+  getCargo(): string | null {
+    return localStorage.getItem('cargo');
   }
 
   getToken(): string | null {
@@ -55,9 +59,5 @@ export class AuthService {
 
   getUsuarioSistema(): string {
     return localStorage.getItem('usuarioSistema') || '';
-  }
-
-  getRol(): string {
-    return localStorage.getItem('rol') || '';
   }
 }

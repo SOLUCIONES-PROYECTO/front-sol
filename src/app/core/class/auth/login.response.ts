@@ -5,6 +5,7 @@ export class LoginResponse {
   expiraEnMs: number;
   usuarioSistema: string;
   rol: string;
+  cargo: string;
 
   constructor(data: Partial<LoginResponse> = {}) {
 
@@ -13,6 +14,7 @@ export class LoginResponse {
     this.expiraEnMs = data.expiraEnMs ?? 0;
     this.usuarioSistema = data.usuarioSistema ?? '';
     this.rol = data.rol ?? '';
+    this.cargo = data.cargo ?? '';
 
   }
 
@@ -25,7 +27,8 @@ export class LoginResponse {
       tipo: r['tipo'] as string,
       expiraEnMs: r['expiraEnMs'] as number,
       usuarioSistema: r['usuarioSistema'] as string,
-      rol: r['rol'] as string
+      rol: r['rol'] as string,
+      cargo: r['cargo'] as string
     });
 
   }

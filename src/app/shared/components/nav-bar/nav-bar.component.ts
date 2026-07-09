@@ -1,4 +1,5 @@
-import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AuthService } from '../../../core/services/auth/auth.service';
 
 @Component({
@@ -7,47 +8,59 @@ import { AuthService } from '../../../core/services/auth/auth.service';
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.css',
 })
-export class NavBarComponent implements OnInit {
+export class NavBarComponent implements OnInit, OnDestroy {
 
-  mostrarModal: boolean = false;
-
+  mostrarModal = false;
+  menuAbierto = false;
+  isLoggedIn = false;
   usuarioSistema = '';
-  rol = '';
+  cargo = '';
+
+  private authSub: Subscription | null = null;
 
   constructor(
     private authService: AuthService,
-    private elementRef: ElementRef
-  ) { }
+    private elementRef: ElementRef,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-  menuAbierto = false;
+  ngOnInit(): void {
+    // 👇 Suscripción al observable — recibe cambios en tiempo real
+    this.authSub = this.authService.isLoggedIn$.subscribe(loggedIn => {
+      this.isLoggedIn = loggedIn;
+
+      if (loggedIn) {
+        this.usuarioSistema = this.authService.getUsuarioSistema() || '';
+        this.cargo = this.authService.getCargo() || '';
+      } else {
+        this.usuarioSistema = '';
+        this.cargo = '';
+      }
+
+      this.cdr.detectChanges(); // necesario por el mismo motivo de siempre en tu app
+    });
+  }
+
+  ngOnDestroy(): void {
+    // Limpieza para evitar memory leaks
+    this.authSub?.unsubscribe();
+  }
 
   toggleMenu(): void {
     this.menuAbierto = !this.menuAbierto;
   }
 
-  isLoggedIn = false;
-
-  ngOnInit(): void {
-
-    this.isLoggedIn = this.authService.isAuthenticated();
-
-    this.usuarioSistema =
-      this.authService.getUsuarioSistema();
-
-    this.rol =
-      this.authService.getRol();
-  }
-
-  abrirModal() {
+  abrirModal(): void {
     this.mostrarModal = true;
   }
 
-  cerrarModal() {
+  cerrarModal(): void {
     this.mostrarModal = false;
   }
 
   logout(): void {
     this.authService.logout();
+    this.menuAbierto = false;
   }
 
   @HostListener('document:click', ['$event'])
@@ -56,5 +69,4 @@ export class NavBarComponent implements OnInit {
       this.menuAbierto = false;
     }
   }
-
 }

@@ -16,7 +16,7 @@
 
       </a>
 
-      <a routerLink="/ingresos" routerLinkActive="bg-white text-primary-600" #rlaIngresos="routerLinkActive"
+      <a *ngIf="puedeVer('Ingresos')" routerLink="/ingresos" routerLinkActive="bg-white text-primary-600" #rlaIngresos="routerLinkActive"
         class="flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600">
 
         <div class="flex items-center gap-3">
@@ -34,7 +34,7 @@
 
       </a>
 
-      <a routerLink="/egresos" routerLinkActive="bg-white text-primary-600" #rlaEgresos="routerLinkActive"
+      <a *ngIf="puedeVer('Egresos')" routerLink="/egresos" routerLinkActive="bg-white text-primary-600" #rlaEgresos="routerLinkActive"
         class="flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600">
         <div class="flex items-center gap-3">
           <lucide-icon name="list" class="w-5 h-5">
@@ -49,7 +49,7 @@
         </span>
       </a>
 
-      <a routerLink="/productos" routerLinkActive="bg-white text-primary-600" #rlaProductos="routerLinkActive"
+      <a *ngIf="puedeVer('Productos')" routerLink="/productos" routerLinkActive="bg-white text-primary-600" #rlaProductos="routerLinkActive"
         class="flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600">
         <div class="flex items-center gap-3">
           <lucide-icon name="shopping-cart" class="w-5 h-5">
@@ -65,7 +65,7 @@
 
       </a>
 
-      <a routerLink="/proveedores" routerLinkActive="bg-white text-primary-600" #rlaProveedores="routerLinkActive"
+      <a *ngIf="puedeVer('Proveedores')" routerLink="/proveedores" routerLinkActive="bg-white text-primary-600" #rlaProveedores="routerLinkActive"
         class="flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600">
         <div class="flex items-center gap-3">
           <lucide-icon name="users" class="w-5 h-5">
@@ -81,7 +81,7 @@
       </a>
 
 
-        <a routerLink="/almacen" routerLinkActive="bg-white text-primary-600" #rlaAlmacen="routerLinkActive"
+        <a *ngIf="puedeVer('Almacen')" routerLink="/almacen" routerLinkActive="bg-white text-primary-600" #rlaAlmacen="routerLinkActive"
           class="flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600">
         <div class="flex items-center gap-3">
           <lucide-icon name="package" class="w-5 h-5">
@@ -96,7 +96,7 @@
         </span>
       </a>
 
-      <a routerLink="/orden-de-compra" routerLinkActive="bg-white text-primary-600" #rlaOrdenes="routerLinkActive"
+      <a *ngIf="puedeVer('OrdenDeCompra')" routerLink="/orden-de-compra" routerLinkActive="bg-white text-primary-600" #rlaOrdenes="routerLinkActive"
         class="flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600">
         <div class="flex items-center gap-3">
           <lucide-icon name="clipboard-list" class="w-5 h-5">
@@ -134,7 +134,7 @@
 
         </a>
 
-        <a routerLink="/ajustes-globales" routerLinkActive="bg-white text-primary-600"
+        <a *ngIf="puedeVer('AjustesGlobales')" routerLink="/ajustes-globales" routerLinkActive="bg-white text-primary-600"
           class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600">
 
           <lucide-icon name="settings" class="w-5 h-5">
