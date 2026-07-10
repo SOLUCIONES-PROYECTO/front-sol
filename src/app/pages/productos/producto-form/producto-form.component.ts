@@ -23,8 +23,17 @@ export class ProductoFormComponent implements OnInit {
   producto: Producto = new Producto();
 
   modoEdicion = false;
+  errorNombreProducto = false;
+  errorStockMinimo = false;
+  errorPrecioCompra = false;
+  errorPrecioVenta = false;
   modoVista = false;
   idProducto: number | null = null;
+
+  showAlertModal = false;
+  alertTitle = '';
+  alertMessage = '';
+  alertType: 'error' | 'success' = 'error';
 
   proveedores: Proveedor[] = [];
   estados: EstadoProducto[] = [];
@@ -114,18 +123,93 @@ export class ProductoFormComponent implements OnInit {
     this.router.navigate(['/productos']);
   }
 
+  aplicarTexto(event: Event, campo: string, maxLength: number): void {
+    const input = event.target as HTMLInputElement;
+    const valorOriginal = input.value;
+    const excede = valorOriginal.length > maxLength;
+    const valor = valorOriginal.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s.,-]/g, '').slice(0, maxLength);
+    input.value = valor;
+    (this.producto as Record<string, any>)[campo] = valor;
+
+    if (campo === 'nombre') {
+      this.errorNombreProducto = excede;
+    }
+  }
+
+  aplicarNumeros(event: Event, campo: string, maxLength: number, decimal = false): void {
+    const input = event.target as HTMLInputElement;
+    const valorOriginal = input.value;
+    const excede = valorOriginal.length > maxLength;
+    const patron = decimal ? /[^\d.]/g : /\D/g;
+    const valor = valorOriginal.replace(patron, '').slice(0, maxLength);
+    input.value = valor;
+    (this.producto as Record<string, any>)[campo] = decimal ? Number(valor || 0) : Number(valor || 0);
+
+    if (campo === 'stockMinimo') {
+      this.errorStockMinimo = excede;
+    } else if (campo === 'precioCompra') {
+      this.errorPrecioCompra = excede;
+    } else if (campo === 'precioVenta') {
+      this.errorPrecioVenta = excede;
+    }
+  }
+
+  private validarCamposObligatorios(): string[] {
+    const errores: string[] = [];
+
+    if (!this.producto.nombre?.trim()) errores.push('Nombre del producto');
+    if (!this.producto.categoria) errores.push('Categoría');
+    if (!this.producto.idUnidadMedida || this.producto.idUnidadMedida === 0) errores.push('Unidad de medida');
+    if (!this.producto.idProveedor || this.producto.idProveedor === 0) errores.push('Proveedor');
+    if (!this.producto.idEstado || this.producto.idEstado === 0) errores.push('Estado');
+    if (this.producto.stockMinimo === undefined || this.producto.stockMinimo === null || this.producto.stockMinimo === 0) errores.push('Stock mínimo');
+    if (this.producto.precioCompra === undefined || this.producto.precioCompra === null || this.producto.precioCompra === 0) errores.push('Precio de compra');
+    if (this.producto.precioVenta === undefined || this.producto.precioVenta === null || this.producto.precioVenta === 0) errores.push('Precio de venta');
+
+    return errores;
+  }
+
+  private mostrarAlerta(title: string, message: string, type: 'error' | 'success'): void {
+    this.alertTitle = title;
+    this.alertMessage = message;
+    this.alertType = type;
+    this.showAlertModal = true;
+    this.cdr.detectChanges();
+  }
+
+  onCerrarAlerta(): void {
+    this.showAlertModal = false;
+    this.cdr.detectChanges();
+
+    if (this.alertType === 'success') {
+      this.router.navigate(['/productos']);
+    }
+  }
+
   guardar(): void {
+    const errores = this.validarCamposObligatorios();
+
+    if (errores.length > 0) {
+      this.mostrarAlerta(
+        'Faltan datos por completar',
+        'Por favor revisa los siguientes campos:\n• ' + errores.join('\n• '),
+        'error'
+      );
+      return;
+    }
+
     const peticion = this.modoEdicion
       ? this.productoService.actualizarProducto(this.idProducto!, this.producto)
       : this.productoService.crearProducto(this.producto);
 
     peticion.subscribe({
-      next: (resp) => {
-        console.log(resp);
-        alert(this.modoEdicion ? 'Producto actualizado' : 'Producto registrado');
-        this.router.navigate(['/productos']);
+      next: () => {
+        this.mostrarAlerta(this.modoEdicion ? 'Producto actualizado' : 'Producto registrado', 'Los cambios se guardaron correctamente.', 'success');
       },
-      error: (err) => console.error(err)
+      error: (err) => {
+        console.error(err);
+        this.mostrarAlerta('Ocurrió un error', 'No se pudo guardar el producto. Inténtalo de nuevo.', 'error');
+      }
     });
   }
 

@@ -9,16 +9,22 @@
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Nombre de la Empresa</label>
-          <input type="text" [(ngModel)]="proveedor.descripcion" [disabled]="modoVista"
+          <input type="text" [(ngModel)]="proveedor.descripcion" maxlength="80" [disabled]="modoVista" (input)="aplicarTexto($event, 'descripcion', 80)"
             placeholder="Empresa SAC 1"
             class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+          @if(errorTexto['descripcion']) {
+            <p class="text-xs text-red-500">Se excedió el máximo de 80 caracteres.</p>
+          }
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">RUC</label>
-          <input type="text" [(ngModel)]="proveedor.ruc" [disabled]="modoVista"
-            placeholder="Ej. 20948456123" maxlength="11"
+          <input type="text" [(ngModel)]="proveedor.ruc" inputmode="numeric" maxlength="11" [disabled]="modoVista" (input)="aplicarNumeros($event, 'ruc', 11)"
+            placeholder="Ej. 20948456123"
             class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+          @if(errorTexto['ruc']) {
+            <p class="text-xs text-red-500">Solo se permiten 11 dígitos.</p>
+          }
         </div>
 
       </div>
@@ -32,9 +38,12 @@
         <!-- Código de Ubigeo — manual siempre -->
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Código de Ubigeo</label>
-          <input type="text" [(ngModel)]="proveedor.codigoUbigeo" [disabled]="modoVista"
+          <input type="text" [(ngModel)]="proveedor.codigoUbigeo" inputmode="numeric" maxlength="6" [disabled]="modoVista" (input)="aplicarNumeros($event, 'codigoUbigeo', 6)"
             placeholder="Ej. 150101"
             class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+          @if(errorTexto['codigoUbigeo']) {
+            <p class="text-xs text-red-500">Solo se permiten 6 dígitos.</p>
+          }
         </div>
 
         <!-- Dirección con autocompletado OSM -->
@@ -43,7 +52,8 @@
           <div class="relative">
             <input type="text"
               [(ngModel)]="busquedaDireccion"
-              (input)="onDireccionInput()"
+              maxlength="120"
+              (input)="onDireccionInput(); aplicarTexto($event, 'direccion', 120)"
               (blur)="cerrarSugerencias()"
               [disabled]="modoVista"
               placeholder="Busca tu dirección..."
@@ -54,6 +64,9 @@
               Buscando...
             </div>
           </div>
+          @if(errorTexto['direccion']) {
+            <p class="text-xs text-red-500">Se excedió el máximo de 120 caracteres.</p>
+          }
 
           <!-- Sugerencias OSM -->
           <div *ngIf="sugerencias.length > 0"
@@ -70,33 +83,48 @@
         <!-- Campos autocompletados por OSM -->
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Departamento</label>
-          <input type="text" [(ngModel)]="proveedor.departamento" [disabled]="modoVista"
+          <input type="text" [(ngModel)]="proveedor.departamento" maxlength="60" [disabled]="modoVista" (input)="aplicarTexto($event, 'departamento', 60)"
             class="w-full bg-gray-50 border border-gray-100 p-2.5 rounded-lg text-gray-500 disabled:cursor-not-allowed" />
+          @if(errorTexto['departamento']) {
+            <p class="text-xs text-red-500">Se excedió el máximo de 60 caracteres.</p>
+          }
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Ciudad</label>
-          <input type="text" [(ngModel)]="proveedor.ciudad" [disabled]="modoVista"
+          <input type="text" [(ngModel)]="proveedor.ciudad" maxlength="60" [disabled]="modoVista" (input)="aplicarTexto($event, 'ciudad', 60)"
             class="w-full bg-gray-50 border border-gray-100 p-2.5 rounded-lg text-gray-500 disabled:cursor-not-allowed" />
+          @if(errorTexto['ciudad']) {
+            <p class="text-xs text-red-500">Se excedió el máximo de 60 caracteres.</p>
+          }
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Distrito</label>
-          <input type="text" [(ngModel)]="proveedor.distrito" [disabled]="modoVista"
+          <input type="text" [(ngModel)]="proveedor.distrito" maxlength="60" [disabled]="modoVista" (input)="aplicarTexto($event, 'distrito', 60)"
             class="w-full bg-gray-50 border border-gray-100 p-2.5 rounded-lg text-gray-500 disabled:cursor-not-allowed" />
+          @if(errorTexto['distrito']) {
+            <p class="text-xs text-red-500">Se excedió el máximo de 60 caracteres.</p>
+          }
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Código Postal</label>
-          <input type="text" [(ngModel)]="proveedor.codigoPostal" [disabled]="modoVista"
+          <input type="text" [(ngModel)]="proveedor.codigoPostal" inputmode="numeric" maxlength="5" [disabled]="modoVista" (input)="aplicarNumeros($event, 'codigoPostal', 5)"
             class="w-full bg-gray-50 border border-gray-100 p-2.5 rounded-lg text-gray-500 disabled:cursor-not-allowed" />
+          @if(errorTexto['codigoPostal']) {
+            <p class="text-xs text-red-500">Solo se permiten 5 dígitos.</p>
+          }
         </div>
 
         <div class="flex flex-col gap-1.5 md:col-span-2">
           <label class="text-sm font-medium text-gray-600">Referencia (Opcional)</label>
-          <input type="text" [(ngModel)]="proveedor.referenciaUbicacion" [disabled]="modoVista"
+          <input type="text" [(ngModel)]="proveedor.referenciaUbicacion" maxlength="120" [disabled]="modoVista" (input)="aplicarTexto($event, 'referenciaUbicacion', 120)"
             placeholder="Ej. Frente al parque, edificio azul..."
             class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+          @if(errorTexto['referenciaUbicacion']) {
+            <p class="text-xs text-red-500">Se excedió el máximo de 120 caracteres.</p>
+          }
         </div>
 
       </div>
@@ -166,14 +194,20 @@
           <label class="text-sm font-medium text-gray-600">
             Teléfono celular <span class="text-red-500">*</span>
           </label>
-          <input type="tel" [(ngModel)]="proveedor.telefonoEmpresa" [disabled]="modoVista"
+          <input type="text" inputmode="numeric" maxlength="9" [(ngModel)]="proveedor.telefonoEmpresa" [disabled]="modoVista" (input)="aplicarNumeros($event, 'telefonoEmpresa', 9)"
             class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+          @if(errorTexto['telefonoEmpresa']) {
+            <p class="text-xs text-red-500">Solo se permiten 9 dígitos.</p>
+          }
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Teléfono fijo (opcional)</label>
-          <input type="tel" [(ngModel)]="proveedor.telefonoFijoEmpresa" [disabled]="modoVista"
+          <input type="text" inputmode="numeric" maxlength="7" [(ngModel)]="proveedor.telefonoFijoEmpresa" [disabled]="modoVista" (input)="aplicarNumeros($event, 'telefonoFijoEmpresa', 7)"
             class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+          @if(errorTexto['telefonoFijoEmpresa']) {
+            <p class="text-xs text-red-500">Solo se permiten 7 dígitos.</p>
+          }
         </div>
 
         <div class="flex flex-col gap-1.5">
@@ -211,14 +245,20 @@
           <label class="text-sm font-medium text-gray-600">
             Teléfono celular <span class="text-red-500">*</span>
           </label>
-          <input type="tel" [(ngModel)]="proveedor.celularSectorista" [disabled]="modoVista"
+          <input type="text" inputmode="numeric" maxlength="9" [(ngModel)]="proveedor.celularSectorista" [disabled]="modoVista" (input)="aplicarNumeros($event, 'celularSectorista', 9)"
             class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+          @if(errorTexto['celularSectorista']) {
+            <p class="text-xs text-red-500">Solo se permiten 9 dígitos.</p>
+          }
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Teléfono fijo (opcional)</label>
-          <input type="tel" [(ngModel)]="proveedor.telefonoFijoSectorista" [disabled]="modoVista"
+          <input type="text" inputmode="numeric" maxlength="7" [(ngModel)]="proveedor.telefonoFijoSectorista" [disabled]="modoVista" (input)="aplicarNumeros($event, 'telefonoFijoSectorista', 7)"
             class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+          @if(errorTexto['telefonoFijoSectorista']) {
+            <p class="text-xs text-red-500">Solo se permiten 7 dígitos.</p>
+          }
         </div>
 
       </div>

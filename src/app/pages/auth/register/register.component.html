@@ -128,6 +128,8 @@
                   <input
                     type="text"
                     formControlName="nombres"
+                    maxlength="50"
+                    (input)="aplicarTexto($event, 'nombres', 50)"
                     placeholder="Ingrese los nombres"
                     class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
                       focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
@@ -137,8 +139,10 @@
                   <p class="mt-1.5 text-xs text-red-500">
                     @if(registerFormPresenter.Form.get('nombres')?.errors?.['required']) { Los nombres son obligatorios. }
                     @if(registerFormPresenter.Form.get('nombres')?.errors?.['minlength']) { Mínimo 3 caracteres. }
+                    @if(registerFormPresenter.Form.get('nombres')?.errors?.['maxlength']) { Máximo 50 caracteres. }
                   </p>
                 }
+                <p class="mt-1 text-xs text-gray-500">Solo texto. Máximo 50 caracteres.</p>
               </div>
 
               <!-- APELLIDOS -->
@@ -151,6 +155,8 @@
                   <input
                     type="text"
                     formControlName="apellidos"
+                    maxlength="50"
+                    (input)="aplicarTexto($event, 'apellidos', 50)"
                     placeholder="Ingrese los apellidos"
                     class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
                       focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
@@ -160,8 +166,10 @@
                   <p class="mt-1.5 text-xs text-red-500">
                     @if(registerFormPresenter.Form.get('apellidos')?.errors?.['required']) { Los apellidos son obligatorios. }
                     @if(registerFormPresenter.Form.get('apellidos')?.errors?.['minlength']) { Mínimo 3 caracteres. }
+                    @if(registerFormPresenter.Form.get('apellidos')?.errors?.['maxlength']) { Máximo 50 caracteres. }
                   </p>
                 }
+                <p class="mt-1 text-xs text-gray-500">Solo texto. Máximo 50 caracteres.</p>
               </div>
 
               <!-- DNI -->
@@ -173,8 +181,10 @@
                   <lucide-icon name="credit-card" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
                   <input
                     type="text"
+                    inputmode="numeric"
                     maxlength="8"
                     formControlName="dni"
+                    (input)="soloNumeros($event, 'dni', 8)"
                     placeholder="12345678"
                     class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
                       focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
@@ -182,6 +192,9 @@
                 </div>
                 @if(registerFormPresenter.Form.get('dni')?.touched && registerFormPresenter.Form.get('dni')?.invalid) {
                   <p class="mt-1.5 text-xs text-red-500">Ingrese un DNI válido de 8 dígitos.</p>
+                }
+                @if(errorDni) {
+                  <p class="mt-1 text-xs text-red-500">Solo se permiten 8 dígitos.</p>
                 }
               </div>
 
@@ -285,8 +298,10 @@
                   <lucide-icon name="phone" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
                   <input
                     type="text"
+                    inputmode="numeric"
                     maxlength="9"
                     formControlName="telefono"
+                    (input)="soloNumeros($event, 'telefono', 9)"
                     placeholder="987654321"
                     class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
                       focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
@@ -294,6 +309,9 @@
                 </div>
                 @if(registerFormPresenter.Form.get('telefono')?.touched && registerFormPresenter.Form.get('telefono')?.invalid) {
                   <p class="mt-1.5 text-xs text-red-500">Ingrese un teléfono válido de 9 dígitos.</p>
+                }
+                @if(errorTelefono) {
+                  <p class="mt-1 text-xs text-red-500">Solo se permiten 9 dígitos.</p>
                 }
               </div>
 
@@ -307,6 +325,8 @@
                   <input
                     type="text"
                     formControlName="direccion"
+                    maxlength="100"
+                    (input)="aplicarTexto($event, 'direccion', 100)"
                     placeholder="Av. Principal 123"
                     class="w-full rounded-lg border border-gray-200 pl-10 pr-10 py-2.5 text-sm outline-none transition-all
                       focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
@@ -320,7 +340,13 @@
                   </button>
                 </div>
                 @if(registerFormPresenter.Form.get('direccion')?.touched && registerFormPresenter.Form.get('direccion')?.invalid) {
-                  <p class="mt-1.5 text-xs text-red-500">La dirección es obligatoria.</p>
+                  <p class="mt-1.5 text-xs text-red-500">
+                    @if(registerFormPresenter.Form.get('direccion')?.errors?.['required']) { La dirección es obligatoria. }
+                    @if(registerFormPresenter.Form.get('direccion')?.errors?.['maxlength']) { Máximo 100 caracteres. }
+                  </p>
+                }
+                @if(errorDireccion) {
+                  <p class="mt-1 text-xs text-red-500">Se excedió el máximo de 100 caracteres.</p>
                 }
               </div>
 
