@@ -40,31 +40,44 @@
     </div>
 
     <!-- Valor en riesgo -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-6">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-base font-bold text-[#1F090A] flex items-center gap-2">
-          <lucide-icon name="triangle-alert" class="w-4 h-4 text-primary-500"></lucide-icon>
-          Valor en riesgo por vencimiento
-        </h3>
-        <span class="text-2xl font-bold text-primary-500">{{ formatearMoneda(valorEnRiesgo.valorTotalEnRiesgo) }}</span>
+    <div class="mb-6 rounded-xl border border-gray-100 bg-white p-5 shadow-sm">
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div class="space-y-2">
+          <div class="inline-flex items-center gap-2 rounded-full bg-primary-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-600">
+            <lucide-icon name="triangle-alert" class="w-4 h-4"></lucide-icon>
+            Monitoreo de caducidad
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-[#1F090A]">Valor en riesgo por vencimiento</h3>
+            <p class="text-sm text-gray-500">Resumen del valor expuesto según el tiempo restante hasta el vencimiento.</p>
+          </div>
+        </div>
+
+        <div class="rounded-xl border border-primary-200 bg-primary-50 px-4 py-3">
+          <p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-500">Valor total</p>
+          <p class="text-2xl font-bold text-primary-600">{{ formatearMoneda(valorEnRiesgo.valorTotalEnRiesgo) }}</p>
+        </div>
       </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div class="rounded-lg bg-badge-vencido-bg p-3">
-          <p class="text-xs text-badge-vencido-text font-semibold mb-1">Vencido</p>
-          <p class="text-base font-bold text-badge-vencido-text">{{ formatearMoneda(valorEnRiesgo.valorVencidos) }}</p>
+      <div class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div class="rounded-lg border border-gray-100 bg-[#F7F2F2] p-4">
+          <p class="text-sm font-semibold text-primary-600">Vencido</p>
+          <p class="mt-2 text-xl font-bold text-primary-700">{{ formatearMoneda(valorEnRiesgo.valorVencidos) }}</p>
         </div>
-        <div class="rounded-lg bg-badge-devuelto-bg p-3">
-          <p class="text-xs text-badge-devuelto-text font-semibold mb-1">Urgente (≤7d)</p>
-          <p class="text-base font-bold text-badge-devuelto-text">{{ formatearMoneda(valorEnRiesgo.valorUrgente) }}</p>
+
+        <div class="rounded-lg border border-gray-100 bg-[#F7F2F2] p-4">
+          <p class="text-sm font-semibold text-primary-600">Urgente (≤7d)</p>
+          <p class="mt-2 text-xl font-bold text-primary-700">{{ formatearMoneda(valorEnRiesgo.valorUrgente) }}</p>
         </div>
-        <div class="rounded-lg bg-badge-tarjeta-bg p-3">
-          <p class="text-xs text-badge-tarjeta-text font-semibold mb-1">Próximo (≤15d)</p>
-          <p class="text-base font-bold text-badge-tarjeta-text">{{ formatearMoneda(valorEnRiesgo.valorProximo) }}</p>
+
+        <div class="rounded-lg border border-gray-100 bg-[#F7F2F2] p-4">
+          <p class="text-sm font-semibold text-primary-600">Próximo (≤15d)</p>
+          <p class="mt-2 text-xl font-bold text-primary-700">{{ formatearMoneda(valorEnRiesgo.valorProximo) }}</p>
         </div>
-        <div class="rounded-lg bg-badge-observado-bg p-3">
-          <p class="text-xs text-badge-observado-text font-semibold mb-1">Advertencia (≤30d)</p>
-          <p class="text-base font-bold text-badge-observado-text">{{ formatearMoneda(valorEnRiesgo.valorAdvertencia) }}</p>
+
+        <div class="rounded-lg border border-gray-100 bg-[#F7F2F2] p-4">
+          <p class="text-sm font-semibold text-primary-600">Advertencia (≤30d)</p>
+          <p class="mt-2 text-xl font-bold text-primary-700">{{ formatearMoneda(valorEnRiesgo.valorAdvertencia) }}</p>
         </div>
       </div>
     </div>
