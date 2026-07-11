@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { AlmacenRoutingModule } from './almacen-routing.module';
 import { AlmacenComponent } from './almacen.component';
@@ -12,9 +13,10 @@ import { AlmacenFormComponent } from './almacen-form/almacen-form.component';
     AlmacenFormComponent
   ],
   imports: [
-    AlmacenRoutingModule,
-    CommonModule,
-    SharedModule
-  ]
+  AlmacenRoutingModule,
+  CommonModule,
+  SharedModule,
+  FormsModule
+]
 })
 export class AlmacenModule {}
