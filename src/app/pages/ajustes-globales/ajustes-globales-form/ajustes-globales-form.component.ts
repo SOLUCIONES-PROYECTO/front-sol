@@ -34,6 +34,8 @@ export class AjustesGlobalesFormComponent implements OnInit {
   estados = ['Activo', 'Inactivo'];
 
   guardando = false;
+  showPassword = false;
+  showConfirmPassword = false;
 
   // — Modal de alerta —
   showAlertModal = false;
@@ -43,6 +45,8 @@ export class AjustesGlobalesFormComponent implements OnInit {
 
   nuevaContrasena = '';
 confirmarContrasena = '';
+  errorDni = false;
+  errorTelefono = false;
 
   constructor(
     private router: Router,
@@ -102,6 +106,30 @@ confirmarContrasena = '';
 
   Regresar(): void {
     this.router.navigate(['/ajustes-globales']);
+  }
+
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPassword(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
+  soloNumeros(event: Event, tipo: 'dni' | 'telefono', maxLength: number): void {
+    const input = event.target as HTMLInputElement;
+    const valorOriginal = input.value;
+    const excede = valorOriginal.length > maxLength;
+    const valor = valorOriginal.replace(/\D/g, '').slice(0, maxLength);
+    input.value = valor;
+
+    if (tipo === 'dni') {
+      this.persona.dni = valor;
+      this.errorDni = excede;
+    } else {
+      this.persona.telefono = valor;
+      this.errorTelefono = excede;
+    }
   }
 
   private mostrarAlerta(title: string, message: string, type: 'error' | 'success'): void {

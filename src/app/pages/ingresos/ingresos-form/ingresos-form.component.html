@@ -185,6 +185,10 @@
   </div>
 </app-form-layout>
 
+<app-alert-modal [visible]="showAlertModal" [title]="alertTitle" [message]="alertMessage" [type]="alertType"
+  (close)="onCerrarAlerta()">
+</app-alert-modal>
+
 <app-modal-form [visible]="showModalProducto" title="Agregar Producto al Ingreso" confirmText="Agregar"
   cancelText="Cancelar" [confirmDisabled]="nuevoDetalleInvalido" (confirm)="agregarDetalle()"
   (cancel)="cerrarModalProducto()">

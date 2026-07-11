@@ -41,6 +41,10 @@ export class OrdenesCompraFormComponent implements OnInit {
 
   detalles: DetalleOrdenCompra[] = [];
   showModalProducto = false;
+  showAlertModal = false;
+  alertTitle = '';
+  alertMessage = '';
+  alertType: 'error' | 'success' = 'error';
 
   nuevoDetalle = {
     categoria: '',
@@ -280,42 +284,79 @@ export class OrdenesCompraFormComponent implements OnInit {
     this.router.navigate(['/orden-de-compra']);
   }
 
+  private validarCamposObligatorios(): string[] {
+    const errores: string[] = [];
+
+    if (!this.ordenCompra.idProveedor || this.ordenCompra.idProveedor === 0) errores.push('Proveedor');
+    if (!this.ordenCompra.idMetodoPago || this.ordenCompra.idMetodoPago === 0) errores.push('Método de pago');
+    if (!this.ordenCompra.fechaEmision) errores.push('Fecha de emisión');
+    if (!this.ordenCompra.fechaEntregaEsperada) errores.push('Fecha de entrega esperada');
+    if (!this.ordenCompra.idEstadoOc || this.ordenCompra.idEstadoOc === 0) errores.push('Estado de la orden');
+    if (this.detalles.length === 0) errores.push('Debe agregar al menos un producto');
+
+    return errores;
+  }
+
+  private mostrarAlerta(title: string, message: string, type: 'error' | 'success'): void {
+    this.alertTitle = title;
+    this.alertMessage = message;
+    this.alertType = type;
+    this.showAlertModal = true;
+    this.cdr.detectChanges();
+  }
+
+  onCerrarAlerta(): void {
+    this.showAlertModal = false;
+    this.cdr.detectChanges();
+
+    if (this.alertType === 'success') {
+      this.router.navigate(['/orden-de-compra']);
+    }
+  }
+
   guardar(): void {
-    if (!this.modoEdicion && !this.ordenCompra.idEmpleado) {
-      alert('No se pudo identificar al empleado logueado.');
+    const errores = this.validarCamposObligatorios();
+
+    if (errores.length > 0) {
+      this.mostrarAlerta(
+        'Faltan datos por completar',
+        'Por favor revisa los siguientes campos:\n• ' + errores.join('\n• '),
+        'error'
+      );
       return;
     }
 
-    if (this.detalles.length === 0) {
-      alert('Debe agregar al menos un producto a la orden.');
+    if (!this.modoEdicion && !this.ordenCompra.idEmpleado) {
+      this.mostrarAlerta('No se pudo identificar al empleado', 'Vuelve a iniciar sesión e inténtalo nuevamente.', 'error');
       return;
     }
 
     this.ordenCompra.detalles = this.detalles;
 
     if (this.modoEdicion) {
-  this.ordenCompraService.cambiarEstado(
-    this.idOrdenCompra!,
-    this.ordenCompra.idEstadoOc
-  ).subscribe({
-    next: () => {
-      alert('Orden actualizada');
-      this.router.navigate(['/orden-de-compra']);
-    },
-    error: (err) => console.error(err)
-  });
+      this.ordenCompraService.cambiarEstado(
+        this.idOrdenCompra!,
+        this.ordenCompra.idEstadoOc
+      ).subscribe({
+        next: () => {
+          this.mostrarAlerta('Orden actualizada', 'Los cambios se guardaron correctamente.', 'success');
+        },
+        error: (err) => {
+          console.error(err);
+          this.mostrarAlerta('Ocurrió un error', 'No se pudo actualizar la orden. Inténtalo de nuevo.', 'error');
+        }
+      });
 
-  return;
-}
+      return;
+    }
 
     this.ordenCompraService.crear(this.ordenCompra).subscribe({
       next: () => {
-        alert('Orden de compra registrada');
-        this.router.navigate(['/orden-de-compra']);
+        this.mostrarAlerta('Orden de compra registrada', 'La orden se registró correctamente.', 'success');
       },
       error: (err) => {
         console.error('Error al crear la orden', err);
-        alert('Ocurrió un error al registrar la orden.');
+        this.mostrarAlerta('Ocurrió un error', 'No se pudo registrar la orden. Inténtalo de nuevo.', 'error');
       }
     });
   }

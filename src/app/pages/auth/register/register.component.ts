@@ -29,6 +29,12 @@ export class RegisterComponent implements OnInit {
     symbol: false
   };
 
+  errorNombres = false;
+  errorApellidos = false;
+  errorDireccion = false;
+  errorDni = false;
+  errorTelefono = false;
+
   constructor(
     public registerFormPresenter: RegisterFormPresenter,
     private registerFacade: RegisterFacade,
@@ -55,6 +61,39 @@ export class RegisterComponent implements OnInit {
 
   toggleConfirmPassword(): void {
     this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
+  aplicarTexto(event: Event, campo: 'nombres' | 'apellidos' | 'direccion', maxLength: number): void {
+    const input = event.target as HTMLInputElement;
+    const valorOriginal = input.value;
+    const excede = valorOriginal.length > maxLength;
+    const valor = valorOriginal.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '').slice(0, maxLength);
+    input.value = valor;
+
+    if (campo === 'nombres') {
+      this.errorNombres = excede;
+    } else if (campo === 'apellidos') {
+      this.errorApellidos = excede;
+    } else {
+      this.errorDireccion = excede;
+    }
+
+    this.registerFormPresenter.Form.get(campo)?.setValue(valor);
+  }
+
+  soloNumeros(event: Event, controlName: 'dni' | 'telefono', maxLength: number): void {
+    const input = event.target as HTMLInputElement;
+    const valorOriginal = input.value;
+    const excede = valorOriginal.length > maxLength;
+    const valor = valorOriginal.replace(/\D/g, '').slice(0, maxLength);
+    input.value = valor;
+    this.registerFormPresenter.Form.get(controlName)?.setValue(valor);
+
+    if (controlName === 'dni') {
+      this.errorDni = excede;
+    } else {
+      this.errorTelefono = excede;
+    }
   }
 
   evaluatePassword(password: string): void {

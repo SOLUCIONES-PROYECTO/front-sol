@@ -120,6 +120,10 @@ export class IngresosFormComponent implements OnInit {
           this.docEntrada.idEmpleado = this.empleadoLogueado.idEmpleado;
         }
 
+        if (!this.modoEdicion && !this.modoVista) {
+          this.docEntrada.fechaIngreso = this.obtenerFechaActual();
+        }
+
         this.cdr.detectChanges();
 
         if (this.idDocEntrada) {
@@ -134,6 +138,14 @@ export class IngresosFormComponent implements OnInit {
     if (this.modoVista) return 'Detalle del Ingreso';
     if (this.modoEdicion) return 'Editar Ingreso';
     return 'Registrar Ingreso';
+  }
+
+  private obtenerFechaActual(): string {
+    const fecha = new Date();
+    const year = fecha.getFullYear();
+    const month = `${fecha.getMonth() + 1}`.padStart(2, '0');
+    const day = `${fecha.getDate()}`.padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
   get empleadoMostrado(): Empleado | undefined {
