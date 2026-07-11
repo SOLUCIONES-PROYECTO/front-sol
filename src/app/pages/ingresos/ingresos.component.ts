@@ -15,7 +15,6 @@ import { SidebarCounterService } from '../../shared/services/sidebar-counter.ser
 export class IngresosComponent implements OnInit {
 
   columns = [
-    { key: 'lote', label: 'Lote' },
     { key: 'documento', label: 'N° Documento' },
     { key: 'fecha', label: 'Fecha de ingreso' },
     { key: 'proveedor', label: 'Proveedor' },

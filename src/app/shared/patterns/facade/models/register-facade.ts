@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Observable, map } from 'rxjs';
 import { Register } from '../../../../core/class/auth/register.class';
 import { AuthApiService } from '../../../../pages/auth/services/auth-api.service';
 
@@ -8,23 +8,11 @@ import { AuthApiService } from '../../../../pages/auth/services/auth-api.service
 })
 export class RegisterFacade {
 
-  constructor(
-    private authApiService: AuthApiService,
-    private router: Router,
-  ) {}
+  constructor(private authApiService: AuthApiService) {}
 
-  registrarUsuario(register: Register): void {
-    this.authApiService.register(Register.toJson(register)).subscribe({
-      next: () => {
-        alert('Usuario registrado correctamente');
-        this.router.navigate(['/auth/login']);
-      },
-      error: (error) => {
-        console.error('Error al registrar usuario', error);
-        alert('Error al registrar, intenta de nuevo');
-      },
-
-      });
+  registrarUsuario(register: Register): Observable<void> {
+    return this.authApiService.register(Register.toJson(register)).pipe(
+      map(() => undefined)
+    );
   }
-
 }

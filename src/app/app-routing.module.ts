@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardLayoutComponent } from './layout/dashboard-layout/dashboard-layout.component';
+import { AuthGuard } from './core/security/auth.guard'; 
+import { CargoGuard } from './core/security/cargo.guard';
 
 const routes: Routes = [
   {
@@ -9,13 +11,19 @@ const routes: Routes = [
       import('./pages/auth/auth.module').then((m) => m.AuthModule),
   },
   {
+    path: '',
+    redirectTo: '/auth/login',
+    pathMatch: 'full',
+  },
+  {
     path: 'home',
-    loadChildren: () =>
-      import('./pages/home/home.module').then((m) => m.HomeComponentModule),
+    redirectTo: '/dashboard',
+    pathMatch: 'full',
   },
   {
     path: '',
     component: DashboardLayoutComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'dashboard',
@@ -26,6 +34,8 @@ const routes: Routes = [
       },
       {
         path: 'almacen',
+        canActivate: [CargoGuard],
+        data: { seccion: 'Almacen' },
         loadChildren: () =>
           import('./pages/almacen/almacen.module').then(
             (m) => m.AlmacenModule
@@ -33,6 +43,8 @@ const routes: Routes = [
       },
       {
         path: 'ingresos',
+        canActivate: [CargoGuard],
+        data: { seccion: 'Ingresos' },
         loadChildren: () =>
           import('./pages/ingresos/ingresos.module').then(
             (m) => m.IngresosModule
@@ -40,6 +52,8 @@ const routes: Routes = [
       },
       {
         path: 'egresos',
+        canActivate: [CargoGuard],
+        data: { seccion: 'Egresos' },
         loadChildren: () =>
           import('./pages/egresos/egresos.module').then(
             (m) => m.EgresosModule
@@ -47,6 +61,8 @@ const routes: Routes = [
       },
       {
         path: 'orden-de-compra',
+        canActivate: [CargoGuard],
+        data: { seccion: 'OrdenDeCompra' },
         loadChildren: () =>
           import('./pages/orden-de-compra/orden-de-compra.module').then(
             (m) => m.OrdenDeCompraModule
@@ -54,6 +70,8 @@ const routes: Routes = [
       },
       {
         path: 'productos',
+        canActivate: [CargoGuard],
+        data: { seccion: 'Productos' },
         loadChildren: () =>
           import('./pages/productos/productos.module').then(
             (m) => m.ProductosModule
@@ -61,20 +79,17 @@ const routes: Routes = [
       },
       {
         path: 'proveedores',
+        canActivate: [CargoGuard],
+        data: { seccion: 'Proveedores' },
         loadChildren: () =>
           import('./pages/proveedores/proveedores.module').then(
             (m) => m.ProveedoresModule
           ),
       },
       {
-        path: 'orden-de-compra',
-        loadChildren: () =>
-          import('./pages/orden-de-compra/orden-de-compra.module').then(
-            (m) => m.OrdenDeCompraModule
-          ),
-      },
-      {
         path: 'ajustes-globales',
+        canActivate: [CargoGuard],
+        data: { seccion: 'AjustesGlobales' },
         loadChildren: () =>
           import('./pages/ajustes-globales/ajustes-globales.module').then(
             (m) => m.AjustesGlobalesModule

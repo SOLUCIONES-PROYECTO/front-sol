@@ -18,7 +18,7 @@ export class ProveedoresFormComponent implements OnInit {
   modoVista = false;
   idProveedor: number | null = null;
 
-  // — Chips de etiquetas —
+  // Etiquetas 
   etiquetasArray: string[] = [];
   nuevaEtiqueta = '';
 
@@ -26,6 +26,25 @@ export class ProveedoresFormComponent implements OnInit {
   busquedaDireccion = '';
   sugerencias: any[] = [];
   buscandoDireccion = false;
+  showAlertModal = false;
+  alertTitle = '';
+  alertMessage = '';
+  alertType: 'error' | 'success' = 'error';
+  errorTexto: Record<string, boolean> = {
+    descripcion: false,
+    ruc: false,
+    codigoUbigeo: false,
+    direccion: false,
+    departamento: false,
+    ciudad: false,
+    distrito: false,
+    codigoPostal: false,
+    referenciaUbicacion: false,
+    telefonoEmpresa: false,
+    telefonoFijoEmpresa: false,
+    celularSectorista: false,
+    telefonoFijoSectorista: false,
+  };
   private debounceTimer: any;
 
   constructor(
@@ -33,7 +52,7 @@ export class ProveedoresFormComponent implements OnInit {
     private route: ActivatedRoute,
     private proveedorService: ProveedorService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
 
@@ -59,7 +78,6 @@ export class ProveedoresFormComponent implements OnInit {
     this.proveedorService.obtenerProveedor(id).subscribe({
       next: (data) => {
         this.proveedor = data;
-        this.busquedaDireccion = data.direccion;
 
         // Reconstruir chips desde el string guardado
         this.etiquetasArray = data.etiquetas
@@ -70,6 +88,26 @@ export class ProveedoresFormComponent implements OnInit {
       },
       error: (err) => console.error(err)
     });
+  }
+
+  aplicarTexto(event: Event, campo: string, maxLength: number): void {
+    const input = event.target as HTMLInputElement;
+    const valorOriginal = input.value;
+    const excede = valorOriginal.length > maxLength;
+    const valor = valorOriginal.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s.,#/-]/g, '').slice(0, maxLength);
+    input.value = valor;
+    (this.proveedor as Record<string, any>)[campo] = valor;
+    this.errorTexto[campo] = excede;
+  }
+
+  aplicarNumeros(event: Event, campo: string, maxLength: number): void {
+    const input = event.target as HTMLInputElement;
+    const valorOriginal = input.value;
+    const excede = valorOriginal.length > maxLength;
+    const valor = valorOriginal.replace(/\D/g, '').slice(0, maxLength);
+    input.value = valor;
+    (this.proveedor as Record<string, any>)[campo] = valor;
+    this.errorTexto[campo] = excede;
   }
 
   // — OSM: buscar dirección con debounce —
@@ -154,22 +192,73 @@ export class ProveedoresFormComponent implements OnInit {
     this.proveedor.etiquetas = this.etiquetasArray.join(',');
   }
 
+  private validarCamposObligatorios(): string[] {
+    const errores: string[] = [];
+
+    if (!this.proveedor.descripcion?.trim()) errores.push('Nombre de la empresa');
+    if (!this.proveedor.ruc?.trim()) errores.push('RUC');
+    if (!this.proveedor.codigoUbigeo?.trim()) errores.push('Código de ubigeo');
+    if (!this.proveedor.direccion?.trim()) errores.push('Dirección');
+    if (!this.proveedor.departamento?.trim()) errores.push('Departamento');
+    if (!this.proveedor.ciudad?.trim()) errores.push('Ciudad');
+    if (!this.proveedor.distrito?.trim()) errores.push('Distrito');
+    if (!this.proveedor.codigoPostal?.trim()) errores.push('Código postal');
+    if (!this.proveedor.correoEmpresa?.trim()) errores.push('Correo de la empresa');
+    if (!this.proveedor.telefonoEmpresa?.trim()) errores.push('Teléfono de la empresa');
+    if (!this.proveedor.nombreSectorista?.trim()) errores.push('Nombre del sectorista');
+    if (!this.proveedor.correoSectorista?.trim()) errores.push('Correo del sectorista');
+    if (!this.proveedor.celularSectorista?.trim()) errores.push('Celular del sectorista');
+
+    return errores;
+  }
+
+  private mostrarAlerta(title: string, message: string, type: 'error' | 'success'): void {
+    this.alertTitle = title;
+    this.alertMessage = message;
+    this.alertType = type;
+    this.showAlertModal = true;
+    this.cdr.detectChanges();
+  }
+
+  onCerrarAlerta(): void {
+    this.showAlertModal = false;
+    this.cdr.detectChanges();
+
+    if (this.alertType === 'success') {
+      this.router.navigate(['/proveedores']);
+    }
+  }
+
   // — Navegación —
   Regresar(): void {
     this.router.navigate(['/proveedores']);
   }
 
   guardar(): void {
+    const errores = this.validarCamposObligatorios();
+
+    if (errores.length > 0) {
+      this.mostrarAlerta(
+        'Faltan datos por completar',
+        'Por favor revisa los siguientes campos:\n• ' + errores.join('\n• '),
+        'error'
+      );
+      return;
+    }
+
     const peticion = this.modoEdicion
       ? this.proveedorService.actualizarProveedor(this.idProveedor!, this.proveedor)
       : this.proveedorService.crearProveedor(this.proveedor);
 
     peticion.subscribe({
       next: () => {
-        alert(this.modoEdicion ? 'Proveedor actualizado' : 'Proveedor registrado');
-        this.router.navigate(['/proveedores']);
+        this.mostrarAlerta(this.modoEdicion ? 'Proveedor actualizado' : 'Proveedor registrado', 'Los cambios se guardaron correctamente.', 'success');
       },
-      error: (err) => console.error(err)
+      error: (err) => {
+        console.error(err);
+        const mensaje = err?.error?.mensaje ?? 'No se pudo guardar el proveedor. Inténtalo de nuevo.';
+        this.mostrarAlerta('Ocurrió un error', mensaje, 'error');
+      }
     });
   }
 }

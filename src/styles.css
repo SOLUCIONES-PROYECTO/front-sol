@@ -58,4 +58,16 @@
 
   --color-badge-inactivo-bg: #FEE2E2;
   --color-badge-inactivo-text: #B91C1C;
+
+  --color-badge-noaplica-bg: #E4E4E7;
+  --color-badge-noaplica-text: #3F3F46;
+
+  --color-badge-buena-bg: #D4EDDA;
+  --color-badge-buena-text: #276749;
+
+  --color-badge-regular-bg: #FEF3C7;
+  --color-badge-regular-text: #92400E;
+
+  --color-badge-mala-bg: #FEE2E2;
+  --color-badge-mala-text: #B91C1C;
 }

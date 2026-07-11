@@ -20,14 +20,18 @@
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-500">DNI <span class="text-red-500">*</span></label>
-          <input type="text" [(ngModel)]="persona.dni" maxlength="8" [disabled]="modoVista"
+          <input type="text" [(ngModel)]="persona.dni" maxlength="8" inputmode="numeric" [disabled]="modoVista"
+            (input)="soloNumeros($event, 'dni', 8)"
             class="w-full bg-white border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+          <p class="text-xs text-red-500" *ngIf="errorDni">Solo se permiten 8 dígitos.</p>
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-500">Teléfono <span class="text-red-500">*</span></label>
-          <input type="text" [(ngModel)]="persona.telefono" maxlength="9" [disabled]="modoVista"
+          <input type="text" [(ngModel)]="persona.telefono" maxlength="9" inputmode="numeric" [disabled]="modoVista"
+            (input)="soloNumeros($event, 'telefono', 9)"
             class="w-full bg-white border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+          <p class="text-xs text-red-500" *ngIf="errorTelefono">Solo se permiten 9 dígitos.</p>
         </div>
 
         <div class="col-span-2 flex flex-col gap-1.5">
@@ -106,6 +110,45 @@
           class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg text-gray-500" />
       </div>
 
+      <div *ngIf="modoEdicion" class="mt-6 pt-6 border-t border-gray-100">
+        <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Cambiar contraseña</h3>
+        <div class="space-y-4">
+
+          <div class="flex flex-col gap-1.5">
+            <label class="text-sm font-medium text-gray-500">Nueva contraseña</label>
+            <div class="relative">
+              <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="nuevaContrasena" placeholder="Mínimo 8 caracteres"
+                class="w-full bg-white border border-gray-200 p-2.5 rounded-lg pr-10" />
+              <button type="button" (click)="togglePassword()"
+                class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                <lucide-icon [name]="showPassword ? 'eye-off' : 'eye'" class="w-4 h-4"></lucide-icon>
+              </button>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-1.5">
+            <label class="text-sm font-medium text-gray-500">Confirmar contraseña</label>
+            <div class="relative">
+              <input [type]="showConfirmPassword ? 'text' : 'password'" [(ngModel)]="confirmarContrasena"
+                class="w-full bg-white border border-gray-200 p-2.5 rounded-lg pr-10" />
+              <button type="button" (click)="toggleConfirmPassword()"
+                class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                <lucide-icon [name]="showConfirmPassword ? 'eye-off' : 'eye'" class="w-4 h-4"></lucide-icon>
+              </button>
+            </div>
+            <span *ngIf="contrasenasNoCoinciden" class="text-xs text-red-500">
+              Las contraseñas no coinciden
+            </span>
+          </div>
+
+          <button (click)="cambiarContrasena()"
+            class="w-full bg-[#531E1E] text-white py-2.5 rounded-lg text-sm font-medium hover:opacity-90 transition">
+            Actualizar contraseña
+          </button>
+
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -117,7 +160,8 @@
     </button>
     <button *ngIf="!modoVista" (click)="guardar()" [disabled]="guardando"
       class="px-8 py-2.5 rounded-lg bg-[#531E1E] text-white font-medium hover:opacity-95 transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-      <svg *ngIf="guardando" class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <svg *ngIf="guardando" class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
       </svg>

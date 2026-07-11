@@ -1,0 +1,71 @@
+<div class="bg-[#F5F5F7] min-h-screen p-6">
+
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold text-[#1F090A]">Dashboard de Ventas</h1>
+    <p class="text-gray-400 text-sm mt-1">Productos más vendidos, tendencias y disponibilidad</p>
+  </div>
+
+  <div *ngIf="cargando" class="text-center text-gray-400 py-20">
+    Cargando datos del dashboard...
+  </div>
+
+  <ng-container *ngIf="!cargando">
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+
+      <!-- Gráfico top productos -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <h3 class="text-base font-bold text-[#1F090A] mb-4">Productos más vendidos (últimos 90 días)</h3>
+        <div class="h-72">
+          <canvas baseChart
+            [data]="barChartData"
+            [options]="barChartOptions"
+            type="bar">
+          </canvas>
+        </div>
+      </div>
+
+      <!-- Tendencias -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <h3 class="text-sm font-bold text-[#1F090A] mb-4">Tendencia de productos</h3>
+        <div *ngIf="tendenciasProductos.length === 0" class="text-sm text-gray-400 italic">
+          Sin datos suficientes este mes.
+        </div>
+        <div class="max-h-72 overflow-y-auto">
+          <div *ngFor="let t of tendenciasProductos" class="flex justify-between items-center py-2 border-b border-gray-50 last:border-0">
+            <span class="text-sm text-gray-700">{{ t.nombreProducto }}</span>
+            <span class="text-xs font-semibold"
+              [ngClass]="{
+                'text-green-600': t.tendencia === 'Alza',
+                'text-red-500': t.tendencia === 'Baja',
+                'text-gray-400': t.tendencia === 'Estable'
+              }">
+              {{ t.tendencia === 'Alza' ? '↑' : t.tendencia === 'Baja' ? '↓' : '→' }} {{ t.tendencia }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Productos disponibles -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+      <h3 class="text-base font-bold text-[#1F090A] mb-4">Productos disponibles</h3>
+
+      <div *ngIf="productosDisponibles.length === 0" class="text-sm text-gray-400 italic">
+        No hay productos disponibles.
+      </div>
+
+      <div *ngIf="productosDisponibles.length > 0" class="max-h-96 overflow-y-auto">
+        <div *ngFor="let p of productosDisponibles" class="flex justify-between items-center py-2 border-b border-gray-50 last:border-0">
+          <span class="text-sm text-gray-700">{{ p.nombre }}</span>
+          <span class="text-xs font-semibold px-2 py-1 rounded-full bg-badge-disponible-bg text-badge-disponible-text">
+            Stock: {{ p.stockActual }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+
+</div>

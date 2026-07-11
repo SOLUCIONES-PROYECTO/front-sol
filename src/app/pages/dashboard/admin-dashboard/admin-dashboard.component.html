@@ -1,0 +1,186 @@
+<div class="bg-[#F5F5F7] min-h-screen p-6">
+
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold text-[#1F090A]">Dashboard Administrativo</h1>
+    <p class="text-gray-400 text-sm mt-1">Resumen financiero, stock y alertas del negocio</p>
+  </div>
+
+  <div *ngIf="cargando" class="text-center text-gray-400 py-20">
+    Cargando datos del dashboard...
+  </div>
+
+  <ng-container *ngIf="!cargando">
+
+    <!-- Tarjetas KPI -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <p class="text-sm text-gray-400 mb-1">Ingresos Totales</p>
+        <p class="text-2xl font-bold text-[#1F090A]">{{ formatearMoneda(resumen.ingresosTotales) }}</p>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <p class="text-sm text-gray-400 mb-1">Total de Gastos Compras</p>
+        <p class="text-2xl font-bold text-[#1F090A]">{{ formatearMoneda(resumen.comprasTotales) }}</p>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <p class="text-sm text-gray-400 mb-1">Ganancia Total</p>
+        <p class="text-2xl font-bold"
+          [ngClass]="resumen.gananciaTotal >= 0 ? 'text-green-600' : 'text-red-500'">
+          {{ formatearMoneda(resumen.gananciaTotal) }}
+        </p>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <p class="text-sm text-gray-400 mb-1">Cantidad de Ventas</p>
+        <p class="text-2xl font-bold text-[#1F090A]">{{ resumen.cantidadVentas }}</p>
+      </div>
+
+    </div>
+
+    <!-- Valor en riesgo -->
+    <div class="mb-6 rounded-xl border border-gray-100 bg-white p-5 shadow-sm">
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div class="space-y-2">
+          <div class="inline-flex items-center gap-2 rounded-full bg-primary-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-600">
+            <lucide-icon name="triangle-alert" class="w-4 h-4"></lucide-icon>
+            Monitoreo de caducidad
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-[#1F090A]">Valor en riesgo por vencimiento</h3>
+            <p class="text-sm text-gray-500">Resumen del valor expuesto según el tiempo restante hasta el vencimiento.</p>
+          </div>
+        </div>
+
+        <div class="rounded-xl border border-primary-200 bg-primary-50 px-4 py-3">
+          <p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-500">Valor total</p>
+          <p class="text-2xl font-bold text-primary-600">{{ formatearMoneda(valorEnRiesgo.valorTotalEnRiesgo) }}</p>
+        </div>
+      </div>
+
+      <div class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div class="rounded-lg border border-gray-100 bg-[#F7F2F2] p-4">
+          <p class="text-sm font-semibold text-primary-600">Vencido</p>
+          <p class="mt-2 text-xl font-bold text-primary-700">{{ formatearMoneda(valorEnRiesgo.valorVencidos) }}</p>
+        </div>
+
+        <div class="rounded-lg border border-gray-100 bg-[#F7F2F2] p-4">
+          <p class="text-sm font-semibold text-primary-600">Urgente (≤7d)</p>
+          <p class="mt-2 text-xl font-bold text-primary-700">{{ formatearMoneda(valorEnRiesgo.valorUrgente) }}</p>
+        </div>
+
+        <div class="rounded-lg border border-gray-100 bg-[#F7F2F2] p-4">
+          <p class="text-sm font-semibold text-primary-600">Próximo (≤15d)</p>
+          <p class="mt-2 text-xl font-bold text-primary-700">{{ formatearMoneda(valorEnRiesgo.valorProximo) }}</p>
+        </div>
+
+        <div class="rounded-lg border border-gray-100 bg-[#F7F2F2] p-4">
+          <p class="text-sm font-semibold text-primary-600">Advertencia (≤30d)</p>
+          <p class="mt-2 text-xl font-bold text-primary-700">{{ formatearMoneda(valorEnRiesgo.valorAdvertencia) }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vencimientos -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-6">
+      <h3 class="text-base font-bold text-[#1F090A] mb-4">Productos por vencer (FEFO)</h3>
+
+      <div *ngIf="vencimientos.length === 0" class="text-sm text-gray-400 italic">
+        No hay productos próximos a vencer.
+      </div>
+
+      <div *ngIf="vencimientos.length > 0" class="max-h-80 overflow-y-auto">
+        <div *ngFor="let v of vencimientos"
+          class="flex items-center justify-between py-3 border-b border-gray-50 last:border-0">
+          <div>
+            <p class="text-sm font-medium text-[#1F090A]">{{ v.nombreProducto }}</p>
+            <p class="text-xs text-gray-400">{{ v.categoria }} · Stock: {{ v.stockActual }} · Vence: {{ formatearFecha(v.fechaVencimiento) }}</p>
+          </div>
+          <span class="text-xs font-semibold px-2 py-1 rounded-full" [ngClass]="getUrgenciaBadgeClass(v.urgencia)">
+            {{ getUrgenciaLabel(v.urgencia) }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <h3 class="text-base font-bold text-[#1F090A] mb-4">Tendencia mensual</h3>
+        <div class="h-72">
+          <canvas baseChart
+            [data]="lineChartData"
+            [options]="lineChartOptions"
+            type="line">
+          </canvas>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <h3 class="text-base font-bold text-[#1F090A] mb-4">Productos más vendidos (últimos 90 días)</h3>
+        <div class="h-72">
+          <canvas baseChart
+            [data]="barChartData"
+            [options]="barChartOptions"
+            type="bar">
+          </canvas>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Alertas e insights -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
+
+      <!-- Stock bajo -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <h3 class="text-sm font-bold text-[#1F090A] mb-4 flex items-center gap-2">
+          <lucide-icon name="trash" class="w-4 h-4 text-red-500"></lucide-icon>
+          Stock bajo
+        </h3>
+        <div *ngIf="productosStockBajo.length === 0" class="text-sm text-gray-400 italic">
+          Ningún producto con stock bajo por ahora.
+        </div>
+        <div *ngFor="let p of productosStockBajo" class="flex justify-between items-center py-2 border-b border-gray-50 last:border-0">
+          <span class="text-sm text-gray-700">{{ p.nombreProducto }}</span>
+          <span class="text-xs font-semibold text-red-500">{{ p.stockActual }} / {{ p.stockMinimo }}</span>
+        </div>
+      </div>
+
+      <!-- No volver a comprar -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <h3 class="text-sm font-bold text-[#1F090A] mb-4">No volver a comprar</h3>
+        <div *ngIf="productosNoComprar.length === 0" class="text-sm text-gray-400 italic">
+          No hay productos sin movimiento.
+        </div>
+        <div *ngFor="let p of productosNoComprar" class="flex justify-between items-center py-2 border-b border-gray-50 last:border-0">
+          <span class="text-sm text-gray-700">{{ p.nombreProducto }}</span>
+          <span class="text-xs text-gray-400">Stock: {{ p.stockActual }}</span>
+        </div>
+      </div>
+
+      <!-- Tendencias -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <h3 class="text-sm font-bold text-[#1F090A] mb-4">Tendencia de productos</h3>
+        <div *ngIf="tendenciasProductos.length === 0" class="text-sm text-gray-400 italic">
+          Sin datos suficientes este mes.
+        </div>
+        <div *ngFor="let t of tendenciasProductos" class="flex justify-between items-center py-2 border-b border-gray-50 last:border-0">
+          <span class="text-sm text-gray-700">{{ t.nombreProducto }}</span>
+          <span class="text-xs font-semibold"
+            [ngClass]="{
+              'text-green-600': t.tendencia === 'Alza',
+              'text-red-500': t.tendencia === 'Baja',
+              'text-gray-400': t.tendencia === 'Estable'
+            }">
+            {{ t.tendencia === 'Alza' ? '↑' : t.tendencia === 'Baja' ? '↓' : '→' }} {{ t.tendencia }}
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </ng-container>
+
+</div>

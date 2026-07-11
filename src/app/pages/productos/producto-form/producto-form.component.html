@@ -8,8 +8,11 @@
 
         <div class="flex flex-col gap-2">
           <label class="text-sm font-medium text-gray-700">Nombre del Producto</label>
-          <input type="text" [(ngModel)]="producto.descripcion" [disabled]="modoVista"
+          <input type="text" [(ngModel)]="producto.nombre" maxlength="80" [disabled]="modoVista" (input)="aplicarTexto($event, 'nombre', 80)"
             class="w-full bg-[#F3F4F9] border-none p-3 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+          @if(errorNombreProducto) {
+            <p class="text-xs text-red-500">Se excedió el máximo de 80 caracteres.</p>
+          }
         </div>
 
         <div class="flex flex-col gap-2">
@@ -39,8 +42,11 @@
           <h3 class="text-xl font-bold mb-5">Información del producto</h3>
           <div class="flex flex-col gap-2">
             <label class="text-sm font-medium text-gray-700">Stock mínimo</label>
-            <input type="number" [(ngModel)]="producto.stockMinimo" [disabled]="modoVista"
+            <input type="text" inputmode="numeric" maxlength="6" [(ngModel)]="producto.stockMinimo" [disabled]="modoVista" (input)="aplicarNumeros($event, 'stockMinimo', 6)"
               class="w-full bg-white border border-gray-200 p-3 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+            @if(errorStockMinimo) {
+              <p class="text-xs text-red-500">Solo se permiten 6 dígitos.</p>
+            }
           </div>
           <div class="flex flex-col gap-2 mt-4">
             <label class="text-sm font-medium text-gray-700">Proveedor</label>
@@ -93,15 +99,21 @@
     <div class="grid grid-cols-2 gap-4">
       <div class="flex flex-col gap-2">
         <label class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Precio Compra</label>
-        <input type="number" [(ngModel)]="producto.precioCompra" [disabled]="modoVista"
-          (ngModelChange)="recalcularPrecios()"
+        <input type="text" inputmode="decimal" maxlength="10" [(ngModel)]="producto.precioCompra" [disabled]="modoVista"
+          (input)="aplicarNumeros($event, 'precioCompra', 10, true); recalcularPrecios()"
           class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+        @if(errorPrecioCompra) {
+          <p class="text-xs text-red-500">Se excedió el máximo permitido.</p>
+        }
       </div>
       <div class="flex flex-col gap-2">
         <label class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Precio Venta</label>
-        <input type="number" [(ngModel)]="producto.precioVenta" [disabled]="modoVista"
-          (ngModelChange)="recalcularPrecios()"
+        <input type="text" inputmode="decimal" maxlength="10" [(ngModel)]="producto.precioVenta" [disabled]="modoVista"
+          (input)="aplicarNumeros($event, 'precioVenta', 10, true); recalcularPrecios()"
           class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+        @if(errorPrecioVenta) {
+          <p class="text-xs text-red-500">Se excedió el máximo permitido.</p>
+        }
       </div>
       <div class="flex flex-col gap-2">
         <label class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Margen</label>
@@ -128,3 +140,7 @@
   </div>
 
 </app-form-layout>
+
+<app-alert-modal [visible]="showAlertModal" [title]="alertTitle" [message]="alertMessage" [type]="alertType"
+  (close)="onCerrarAlerta()">
+</app-alert-modal>

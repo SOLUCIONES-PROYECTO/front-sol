@@ -79,7 +79,10 @@
               <td class="px-4 py-4 text-gray-500">{{ d.cantidad }}</td>
               <td class="px-4 py-4 text-gray-500">{{ d.precioUnitario | currency:'S/.':'symbol-narrow':'1.2-2' }}</td>
               <td class="px-4 py-4 text-gray-500">{{ d.subtotal | currency:'S/.':'symbol-narrow':'1.2-2' }}</td>
-              <td class="px-4 py-4" *ngIf="!soloLecturaDetalle">
+              <td class="px-4 py-4 flex items-center gap-2" *ngIf="!soloLecturaDetalle">
+                <button (click)="editarDetalle(i)" class="text-blue-500 hover:text-blue-700 transition">
+                  <lucide-icon name="pencil" class="w-4 h-4"></lucide-icon>
+                </button>
                 <button (click)="eliminarDetalle(i)" class="text-red-400 hover:text-red-600 transition">
                   <lucide-icon name="trash" class="w-4 h-4"></lucide-icon>
                 </button>
@@ -182,6 +185,10 @@
     </button>
   </div>
 </app-form-layout>
+
+<app-alert-modal [visible]="showAlertModal" [title]="alertTitle" [message]="alertMessage" [type]="alertType"
+  (close)="onCerrarAlerta()">
+</app-alert-modal>
 
 <app-modal-form [visible]="showModalProducto" title="Agregar Producto al Ingreso" confirmText="Agregar"
   cancelText="Cancelar" [confirmDisabled]="nuevoDetalleInvalido" (confirm)="agregarDetalle()"

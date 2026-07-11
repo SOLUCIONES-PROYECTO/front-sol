@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { LoginFormPresenter } from './login-form.presenter';
 import { LoginFacade } from '../../../shared/patterns/facade/models/login-facade';
 
@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
   constructor(
     public loginFormPresenter: LoginFormPresenter,
     private loginFacade: LoginFacade,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -46,24 +47,26 @@ export class LoginComponent implements OnInit {
 
     this.isLoading = true;
 
-    // Adapta según lo que devuelva tu facade (Observable, Promise, etc.)
-    try {
-      this.loginFacade.iniciarSesion(this.loginFormPresenter.Value);
-
-      // Si el facade es síncrono o maneja la navegación internamente,
-      // muestra el éxito brevemente antes de que Angular redirija.
-      this.notification = {
-        type: 'success',
-        message: '¡Sesión iniciada correctamente! Redirigiendo...',
-      };
-    } catch (error: any) {
-      this.notification = {
-        type: 'error',
-        message: error?.message ?? 'Credenciales incorrectas. Verifica tu usuario y contraseña.',
-      };
-    } finally {
-      this.isLoading = false;
-    }
-  }
+    this.loginFacade.iniciarSesion(
+      this.loginFormPresenter.Value,
+      () => {
+        // Éxito: se ejecuta solo si el login realmente funcionó
+        this.notification = {
+          type: 'success',
+          message: '¡Sesión iniciada correctamente! Redirigiendo...',
+        };
+        this.isLoading = false;
+      },
+      (mensaje: string) => {
+        console.log('LoginComponent recibió el error:', mensaje); // ← temporal
+        this.notification = {
+          type: 'error',
+          message: mensaje,
+        };
+        this.isLoading = false;
+        this.cdr.detectChanges(); // Forzar la detección de cambios
+      }
+    );
+}
 
 }

@@ -139,21 +139,21 @@ verEgreso(item: any): void {
 }
 
 eliminarEgresos(items: any[]): void {
-    const peticiones = items.map(item =>
-      this.egresosService.eliminarEgreso(item.id)
-    );
+  const peticiones = items.map(item =>
+    this.egresosService.eliminarEgreso(item.id)  // 👈 item.id, no item.documento
+  );
 
-    forkJoin(peticiones).subscribe({
-      next: () => {
-        this.cargarEgresos();
-      },
-      error: (err) => {
-        const mensaje = err.error?.mensaje || 'No se pudo eliminar el egreso';
-        alert(mensaje);
-        console.error('Error al eliminar', err);
-      }
-    });
+  forkJoin(peticiones).subscribe({
+    next: () => {
+      this.cargarEgresos();
+    },
+    error: (err) => {
+      const mensaje = err.error?.mensaje || 'No se pudo eliminar el egreso';
+      alert(mensaje);
+      console.error('Error al eliminar', err);
+    }
+  });
 }
 
-  puedeEliminar = (item: any): boolean => true; // siempre permite intentar; el backend decide
+puedeEliminar = (item: any): boolean => true;
 }

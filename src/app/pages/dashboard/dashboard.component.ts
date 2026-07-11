@@ -1,6 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { forkJoin } from 'rxjs';
 import { ChartConfiguration, ChartData } from 'chart.js';
+import {Router} from '@angular/router';
+import { AuthService } from '../../core/services/auth/auth.service';
 
 import { DashboardService } from '../../core/services/dashboard/dashboard.service';
 import { ResumenDashboard } from '../../core/class/models/dashboard/resumendashboard';
@@ -54,11 +56,35 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private dashboardService: DashboardService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.cargarDashboard();
+    const cargo = this.authService.getCargo();
+    this.redirigirSegunCargo(cargo);
+  }
+
+  private redirigirSegunCargo(cargo: string | null): void {
+    switch (cargo) {
+      case 'Administrador':
+        this.router.navigate(['/dashboard/admin']);
+        break;
+      case 'Jefe de Compras':
+        this.router.navigate(['/dashboard/jefe-compras']);
+        break;
+      case 'Almacenero':
+        this.router.navigate(['/dashboard/almacenero']);
+        break;
+      case 'Vendedor':
+        this.router.navigate(['/dashboard/vendedor']);
+        break;
+      default:
+        this.router.navigate(['/dashboard/admin']); // fallback seguro
+        break;
+    }
   }
 
   cargarDashboard(): void {

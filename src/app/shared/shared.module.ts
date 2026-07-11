@@ -44,7 +44,8 @@ import { AlertModalComponent } from './components/alert-modal/alert-modal.compon
     FilterPanelComponent,
     ConfirmModalComponent,
     ModalFormComponent,
-    AlertModalComponent
+    AlertModalComponent,
+    LucideAngularModule
   ]
 })
 export class SharedModule {}

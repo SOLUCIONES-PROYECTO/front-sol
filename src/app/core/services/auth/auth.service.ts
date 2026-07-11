@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { AuthApiService } from '../../../pages/auth/services/auth-api.service';
 import { LoginResponse } from '../../../core/class/auth/login.response';
 
+const SESSION_STORAGE_KEYS = ['token', 'usuarioSistema', 'cargo'];
+
 @Injectable({
   providedIn: 'root',
 })
@@ -16,23 +18,33 @@ export class AuthService {
     private router: Router,
     private authApiService: AuthApiService,
   ) {
-    const token = localStorage.getItem('token');
+    this.restoreSession();
+    window.addEventListener('storage', () => this.restoreSession());
+    window.addEventListener('beforeunload', () => this.clearSessionForTabClose());
+  }
+
+  private restoreSession(): void {
+    const token = sessionStorage.getItem('token');
     if (token) {
       this.loggedInSubject.next(true);
+    } else {
+      this.loggedInSubject.next(false);
     }
   }
 
+  private clearSessionForTabClose(): void {
+    SESSION_STORAGE_KEYS.forEach((key) => sessionStorage.removeItem(key));
+  }
+
   login(response: LoginResponse): void {
-    localStorage.setItem('token', response.token);
-    localStorage.setItem('usuarioSistema', response.usuarioSistema);
-    localStorage.setItem('rol', response.rol);
+    sessionStorage.setItem('token', response.token);
+    sessionStorage.setItem('usuarioSistema', response.usuarioSistema);
+    sessionStorage.setItem('cargo', response.cargo);
     this.loggedInSubject.next(true);
   }
 
   logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('usuarioSistema');
-    localStorage.removeItem('rol');
+    this.clearSession();
     this.loggedInSubject.next(false);
 
     this.authApiService.logout().subscribe({
@@ -41,8 +53,16 @@ export class AuthService {
     });
   }
 
+  private clearSession(): void {
+    SESSION_STORAGE_KEYS.forEach((key) => sessionStorage.removeItem(key));
+  }
+
+  getCargo(): string | null {
+    return sessionStorage.getItem('cargo');
+  }
+
   getToken(): string | null {
-    return localStorage.getItem('token');
+    return sessionStorage.getItem('token');
   }
 
   isLoggedIn(): boolean {
@@ -50,14 +70,10 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return !!localStorage.getItem('token');
+    return !!sessionStorage.getItem('token');
   }
 
   getUsuarioSistema(): string {
-    return localStorage.getItem('usuarioSistema') || '';
-  }
-
-  getRol(): string {
-    return localStorage.getItem('rol') || '';
+    return sessionStorage.getItem('usuarioSistema') || '';
   }
 }

@@ -44,6 +44,8 @@ export class EgresosFormComponent implements OnInit {
   empleados: Empleado[] = [];
   empleadoLogueado: Empleado | undefined;
 
+  // Tipos excluidos por ahora (Devolución pendiente de Fase futura)
+  tiposPermitidos = ['Venta', 'Merma', 'Uso interno']; // 'Devolución' se mantiene para futuras fases, pero no se permite crear actualmente
 
   // — Detalle en memoria —
   detalles: any[] = [];
@@ -137,6 +139,10 @@ export class EgresosFormComponent implements OnInit {
 
         if (!this.modoEdicion && !this.modoVista && this.empleadoLogueado) {
           this.docSalida.idEmpleado = this.empleadoLogueado.idEmpleado;
+        }
+
+        if (!this.modoEdicion && !this.modoVista) {
+          this.docSalida.fechaEgreso = this.obtenerFechaActual();
         }
 
         this.cdr.detectChanges();
@@ -352,10 +358,34 @@ export class EgresosFormComponent implements OnInit {
     return this.detalles.reduce((sum, d) => sum + d.subtotal, 0);
   }
 
+  private obtenerFechaActual(): string {
+    const fecha = new Date();
+    const year = fecha.getFullYear();
+    const month = `${fecha.getMonth() + 1}`.padStart(2, '0');
+    const day = `${fecha.getDate()}`.padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   private obtenerFechaRegistroActual(): string {
     const ahora = new Date();
     const pad = (n: number) => n.toString().padStart(2, '0');
     return `${ahora.getFullYear()}-${pad(ahora.getMonth() + 1)}-${pad(ahora.getDate())}T${pad(ahora.getHours())}:${pad(ahora.getMinutes())}:${pad(ahora.getSeconds())}`;
+  }
+
+  private validarStockDisponible(): string | null {
+    for (const item of this.detalles) {
+      const producto = this.productosDisponibles.find(p => p.idproducto === item.idProducto);
+      if (!producto) {
+        return 'No se encontró información del producto seleccionado.';
+      }
+
+      if ((producto.stockActual ?? 0) < item.cantidad) {
+        const disponible = producto.stockActual ?? 0;
+        return `Stock insuficiente para ${producto.nombre}. Stock disponible: ${disponible}`;
+      }
+    }
+
+    return null;
   }
 
   guardar(): void {
@@ -378,6 +408,14 @@ export class EgresosFormComponent implements OnInit {
         'error'
       );
       return;
+    }
+
+    if (!this.modoEdicion) {
+      const stockError = this.validarStockDisponible();
+      if (stockError) {
+        this.mostrarAlerta('Stock insuficiente', stockError, 'error');
+        return;
+      }
     }
 
     this.docSalida.totalSalida = this.totalEgresoDetalle;
@@ -448,6 +486,12 @@ export class EgresosFormComponent implements OnInit {
 
         forkJoin(peticiones).subscribe({
           next: () => {
+            this.detalles.forEach(item => {
+              const producto = this.productosDisponibles.find(p => p.idproducto === item.idProducto);
+              if (producto) {
+                producto.stockActual = Math.max(0, (producto.stockActual || 0) - item.cantidad);
+              }
+            });
             this.guardando = false;
             this.mostrarAlerta('Egreso registrado', 'El egreso y sus productos se guardaron correctamente.', 'success');
           },

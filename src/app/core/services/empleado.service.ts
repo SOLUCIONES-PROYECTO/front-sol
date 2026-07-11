@@ -11,7 +11,7 @@ import { Empleado } from '../class/models/empleado';
 })
 export class EmpleadoService {
 
-  private baseUrl =environment.URL_BACKEND + '/api/empleados';
+  private baseUrl = environment.URL_BACKEND + '/api/empleados';
 
 
   constructor(
@@ -85,6 +85,15 @@ export class EmpleadoService {
 
     return this.http.delete<void>(
       `${this.baseUrl}/${id}`
+    );
+
+  }
+
+  cambiarContrasena(id: number, nuevaContrasena: string): Observable<void> {
+
+    return this.http.put<void>(
+      `${this.baseUrl}/${id}/contrasena`,
+      { nuevaContrasena }
     );
 
   }
