@@ -82,12 +82,30 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'clientes',
+        canActivate: [CargoGuard],
+        data: { seccion: 'Clientes' }, // Or whatever section name matches in CargoGuard/Permissions
+        loadChildren: () =>
+          import('./pages/clientes/clientes-module').then(
+            (m) => m.ClientesModule
+          ),
+      },
+      {
         path: 'ajustes-globales',
         canActivate: [CargoGuard],
         data: { seccion: 'AjustesGlobales' },
         loadChildren: () =>
           import('./pages/ajustes-globales/ajustes-globales.module').then(
             (m) => m.AjustesGlobalesModule
+          ),
+      },
+      {
+        path: 'auditoria',
+        canActivate: [CargoGuard],
+        data: { seccion: 'AjustesGlobales' },
+        loadChildren: () =>
+          import('./pages/auditoria/auditoria-module').then(
+            (m) => m.AuditoriaModule
           ),
       },
     ],

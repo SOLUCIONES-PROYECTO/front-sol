@@ -137,7 +137,8 @@
               <label class="block text-sm font-medium text-gray-700">
                 Contraseña <span class="text-red-500">*</span>
               </label>
-              <a href="#" class="text-xs text-primary-500 hover:text-primary-700 transition">
+              <!-- NUEVO: Evento click para abrir el modal -->
+              <a href="#" (click)="openForgotPassword($event)" class="text-xs text-primary-500 hover:text-primary-700 transition">
                 ¿Olvidaste tu contraseña?
               </a>
             </div>
@@ -184,4 +185,64 @@
     </main>
 
   </div>
+
+  <!-- NUEVO: Modal de recuperación de contraseña -->
+  @if(showForgotPasswordModal) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-5">
+            <h3 class="text-xl font-bold text-gray-800">Recuperar contraseña</h3>
+            <button (click)="closeForgotPassword()" class="text-gray-400 hover:text-gray-600 transition p-1">
+              <lucide-icon name="x" class="w-5 h-5"></lucide-icon>
+            </button>
+          </div>
+          
+          <p class="text-sm text-gray-600 mb-5">
+            Ingresa tu correo electrónico asociado a la cuenta. Te enviaremos un enlace para que puedas crear una contraseña nueva.
+          </p>
+          
+          <div class="mb-5">
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+              Correo Electrónico <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <lucide-icon name="mail" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+              <input 
+                type="email" 
+                [value]="forgotPasswordEmail" 
+                (input)="onEmailChange($event)"
+                placeholder="ejemplo@correo.com" 
+                class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+              >
+            </div>
+          </div>
+          
+          <div class="flex gap-3 justify-end mt-6">
+            <button 
+              type="button" 
+              (click)="closeForgotPassword()"
+              class="px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+            >
+              Cancelar
+            </button>
+            <button 
+              type="button" 
+              (click)="requestPasswordReset()"
+              [disabled]="isSendingEmail"
+              class="px-4 py-2.5 text-sm font-medium text-white bg-primary-700 rounded-lg hover:bg-primary-600 transition-colors flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              @if(isSendingEmail) {
+                <lucide-icon name="loader-circle" class="w-4 h-4 animate-spin"></lucide-icon>
+                Enviando...
+              } @else {
+                <lucide-icon name="send" class="w-4 h-4"></lucide-icon>
+                Enviar correo
+              }
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
 </div>

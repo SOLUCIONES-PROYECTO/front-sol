@@ -19,6 +19,7 @@ export class AlmacenFormComponent implements OnInit {
 
   fechaVencimientoMasProxima: Date | null = null;
   lotesDelProducto: DetalleEntrada[] = [];
+  modoVista = true;
 
   constructor(
     private router: Router,
@@ -87,6 +88,26 @@ export class AlmacenFormComponent implements OnInit {
   get estaVencido(): boolean {
     if (!this.fechaVencimientoMasProxima) return false;
     return this.fechaVencimientoMasProxima < new Date();
+  }
+
+  activarEdicion(): void {
+    this.modoVista = false;
+  }
+
+  guardar(): void {
+    if (this.idProducto) {
+      this.productoService.actualizarProducto(this.idProducto, this.producto).subscribe({
+        next: () => {
+          alert('Stock de almacén actualizado correctamente');
+          this.modoVista = true;
+          this.cargarProducto(this.idProducto!);
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Error al actualizar el stock');
+        }
+      });
+    }
   }
 
   Regresar(): void {

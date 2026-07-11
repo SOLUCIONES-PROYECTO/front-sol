@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ResetPassword } from './reset-password/reset-password';
 
 const routes: Routes = [
   {
@@ -10,6 +11,10 @@ const routes: Routes = [
     path:'register',
     loadChildren:()=>import('./register/register.module').then(m=>m.RegisterModule)
   },
+  {
+    path: 'reset-password',
+    component: ResetPassword
+  }
 ];
 
 @NgModule({

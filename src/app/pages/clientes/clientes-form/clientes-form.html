@@ -1,0 +1,198 @@
+<app-form-layout [title]="tituloFormulario" (onBack)="Regresar()">
+
+  <div general class="space-y-6">
+    <!-- Información de Persona -->
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Información Personal</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+        
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Nombre <span class="text-red-500">*</span></label>
+          <div class="relative">
+            <lucide-icon name="user" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="text" [(ngModel)]="persona.nombre" [disabled]="modoVista"
+              placeholder="Nombres"
+              class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-[var(--color-primary-400)] focus:ring-2 focus:ring-[var(--color-primary-100)] disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Apellidos <span class="text-red-500">*</span></label>
+          <div class="relative">
+            <lucide-icon name="users" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="text" [(ngModel)]="persona.apellido" [disabled]="modoVista"
+              placeholder="Apellidos"
+              class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-[var(--color-primary-400)] focus:ring-2 focus:ring-[var(--color-primary-100)] disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">DNI <span class="text-red-500">*</span></label>
+          <div class="relative">
+            <lucide-icon name="credit-card" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="text" [(ngModel)]="persona.dni" [disabled]="modoVista"
+              placeholder="Documento de Identidad" maxlength="8"
+              class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-[var(--color-primary-400)] focus:ring-2 focus:ring-[var(--color-primary-100)] disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Género</label>
+          <div class="relative">
+            <lucide-icon name="user" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <select [(ngModel)]="persona.genero" [disabled]="modoVista"
+              class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all appearance-none focus:border-[var(--color-primary-400)] focus:ring-2 focus:ring-[var(--color-primary-100)] disabled:opacity-60 disabled:cursor-not-allowed bg-white">
+              <option value="M">Masculino</option>
+              <option value="F">Femenino</option>
+              <option value="O">Otro</option>
+            </select>
+            <lucide-icon name="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Información de Contacto -->
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Contacto</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+        
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Teléfono</label>
+          <div class="relative">
+            <lucide-icon name="phone" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="text" [(ngModel)]="persona.telefono" [disabled]="modoVista"
+              placeholder="Número de teléfono"
+              class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-[var(--color-primary-400)] focus:ring-2 focus:ring-[var(--color-primary-100)] disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Correo</label>
+          <div class="relative">
+            <lucide-icon name="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="email" [(ngModel)]="persona.correo" [disabled]="modoVista"
+              placeholder="Correo electrónico"
+              class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-[var(--color-primary-400)] focus:ring-2 focus:ring-[var(--color-primary-100)] disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1.5 md:col-span-2">
+          <label class="text-sm font-medium text-gray-600">Dirección</label>
+          <div class="relative">
+            <lucide-icon name="map-pin" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="text" [(ngModel)]="persona.direccion" [disabled]="modoVista"
+              placeholder="Dirección completa"
+              class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-[var(--color-primary-400)] focus:ring-2 focus:ring-[var(--color-primary-100)] disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Notas -->
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Observaciones</h3>
+      <div class="flex flex-col gap-1.5">
+        <textarea rows="4" [(ngModel)]="cliente.observaciones" [disabled]="modoVista"
+          placeholder="Ingrese una breve descripción u observaciones adicionales sobre el cliente"
+          class="w-full rounded-lg border border-gray-200 p-3 text-sm outline-none transition-all focus:border-[var(--color-primary-400)] focus:ring-2 focus:ring-[var(--color-primary-100)] disabled:opacity-60 disabled:cursor-not-allowed bg-white"></textarea>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <div sidebar class="space-y-6">
+
+    <!-- Configuración Cliente -->
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Configuración del Cliente</h3>
+      <div class="space-y-4">
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Código Cliente</label>
+          <div class="relative">
+            <lucide-icon name="hash" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="text" [(ngModel)]="cliente.codigoCliente" [disabled]="modoVista || modoEdicion"
+              placeholder="Generado automáticamente si se deja vacío"
+              class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-[var(--color-primary-400)] focus:ring-2 focus:ring-[var(--color-primary-100)] disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Tipo de Cliente</label>
+          <div class="relative">
+            <lucide-icon name="user-check" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <select [(ngModel)]="cliente.tipoCliente" [disabled]="modoVista"
+              class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all appearance-none focus:border-[var(--color-primary-400)] focus:ring-2 focus:ring-[var(--color-primary-100)] disabled:opacity-60 disabled:cursor-not-allowed bg-white">
+              <option value="Regular">Regular</option>
+              <option value="Mayorista">Mayorista</option>
+              <option value="Vip">VIP</option>
+            </select>
+            <lucide-icon name="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Categoría</label>
+          <div class="relative">
+            <lucide-icon name="star" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <select [(ngModel)]="cliente.categoriaCliente" [disabled]="modoVista"
+              class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all appearance-none focus:border-[var(--color-primary-400)] focus:ring-2 focus:ring-[var(--color-primary-100)] disabled:opacity-60 disabled:cursor-not-allowed bg-white">
+              <option value="A">Clase A</option>
+              <option value="B">Clase B</option>
+              <option value="C">Clase C</option>
+            </select>
+            <lucide-icon name="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Frecuencia de Compra</label>
+          <div class="relative">
+            <lucide-icon name="activity" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <select [(ngModel)]="cliente.frecuenciaCompra" [disabled]="modoVista"
+              class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all appearance-none focus:border-[var(--color-primary-400)] focus:ring-2 focus:ring-[var(--color-primary-100)] disabled:opacity-60 disabled:cursor-not-allowed bg-white">
+              <option value="Ocasional">Ocasional</option>
+              <option value="Frecuente">Frecuente</option>
+              <option value="Diario">Diario</option>
+            </select>
+            <lucide-icon name="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+          </div>
+        </div>
+        
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Estado</label>
+          <div class="relative">
+            <lucide-icon name="toggle-right" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <select [(ngModel)]="cliente.estado" [disabled]="modoVista"
+              class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all appearance-none focus:border-[var(--color-primary-400)] focus:ring-2 focus:ring-[var(--color-primary-100)] disabled:opacity-60 disabled:cursor-not-allowed bg-white">
+              <option value="Activo">Activo</option>
+              <option value="Inactivo">Inactivo</option>
+            </select>
+            <lucide-icon name="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ACCIONES -->
+  <div actions>
+    <button type="button"
+      class="px-8 py-2.5 rounded-lg border border-gray-300 text-gray-600 font-medium hover:bg-gray-50 transition-colors"
+      (click)="Regresar()">
+      {{ modoVista ? 'Regresar' : 'Cancelar' }}
+    </button>
+    <button *ngIf="!modoVista" type="button"
+      (click)="guardar()"
+      class="px-8 py-2.5 rounded-lg bg-[var(--color-primary-600)] text-white font-medium hover:opacity-95 transition-colors">
+      {{ modoEdicion ? 'Guardar Cambios' : 'Registrar Cliente' }}
+    </button>
+  </div>
+
+</app-form-layout>

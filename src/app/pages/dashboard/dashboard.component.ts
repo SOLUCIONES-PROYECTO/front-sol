@@ -10,6 +10,8 @@ import { ProductoMasVendido } from '../../core/class/models/dashboard/productoma
 import { ProductoSinMovimiento } from '../../core/class/models/dashboard/productosinmovimiento';
 import { TendenciaProducto } from '../../core/class/models/dashboard/tendenciaproducto';
 import { ProductoStockBajo } from '../../core/class/models/dashboard/productostockbajo';
+import { ClienteService } from '../../core/services/cliente.service';
+import { Cliente } from '../../core/class/models/cliente';
 @Component({
   selector: 'app-dashboard',
   standalone: false,
@@ -25,6 +27,8 @@ export class DashboardComponent implements OnInit {
   productosNoComprar: ProductoSinMovimiento[] = [];
   tendenciasProductos: TendenciaProducto[] = [];
   productosStockBajo: ProductoStockBajo[] = [];
+  clientes: Cliente[] = [];
+  ultimosClientes: Cliente[] = [];
 
   cargando = true;
 
@@ -54,6 +58,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private dashboardService: DashboardService,
+    private clienteService: ClienteService,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -65,12 +70,13 @@ export class DashboardComponent implements OnInit {
 
     forkJoin({
       resumen: this.dashboardService.obtenerResumen(),
-  ventas: this.dashboardService.ventasPorMes(6),
-  ganancias: this.dashboardService.gananciaPorMes(6),
-  topProductos: this.dashboardService.productosMasVendidos(5, 90),
-  noComprar: this.dashboardService.noComprar(45),         
-  tendencias: this.dashboardService.tendencias(),       
-  stockBajo: this.dashboardService.stockBajo()      
+      ventas: this.dashboardService.ventasPorMes(6),
+      ganancias: this.dashboardService.gananciaPorMes(6),
+      topProductos: this.dashboardService.productosMasVendidos(5, 90),
+      noComprar: this.dashboardService.noComprar(45),           
+      tendencias: this.dashboardService.tendencias(),       
+      stockBajo: this.dashboardService.stockBajo(),
+      clientes: this.clienteService.listar()
     }).subscribe({
       next: (data) => {
         this.resumen = data.resumen;
@@ -78,9 +84,11 @@ export class DashboardComponent implements OnInit {
         this.gananciaPorMes = data.ganancias;
         this.topProductos = data.topProductos;
         this.topProductos = data.topProductos;
-    this.productosNoComprar = data.noComprar;             
-    this.tendenciasProductos = data.tendencias;          
-    this.productosStockBajo = data.stockBajo;            
+        this.productosNoComprar = data.noComprar;             
+        this.tendenciasProductos = data.tendencias;          
+        this.productosStockBajo = data.stockBajo;
+        this.clientes = data.clientes;
+        this.ultimosClientes = [...this.clientes].reverse().slice(0, 5);
 
         this.construirGraficoLineas();
         this.construirGraficoBarras();
@@ -101,7 +109,7 @@ export class DashboardComponent implements OnInit {
       labels: this.gananciaPorMes.map(g => g.mes),
       datasets: [
         {
-          label: 'Ingresos',
+          label: 'Ingresos (Ventas)',
           data: this.gananciaPorMes.map(g => g.ingresos),
           borderColor: '#A32924',
           backgroundColor: 'rgba(163, 41, 36, 0.1)',
@@ -109,7 +117,7 @@ export class DashboardComponent implements OnInit {
           fill: true
         },
         {
-          label: 'Ganancia',
+          label: 'Ganancia Neta',
           data: this.gananciaPorMes.map(g => g.ganancia),
           borderColor: '#531E1E',
           backgroundColor: 'rgba(83, 30, 30, 0.1)',

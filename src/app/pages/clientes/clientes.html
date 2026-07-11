@@ -1,0 +1,13 @@
+<app-crud-table
+  [title]="'Clientes'"
+  [columns]="columns"
+  [data]="data"
+  [filters]="filters"
+  keyField="id"
+  (searchChange)="buscar($event)"
+  (filterChange)="filtrar($event)"
+  (onAdd)="onAddCliente()"
+  (onEdit)="editarCliente($event)"
+  (onDelete)="eliminarClientes($event)"
+  (onView)="verCliente($event)">
+</app-crud-table>

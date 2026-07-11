@@ -32,6 +32,8 @@ export class ProveedoresComponent implements OnInit {
       label: 'Calificacion',
       options: [
         { value: 'Buena', label: 'Buena' },
+        { value: 'Regular', label: 'Regular' },
+        { value: 'Mala', label: 'Mala' },
       ]
     },
   ];

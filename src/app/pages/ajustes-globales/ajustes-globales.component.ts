@@ -12,6 +12,9 @@ import { EmpleadoService } from '../../core/services/empleado.service';
 })
 export class AjustesGlobalesComponent implements OnInit {
 
+  // NUEVO: Pestaña activa
+  activeTab: 'empleados' | 'historial' | 'lotes' | 'alertas' = 'empleados';
+
   columns = [
     { key: 'id', label: 'ID' },
     { key: 'nombre', label: 'Nombre' },

@@ -34,6 +34,22 @@ logout() {
   );
 }
 
+// NUEVO: Endpoint para solicitar recuperación de contraseña al backend
+requestPasswordReset(email: string): Observable<any> {
+  return this.http.post(
+    `${this.baseUrl}/auth/forgot-password`,
+    { email }
+  );
+}
+
+// NUEVO: Endpoint para procesar el restablecimiento de contraseña
+resetPassword(token: string, nuevaContrasena: string): Observable<any> {
+  return this.http.post(
+    `${this.baseUrl}/auth/reset-password`,
+    { token, nuevaContrasena }
+  );
+}
+
 getAreas(): Observable<{ idArea: number; nombre: string }[]> {
     return this.http.get<{ idArea: number; nombre: string }[]>(`${this.baseUrl}/areas`);
   }

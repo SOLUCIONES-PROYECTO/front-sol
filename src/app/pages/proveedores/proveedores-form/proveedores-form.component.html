@@ -9,16 +9,22 @@
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Nombre de la Empresa</label>
-          <input type="text" [(ngModel)]="proveedor.descripcion" [disabled]="modoVista"
+          <div class="relative">
+            <lucide-icon name="building" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="text" [(ngModel)]="proveedor.descripcion" [disabled]="modoVista"
             placeholder="Empresa SAC 1"
-            class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+            class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-primary-400 focus:ring-2 focus:ring-primary-100 disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">RUC</label>
-          <input type="text" [(ngModel)]="proveedor.ruc" [disabled]="modoVista"
+          <div class="relative">
+            <lucide-icon name="credit-card" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="text" [(ngModel)]="proveedor.ruc" [disabled]="modoVista"
             placeholder="Ej. 20948456123" maxlength="11"
-            class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+            class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-primary-400 focus:ring-2 focus:ring-primary-100 disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
         </div>
 
       </div>
@@ -32,22 +38,28 @@
         <!-- Código de Ubigeo — manual siempre -->
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Código de Ubigeo</label>
-          <input type="text" [(ngModel)]="proveedor.codigoUbigeo" [disabled]="modoVista"
+          <div class="relative">
+            <lucide-icon name="map-pin" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="text" [(ngModel)]="proveedor.codigoUbigeo" [disabled]="modoVista"
             placeholder="Ej. 150101"
-            class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+            class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-primary-400 focus:ring-2 focus:ring-primary-100 disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
         </div>
 
         <!-- Dirección con autocompletado OSM -->
         <div class="flex flex-col gap-1.5 relative">
           <label class="text-sm font-medium text-gray-600">Dirección</label>
           <div class="relative">
+            <div class="relative">
+            <lucide-icon name="map-pin" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
             <input type="text"
               [(ngModel)]="busquedaDireccion"
               (input)="onDireccionInput()"
               (blur)="cerrarSugerencias()"
               [disabled]="modoVista"
               placeholder="Busca tu dirección..."
-              class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+              class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-primary-400 focus:ring-2 focus:ring-primary-100 disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
 
             <div *ngIf="buscandoDireccion"
               class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">
@@ -70,33 +82,48 @@
         <!-- Campos autocompletados por OSM -->
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Departamento</label>
-          <input type="text" [(ngModel)]="proveedor.departamento" [disabled]="modoVista"
-            class="w-full bg-gray-50 border border-gray-100 p-2.5 rounded-lg text-gray-500 disabled:cursor-not-allowed" />
+          <div class="relative">
+            <lucide-icon name="map-pin" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="text" [(ngModel)]="proveedor.departamento" [disabled]="true"
+            class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-primary-400 focus:ring-2 focus:ring-primary-100 disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Ciudad</label>
-          <input type="text" [(ngModel)]="proveedor.ciudad" [disabled]="modoVista"
-            class="w-full bg-gray-50 border border-gray-100 p-2.5 rounded-lg text-gray-500 disabled:cursor-not-allowed" />
+          <div class="relative">
+            <lucide-icon name="map-pin" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="text" [(ngModel)]="proveedor.ciudad" [disabled]="true"
+            class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-primary-400 focus:ring-2 focus:ring-primary-100 disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Distrito</label>
-          <input type="text" [(ngModel)]="proveedor.distrito" [disabled]="modoVista"
-            class="w-full bg-gray-50 border border-gray-100 p-2.5 rounded-lg text-gray-500 disabled:cursor-not-allowed" />
+          <div class="relative">
+            <lucide-icon name="map-pin" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="text" [(ngModel)]="proveedor.distrito" [disabled]="true"
+            class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-primary-400 focus:ring-2 focus:ring-primary-100 disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Código Postal</label>
-          <input type="text" [(ngModel)]="proveedor.codigoPostal" [disabled]="modoVista"
-            class="w-full bg-gray-50 border border-gray-100 p-2.5 rounded-lg text-gray-500 disabled:cursor-not-allowed" />
+          <div class="relative">
+            <lucide-icon name="map-pin" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="text" [(ngModel)]="proveedor.codigoPostal" [disabled]="true"
+            class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-primary-400 focus:ring-2 focus:ring-primary-100 disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
         </div>
 
         <div class="flex flex-col gap-1.5 md:col-span-2">
           <label class="text-sm font-medium text-gray-600">Referencia (Opcional)</label>
-          <input type="text" [(ngModel)]="proveedor.referenciaUbicacion" [disabled]="modoVista"
+          <div class="relative">
+            <lucide-icon name="map-pin" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="text" [(ngModel)]="proveedor.referenciaUbicacion" [disabled]="modoVista"
             placeholder="Ej. Frente al parque, edificio azul..."
-            class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+            class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-primary-400 focus:ring-2 focus:ring-primary-100 disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
         </div>
 
       </div>
@@ -107,11 +134,14 @@
       <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Clasificación / Etiquetas</h3>
 
       <div *ngIf="!modoVista" class="flex items-center gap-2 mb-3">
-        <input type="text"
+        <div class="relative flex-1">
+            <lucide-icon name="tag" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="text"
           [(ngModel)]="nuevaEtiqueta"
           (keydown)="agregarEtiquetaConEnter($event)"
           placeholder="Introducir nombre de la Etiqueta"
-          class="flex-1 bg-[#F3F4F9] border-none p-2.5 rounded-lg text-sm" />
+          class="flex-1 rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-primary-400 focus:ring-2 focus:ring-primary-100 bg-white" />
+          </div>
         <button type="button" (click)="agregarEtiqueta()"
           class="bg-[var(--color-primary-600)] text-white px-4 py-2.5 rounded-lg text-sm hover:opacity-90 transition">
           Añadir
@@ -140,7 +170,7 @@
         <label class="text-sm font-medium text-gray-600">Descripción sobre alguna incidencia</label>
         <textarea rows="4" [(ngModel)]="proveedor.incidencias" [disabled]="modoVista"
           placeholder="Ingrese una breve descripción"
-          class="w-full border border-gray-200 rounded-lg p-3 disabled:opacity-60 disabled:cursor-not-allowed"></textarea>
+          class="w-full rounded-lg border border-gray-200 p-3 text-sm outline-none transition-all focus:border-primary-400 focus:ring-2 focus:ring-primary-100 disabled:opacity-60 disabled:cursor-not-allowed bg-white"></textarea>
       </div>
     </section>
 
@@ -158,29 +188,41 @@
           <label class="text-sm font-medium text-gray-600">
             Correo electrónico <span class="text-red-500">*</span>
           </label>
-          <input type="email" [(ngModel)]="proveedor.correoEmpresa" [disabled]="modoVista"
-            class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+          <div class="relative">
+            <lucide-icon name="building" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="email" [(ngModel)]="proveedor.correoEmpresa" [disabled]="modoVista"
+            class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-primary-400 focus:ring-2 focus:ring-primary-100 disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">
             Teléfono celular <span class="text-red-500">*</span>
           </label>
-          <input type="tel" [(ngModel)]="proveedor.telefonoEmpresa" [disabled]="modoVista"
-            class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+          <div class="relative">
+            <lucide-icon name="building" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="tel" [(ngModel)]="proveedor.telefonoEmpresa" [disabled]="modoVista"
+            class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-primary-400 focus:ring-2 focus:ring-primary-100 disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Teléfono fijo (opcional)</label>
-          <input type="tel" [(ngModel)]="proveedor.telefonoFijoEmpresa" [disabled]="modoVista"
-            class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+          <div class="relative">
+            <lucide-icon name="building" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="tel" [(ngModel)]="proveedor.telefonoFijoEmpresa" [disabled]="modoVista"
+            class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-primary-400 focus:ring-2 focus:ring-primary-100 disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Página web (opcional)</label>
-          <input type="url" [(ngModel)]="proveedor.paginaWeb" [disabled]="modoVista"
+          <div class="relative">
+            <lucide-icon name="building" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="url" [(ngModel)]="proveedor.paginaWeb" [disabled]="modoVista"
             placeholder="https://empresa.com"
-            class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+            class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-primary-400 focus:ring-2 focus:ring-primary-100 disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
         </div>
 
       </div>
@@ -195,30 +237,42 @@
           <label class="text-sm font-medium text-gray-600">
             Nombre del sectorista <span class="text-red-500">*</span>
           </label>
-          <input type="text" [(ngModel)]="proveedor.nombreSectorista" [disabled]="modoVista"
-            class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+          <div class="relative">
+            <lucide-icon name="user" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="text" [(ngModel)]="proveedor.nombreSectorista" [disabled]="modoVista"
+            class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-primary-400 focus:ring-2 focus:ring-primary-100 disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">
             Correo electrónico <span class="text-red-500">*</span>
           </label>
-          <input type="email" [(ngModel)]="proveedor.correoSectorista" [disabled]="modoVista"
-            class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+          <div class="relative">
+            <lucide-icon name="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="email" [(ngModel)]="proveedor.correoSectorista" [disabled]="modoVista"
+            class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-primary-400 focus:ring-2 focus:ring-primary-100 disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">
             Teléfono celular <span class="text-red-500">*</span>
           </label>
-          <input type="tel" [(ngModel)]="proveedor.celularSectorista" [disabled]="modoVista"
-            class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+          <div class="relative">
+            <lucide-icon name="phone" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="tel" [(ngModel)]="proveedor.celularSectorista" [disabled]="modoVista"
+            class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-primary-400 focus:ring-2 focus:ring-primary-100 disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Teléfono fijo (opcional)</label>
-          <input type="tel" [(ngModel)]="proveedor.telefonoFijoSectorista" [disabled]="modoVista"
-            class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+          <div class="relative">
+            <lucide-icon name="phone" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="tel" [(ngModel)]="proveedor.telefonoFijoSectorista" [disabled]="modoVista"
+            class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-primary-400 focus:ring-2 focus:ring-primary-100 disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
         </div>
 
       </div>
@@ -231,20 +285,27 @@
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Condiciones de pago</label>
-          <input type="text" [(ngModel)]="proveedor.condicionesPago" [disabled]="modoVista"
+          <div class="relative">
+            <lucide-icon name="dollar-sign" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <input type="text" [(ngModel)]="proveedor.condicionesPago" [disabled]="modoVista"
             placeholder="Ej. 30 días, contado..."
-            class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+            class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all focus:border-primary-400 focus:ring-2 focus:ring-primary-100 disabled:opacity-60 disabled:cursor-not-allowed bg-white" />
+          </div>
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Calificación</label>
-          <select [(ngModel)]="proveedor.calificacion" [disabled]="modoVista"
-            class="w-full border border-gray-200 p-2.5 rounded-lg appearance-none disabled:opacity-60 disabled:cursor-not-allowed">
+          <div class="relative">
+            <lucide-icon name="star" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+            <select [(ngModel)]="proveedor.calificacion" [disabled]="modoVista"
+            class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all appearance-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 disabled:opacity-60 disabled:cursor-not-allowed bg-white">
             <option value="">Selecciona</option>
             <option value="Buena">Buena</option>
             <option value="Regular">Regular</option>
             <option value="Mala">Mala</option>
           </select>
+            <lucide-icon name="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+          </div>
         </div>
 
       </div>

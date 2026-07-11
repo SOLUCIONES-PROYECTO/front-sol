@@ -1,0 +1,66 @@
+<div class="px-6 py-8 h-full bg-[var(--color-bg-base)]">
+  
+  <div class="mb-6 flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-[var(--color-primary-800)] flex items-center gap-2">
+        <lucide-icon name="history" class="w-6 h-6"></lucide-icon>
+        Historial de Acciones
+      </h1>
+      <p class="text-[var(--color-primary-600)] text-sm mt-1">
+        Registro de auditoría de creación, edición y eliminación de registros.
+      </p>
+    </div>
+    <button (click)="cargarDatos()" class="p-2 bg-white rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 transition text-gray-600">
+      <lucide-icon name="history" class="w-5 h-5"></lucide-icon>
+    </button>
+  </div>
+
+  @if (cargando) {
+  <div class="flex justify-center items-center py-12">
+    <lucide-icon name="loader-circle" class="w-8 h-8 text-[var(--color-primary-600)] animate-spin"></lucide-icon>
+  </div>
+  }
+
+  @if (!cargando) {
+  <div class="bg-white shadow-md rounded-xl overflow-hidden border border-gray-200">
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left">
+        <thead class="text-xs uppercase bg-[var(--color-primary-50)] text-[var(--color-primary-700)]">
+          <tr>
+            <th class="px-6 py-4 font-semibold">Fecha y Hora</th>
+            <th class="px-6 py-4 font-semibold">Usuario</th>
+            <th class="px-6 py-4 font-semibold">Módulo</th>
+            <th class="px-6 py-4 font-semibold">Acción</th>
+            <th class="px-6 py-4 font-semibold">Detalle</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          @for (log of logs; track log.idauditoria) {
+          <tr class="hover:bg-gray-50 transition-colors">
+            <td class="px-6 py-4 text-gray-600 whitespace-nowrap">{{ formatearFecha(log.fecha) }}</td>
+            <td class="px-6 py-4 font-medium text-gray-900">{{ log.usuario }}</td>
+            <td class="px-6 py-4 font-medium text-gray-700">{{ log.modulo }}</td>
+            <td class="px-6 py-4">
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider" [ngClass]="getBadgeColor(log.accion)">
+                {{ log.accion }}
+              </span>
+            </td>
+            <td class="px-6 py-4 text-gray-600">{{ log.detalle }}</td>
+          </tr>
+          }
+          @if (logs.length === 0) {
+          <tr>
+            <td colspan="5" class="px-6 py-12 text-center text-gray-500">
+              <div class="flex flex-col items-center">
+                <lucide-icon name="circle-alert" class="w-10 h-10 mb-3 text-gray-300"></lucide-icon>
+                <p>No hay registros de auditoría.</p>
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+  }
+</div>

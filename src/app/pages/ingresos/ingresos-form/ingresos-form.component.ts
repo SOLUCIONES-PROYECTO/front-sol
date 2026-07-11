@@ -47,7 +47,7 @@ export class IngresosFormComponent implements OnInit {
   estadosIngreso: EstadoIngreso[] = [];
   productosDisponibles: Producto[] = [];
   ordenesCompra: any[] = [];
-  ordenSeleccionada: any = [];
+  ordenSeleccionada: any = null;
   detalles: DetalleEntrada[] = [];
   showModalProducto = false;
 
@@ -115,8 +115,15 @@ export class IngresosFormComponent implements OnInit {
           e => e.usuarioSistema === this.authService.getUsuarioSistema()
         );
 
-        if (!this.modoEdicion && !this.modoVista && this.empleadoLogueado) {
-          this.docEntrada.idEmpleado = this.empleadoLogueado.idEmpleado;
+        if (!this.modoEdicion && !this.modoVista) {
+          if (this.empleadoLogueado) {
+            this.docEntrada.idEmpleado = this.empleadoLogueado.idEmpleado;
+          }
+          // NUEVO: Autocompletar fecha de ingreso con la fecha local
+          const hoy = new Date();
+          const offset = hoy.getTimezoneOffset();
+          const fechaLocal = new Date(hoy.getTime() - (offset*60*1000));
+          this.docEntrada.fechaIngreso = fechaLocal.toISOString().split('T')[0];
         }
 
         this.cdr.detectChanges();
@@ -167,7 +174,7 @@ export class IngresosFormComponent implements OnInit {
   }
 
   get soloLecturaDetalle(): boolean {
-    return this.modoVista || this.modoEdicion;
+    return this.modoVista;
   }
 
   // — Filtros en cascada: proveedor (header) → categoría → producto —
@@ -272,11 +279,15 @@ export class IngresosFormComponent implements OnInit {
     this.nuevoDetalle.subtotal = +(cantidad * precio).toFixed(2);
   }
 
+  recalcularFila(detalle: DetalleEntrada): void {
+    if (detalle.cantidad < 1) detalle.cantidad = 1;
+    detalle.subtotal = +(detalle.cantidad * detalle.precioUnitario).toFixed(2);
+    this.cdr.detectChanges();
+  }
+
   get nuevoDetalleInvalido(): boolean {
     return (
       !this.nuevoDetalle.idProducto ||
-      !this.nuevoDetalle.loteProducto ||
-      !this.nuevoDetalle.fechaVencimiento ||
       !this.nuevoDetalle.cantidad ||
       this.nuevoDetalle.cantidad <= 0
     );

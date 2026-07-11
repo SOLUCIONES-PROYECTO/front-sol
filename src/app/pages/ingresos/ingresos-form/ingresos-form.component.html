@@ -75,7 +75,10 @@
               <td class="px-4 py-4 font-medium text-gray-800">{{ d.nombreProducto }}</td>
               <td class="px-4 py-4 text-gray-500 text-xs">{{ d.loteProducto }}</td>
               <td class="px-4 py-4 text-gray-500 text-xs">{{ d.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
-              <td class="px-4 py-4 text-gray-500">{{ d.cantidad }}</td>
+              <td class="px-4 py-4 text-gray-500">
+                <input type="number" *ngIf="!soloLecturaDetalle" [(ngModel)]="d.cantidad" [ngModelOptions]="{standalone: true}" (ngModelChange)="recalcularFila(d)" class="w-16 p-1 border rounded" min="1">
+                <span *ngIf="soloLecturaDetalle">{{ d.cantidad }}</span>
+              </td>
               <td class="px-4 py-4 text-gray-500">{{ d.precioUnitario | currency:'S/.':'symbol-narrow':'1.2-2' }}</td>
               <td class="px-4 py-4 text-gray-500">{{ d.subtotal | currency:'S/.':'symbol-narrow':'1.2-2' }}</td>
               <td class="px-4 py-4" *ngIf="!soloLecturaDetalle">

@@ -139,7 +139,13 @@ export class ProductoFormComponent implements OnInit {
   this.producto.margen = compra > 0 ? +((ganancia / compra) * 100).toFixed(2) : 0;
 }
 
-onFileSelected(event: Event): void {
+  activarEdicion(): void {
+    this.modoVista = false;
+    this.modoEdicion = true;
+    this.cdr.detectChanges();
+  }
+
+  onFileSelected(event: Event): void {
   const input = event.target as HTMLInputElement;
   const file = input.files?.[0];
 
@@ -157,9 +163,41 @@ onFileSelected(event: Event): void {
   }
 
   const reader = new FileReader();
-  reader.onload = () => {
-    this.producto.imagen = reader.result as string;
-    this.cdr.detectChanges();
+  reader.onload = (e: any) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+      
+      const MAX_WIDTH = 800;
+      const MAX_HEIGHT = 800;
+      
+      if (width > height) {
+        if (width > MAX_WIDTH) {
+          height *= MAX_WIDTH / width;
+          width = MAX_WIDTH;
+        }
+      } else {
+        if (height > MAX_HEIGHT) {
+          width *= MAX_HEIGHT / height;
+          height = MAX_HEIGHT;
+        }
+      }
+      
+      canvas.width = width;
+      canvas.height = height;
+      
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(img, 0, 0, width, height);
+        // Reducir calidad al 70% para no saturar la base de datos
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+        this.producto.imagen = dataUrl;
+        this.cdr.detectChanges();
+      }
+    };
+    img.src = e.target.result;
   };
   reader.readAsDataURL(file);
 }

@@ -3,6 +3,8 @@ import { RegisterFormPresenter } from './register-form.presenter';
 import { RegisterFacade } from '../../../shared/patterns/facade/models/register-facade';
 import { AuthApiService } from '../services/auth-api.service';
 
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-register',
   standalone: false,
@@ -33,6 +35,7 @@ export class RegisterComponent implements OnInit {
     public registerFormPresenter: RegisterFormPresenter,
     private registerFacade: RegisterFacade,
     private authApiService: AuthApiService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -112,9 +115,19 @@ export class RegisterComponent implements OnInit {
       return;
     }
     this.isLoading = true;
-    this.registerFacade.registrarUsuario(
-      this.registerFormPresenter.Value
-    );
+    this.registerFacade.registrarUsuario(this.registerFormPresenter.Value).subscribe({
+      next: () => {
+        this.isLoading = false;
+        alert('Usuario registrado correctamente');
+        this.router.navigate(['/auth/login']);
+      },
+      error: (error) => {
+        this.isLoading = false;
+        console.error('Error al registrar usuario', error);
+        const mensajeError = error.error?.mensaje || error.error?.message || 'Error al registrar, revisa los datos e intenta de nuevo';
+        alert(mensajeError);
+      }
+    });
   }
 
   get passwordsMatch(): boolean {

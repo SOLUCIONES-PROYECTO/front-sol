@@ -6,6 +6,7 @@ export class DocSalida {
   idTipoDocSalida: number;
   idEmpleado: number;
   idMetodoPago: number;
+  idCliente: number;
 
   nombreCliente: string;
   apellidoCliente: string;
@@ -30,6 +31,7 @@ export class DocSalida {
     this.idTipoDocSalida = docSalida.idTipoDocSalida ?? 0;
     this.idEmpleado = docSalida.idEmpleado ?? 0;
     this.idMetodoPago = docSalida.idMetodoPago ?? 0;
+    this.idCliente = docSalida.idCliente ?? 0;
 
     this.nombreCliente = docSalida.nombreCliente ?? '';
     this.apellidoCliente = docSalida.apellidoCliente ?? '';
@@ -58,6 +60,7 @@ export class DocSalida {
       idTipoDocSalida: d['idTipoDocSalida'] as number,
       idMetodoPago: d['idMetodoPago'] as number,
       idEmpleado: d['idEmpleado'] as number,
+      idCliente: d['idCliente'] as number,
 
       tipoDocSalida: d['tipoDocSalida'] as string,
       cliente: d['cliente'] as string,

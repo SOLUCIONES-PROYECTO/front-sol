@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 export class AlmacenComponent implements OnInit {
 
   columns = [
+    { key: 'imagen', label: '', type: 'image' },
     { key: 'producto', label: 'Producto' },
     { key: 'categoria', label: 'Categoría' },
     { key: 'stockActual', label: 'Stock Actual' },
@@ -65,6 +66,7 @@ export class AlmacenComponent implements OnInit {
 
         this.data = productos.map((p: Producto) => ({
           id: p.idproducto,          // ← NUEVO: necesario para navegar al detalle
+          imagen: p.imagen,
           producto: p.nombre,
           categoria: p.categoria,
           stockActual: p.stockActual,

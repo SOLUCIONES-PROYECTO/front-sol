@@ -93,7 +93,11 @@
                   'bg-[var(--color-badge-anulada-bg)]       text-[var(--color-badge-anulada-text)]':       item[column.key] === 'Anulada',
 
                   'bg-[var(--color-badge-activo-bg)]     text-[var(--color-badge-activo-text)]':     item[column.key] === 'Activo',
-                  'bg-[var(--color-badge-inactivo-bg)]   text-[var(--color-badge-inactivo-text)]':   item[column.key] === 'Inactivo',                                     
+                  'bg-[var(--color-badge-inactivo-bg)]   text-[var(--color-badge-inactivo-text)]':   item[column.key] === 'Inactivo',
+
+                  'bg-green-100 text-green-700': item[column.key] === 'Buena',
+                  'bg-yellow-100 text-yellow-700': item[column.key] === 'Regular',
+                  'bg-red-100 text-red-700': item[column.key] === 'Mala',                                     
                 }">
                     {{ item[column.key] }}
                   </span>

@@ -1,13 +1,129 @@
-<app-crud-table
-  [title]="'Ajustes Globales'"
-  [columns]="columns"
-  [data]="data"
-  [filters]="filters"
-  keyField="id"
-  [canAdd]="false"
-  (searchChange)="buscar($event)"
-  (filterChange)="filtrar($event)"
-  (onEdit)="onEditar($event)"
-  (onDelete)="onEliminar($event)"
-  (onView)="onVer($event)">
-</app-crud-table>
+<div class="bg-white min-h-screen">
+  <!-- Cabecera y Pestañas -->
+  <div class="border-b border-gray-200 px-6 pt-6">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">Panel Administrador / Ajustes Globales</h2>
+    <div class="flex gap-6">
+      <button 
+        (click)="activeTab = 'empleados'"
+        [class.text-primary-600]="activeTab === 'empleados'"
+        [class.border-primary-600]="activeTab === 'empleados'"
+        [class.border-transparent]="activeTab !== 'empleados'"
+        class="pb-3 text-sm font-medium border-b-2 transition-colors text-gray-500 hover:text-gray-800">
+        Gestión de Empleados
+      </button>
+      <button 
+        (click)="activeTab = 'historial'"
+        [class.text-primary-600]="activeTab === 'historial'"
+        [class.border-primary-600]="activeTab === 'historial'"
+        [class.border-transparent]="activeTab !== 'historial'"
+        class="pb-3 text-sm font-medium border-b-2 transition-colors text-gray-500 hover:text-gray-800">
+        Historial de Acciones
+      </button>
+      <button 
+        (click)="activeTab = 'lotes'"
+        [class.text-primary-600]="activeTab === 'lotes'"
+        [class.border-primary-600]="activeTab === 'lotes'"
+        [class.border-transparent]="activeTab !== 'lotes'"
+        class="pb-3 text-sm font-medium border-b-2 transition-colors text-gray-500 hover:text-gray-800">
+        Configuración de Lotes
+      </button>
+      <button 
+        (click)="activeTab = 'alertas'"
+        [class.text-primary-600]="activeTab === 'alertas'"
+        [class.border-primary-600]="activeTab === 'alertas'"
+        [class.border-transparent]="activeTab !== 'alertas'"
+        class="pb-3 text-sm font-medium border-b-2 transition-colors text-gray-500 hover:text-gray-800">
+        Alertas y Notificaciones
+      </button>
+    </div>
+  </div>
+
+  <!-- Contenido de las pestañas -->
+  <div class="p-6">
+    
+    <!-- PESTAÑA: EMPLEADOS (Original) -->
+    @if(activeTab === 'empleados') {
+      <app-crud-table
+        [title]="'Empleados del Sistema'"
+        [columns]="columns"
+        [data]="data"
+        [filters]="filters"
+        keyField="id"
+        [canAdd]="false"
+        (searchChange)="buscar($event)"
+        (filterChange)="filtrar($event)"
+        (onEdit)="onEditar($event)"
+        (onDelete)="onEliminar($event)"
+        (onView)="onVer($event)">
+      </app-crud-table>
+    }
+
+    <!-- PESTAÑA: HISTORIAL -->
+    @if(activeTab === 'historial') {
+      <div class="bg-gray-50 border border-gray-100 rounded-xl p-8 text-center">
+        <lucide-icon name="history" class="w-12 h-12 text-gray-300 mx-auto mb-4"></lucide-icon>
+        <h3 class="text-lg font-bold text-gray-700 mb-2">Historial de Acciones</h3>
+        <p class="text-sm text-gray-500 max-w-md mx-auto">
+          Aquí se mostrará el registro de auditoría. Se requiere integración con el backend para listar los movimientos de cada usuario.
+        </p>
+      </div>
+    }
+
+    <!-- PESTAÑA: LOTES -->
+    @if(activeTab === 'lotes') {
+      <div class="max-w-2xl">
+        <h3 class="text-lg font-bold text-gray-800 mb-4">Configuración predeterminada de lotes</h3>
+        <div class="space-y-4">
+          <div class="flex flex-col gap-1">
+            <label class="text-sm font-medium text-gray-700">Días de alerta antes del vencimiento</label>
+            <input type="number" class="border border-gray-200 rounded-lg p-2 text-sm outline-none w-32 focus:border-primary-400 focus:ring-2 focus:ring-primary-100" value="30">
+          </div>
+          <div class="flex items-center gap-3">
+            <input type="checkbox" id="auto_asign" class="w-4 h-4 text-primary-600 rounded border-gray-300 focus:ring-primary-500" checked>
+            <label for="auto_asign" class="text-sm text-gray-700">Asignar automáticamente el lote más antiguo (FIFO) en los egresos</label>
+          </div>
+          <button class="px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-medium mt-4 hover:bg-primary-700 transition">
+            Guardar configuración
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- PESTAÑA: ALERTAS -->
+    @if(activeTab === 'alertas') {
+      <div class="max-w-2xl">
+        <h3 class="text-lg font-bold text-gray-800 mb-4">Canales de Notificación</h3>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between p-4 border border-gray-100 rounded-lg bg-white">
+            <div class="flex items-center gap-3">
+              <lucide-icon name="mail" class="w-5 h-5 text-gray-400"></lucide-icon>
+              <div>
+                <p class="text-sm font-bold text-gray-700">Notificaciones por Correo</p>
+                <p class="text-xs text-gray-500">Enviar alertas de stock bajo al correo del administrador.</p>
+              </div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" class="sr-only peer" checked>
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
+            </label>
+          </div>
+
+          <div class="flex items-center justify-between p-4 border border-gray-100 rounded-lg bg-white">
+            <div class="flex items-center gap-3">
+              <lucide-icon name="bell" class="w-5 h-5 text-gray-400"></lucide-icon>
+              <div>
+                <p class="text-sm font-bold text-gray-700">Alertas en Sistema</p>
+                <p class="text-xs text-gray-500">Mostrar insignias (badges) y pop-ups en el sistema.</p>
+              </div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" class="sr-only peer" checked>
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
+            </label>
+          </div>
+        </div>
+      </div>
+    }
+
+  </div>
+</div>

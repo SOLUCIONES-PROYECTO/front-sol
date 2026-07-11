@@ -11,8 +11,47 @@
     }
 
     @if (isLoggedIn) {
-    <div class="relative">
+    <div class="relative flex items-center gap-4">
 
+      <!-- Notificaciones -->
+      <div class="relative">
+        <button (click)="toggleNotificaciones()" class="p-2 text-white/80 hover:text-white transition relative">
+          <lucide-icon name="bell" class="w-6 h-6"></lucide-icon>
+          @if (notificaciones.length > 0) {
+            <span class="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full">
+              {{ notificaciones.length }}
+            </span>
+          }
+        </button>
+
+        @if (mostrarNotificaciones) {
+        <div class="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
+          <div class="px-4 py-3 bg-[var(--color-primary-50)] border-b border-gray-100 flex justify-between items-center">
+            <h3 class="font-semibold text-[var(--color-primary-700)]">Notificaciones</h3>
+            <span class="text-xs font-medium bg-[var(--color-primary-200)] text-[var(--color-primary-700)] px-2 py-0.5 rounded-full">
+              {{ notificaciones.length }} nuevas
+            </span>
+          </div>
+          <div class="max-h-80 overflow-y-auto">
+            @if (notificaciones.length === 0) {
+              <div class="px-4 py-8 text-center text-gray-400">
+                <lucide-icon name="check-circle" class="w-8 h-8 mx-auto mb-2 opacity-50"></lucide-icon>
+                <p class="text-sm">No tienes notificaciones pendientes</p>
+              </div>
+            }
+            @for (not of notificaciones; track $index) {
+              <a [routerLink]="not.enlace" class="block px-4 py-3 hover:bg-gray-50 border-b border-gray-50 transition" (click)="mostrarNotificaciones = false">
+                <p class="text-xs font-bold text-[var(--color-primary-600)] mb-1">{{ not.tipo }}</p>
+                <p class="text-sm text-gray-700">{{ not.mensaje }}</p>
+              </a>
+            }
+          </div>
+        </div>
+        }
+      </div>
+
+      <!-- Usuario -->
+      <div class="relative">
       <button (click)="toggleMenu()"
         class="flex items-center gap-3 px-3 py-2 rounded-xl transition hover:bg-white/10">
 
@@ -63,6 +102,8 @@
 
       </div>
       }
+      </div>
+
     </div>
     }
   </div>

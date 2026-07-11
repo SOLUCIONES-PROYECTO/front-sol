@@ -1,0 +1,17 @@
+<app-form-layout [title]="'Historial de Compras'" (onBack)="Regresar()">
+  <div general class="space-y-6">
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Documentos de Salida asociados</h3>
+      
+      <app-crud-table
+        [title]="'Egresos'"
+        [columns]="columns"
+        [data]="data"
+        keyField="iddocsalida"
+        [filters]="[]"
+        (searchChange)="buscar($event)">
+      </app-crud-table>
+      
+    </section>
+  </div>
+</app-form-layout>

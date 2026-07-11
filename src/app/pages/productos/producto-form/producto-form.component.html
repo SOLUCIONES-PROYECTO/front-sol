@@ -2,7 +2,7 @@
 
   <div general class="space-y-8">
 
-    <section>
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
       <h3 class="text-xl font-bold mb-5 text-[#1F090A]">Información</h3>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
 
@@ -35,12 +35,19 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <div class="space-y-6">
-        <section>
+        <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <h3 class="text-xl font-bold mb-5">Información del producto</h3>
-          <div class="flex flex-col gap-2">
-            <label class="text-sm font-medium text-gray-700">Stock mínimo</label>
-            <input type="number" [(ngModel)]="producto.stockMinimo" [disabled]="modoVista"
-              class="w-full bg-white border border-gray-200 p-3 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+          <div class="grid grid-cols-2 gap-4">
+            <div class="flex flex-col gap-2">
+              <label class="text-sm font-medium text-gray-700">Stock actual</label>
+              <input type="number" [(ngModel)]="producto.stockActual" [disabled]="modoVista"
+                class="w-full bg-white border border-gray-200 p-3 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label class="text-sm font-medium text-gray-700">Stock mínimo</label>
+              <input type="number" [(ngModel)]="producto.stockMinimo" [disabled]="modoVista"
+                class="w-full bg-white border border-gray-200 p-3 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+            </div>
           </div>
           <div class="flex flex-col gap-2 mt-4">
             <label class="text-sm font-medium text-gray-700">Proveedor</label>
@@ -52,7 +59,7 @@
           </div>
         </section>
 
-        <section>
+        <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mt-6">
           <h3 class="text-xl font-bold mb-5">Estado de Producto</h3>
           <div class="flex flex-col gap-2">
             <label class="text-sm font-medium text-gray-700">Estado</label>
@@ -81,7 +88,7 @@
       </div>
     </div>
 
-    <section>
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
       <label class="text-sm font-medium text-gray-700 block mb-2">Descripción del producto</label>
       <textarea rows="5" [(ngModel)]="producto.descripcion" [disabled]="modoVista"
         class="w-full border border-gray-200 rounded-lg p-3 disabled:opacity-60 disabled:cursor-not-allowed"></textarea>
@@ -116,11 +123,14 @@
     </div>
   </div>
 
-  <div actions>
+  <div actions class="flex gap-3">
     <button
       class="px-6 py-2.5 rounded-lg border border-[#531E1E] text-[#531E1E] font-medium hover:bg-gray-50 transition-colors"
       (click)="Regresar()">
       {{ modoVista ? 'Regresar' : 'Cancelar' }}
+    </button>
+    <button *ngIf="modoVista" (click)="activarEdicion()" class="px-6 py-2.5 rounded-lg bg-[#531E1E] text-white">
+      Editar
     </button>
     <button *ngIf="!modoVista" (click)="guardar()" class="px-6 py-2.5 rounded-lg bg-[#531E1E] text-white">
       Guardar

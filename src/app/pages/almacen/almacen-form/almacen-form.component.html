@@ -2,7 +2,7 @@
 
   <div general class="space-y-8">
 
-    <section>
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
       <h3 class="text-xl font-bold mb-5 text-[#1F090A]">Información del producto</h3>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
 
@@ -33,14 +33,14 @@
       </div>
     </section>
 
-    <section>
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
       <h3 class="text-xl font-bold mb-5 text-[#1F090A]">Stock y disponibilidad</h3>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-5">
 
         <div class="flex flex-col gap-2">
           <label class="text-sm font-medium text-gray-500">Stock actual</label>
-          <input type="text" [value]="producto.stockActual" disabled
-            class="w-full bg-white border border-gray-200 p-3 rounded-lg text-gray-600" />
+          <input type="number" [(ngModel)]="producto.stockActual" [disabled]="modoVista"
+            class="w-full bg-white border border-gray-200 p-3 rounded-lg text-gray-600 focus:border-[#531E1E] focus:ring-1 focus:ring-[#531E1E] outline-none transition disabled:opacity-60 disabled:cursor-not-allowed" />
         </div>
 
         <div class="flex flex-col gap-2">
@@ -69,7 +69,7 @@
       </div>
     </section>
 
-    <section>
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
       <label class="text-sm font-medium text-gray-500 block mb-2">Descripción del producto</label>
       <textarea rows="4" [value]="producto.descripcion" disabled
         class="w-full border border-gray-200 rounded-lg p-3 text-gray-600 bg-gray-50"></textarea>
@@ -108,11 +108,17 @@
     </div>
   </div>
 
-  <div actions>
+  <div actions class="flex gap-3">
     <button
       class="px-6 py-2.5 rounded-lg border border-[#531E1E] text-[#531E1E] font-medium hover:bg-gray-50 transition-colors"
       (click)="Regresar()">
-      Regresar
+      {{ modoVista ? 'Regresar' : 'Cancelar' }}
+    </button>
+    <button *ngIf="modoVista" (click)="activarEdicion()" class="px-6 py-2.5 rounded-lg bg-[#531E1E] text-white">
+      Editar Stock
+    </button>
+    <button *ngIf="!modoVista" (click)="guardar()" class="px-6 py-2.5 rounded-lg bg-[#531E1E] text-white">
+      Guardar
     </button>
   </div>
 

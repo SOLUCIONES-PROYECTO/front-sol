@@ -40,7 +40,7 @@ export class EgresosFormComponent implements OnInit {
   productosDisponibles: Producto[] = [];
   tiposDocSalida: TipoDocSalida[] = [];
   metodosPago: MetodoPago[] = [];
-  areasUsoInterno: AreaUsoInterno[] = [];
+  areasUsoInterno: any[] = [];
   empleados: Empleado[] = [];
   empleadoLogueado: Empleado | undefined;
 
@@ -137,8 +137,15 @@ export class EgresosFormComponent implements OnInit {
           e => e.usuarioSistema === this.authService.getUsuarioSistema()
         );
 
-        if (!this.modoEdicion && !this.modoVista && this.empleadoLogueado) {
-          this.docSalida.idEmpleado = this.empleadoLogueado.idEmpleado;
+        if (!this.modoEdicion && !this.modoVista) {
+          if (this.empleadoLogueado) {
+            this.docSalida.idEmpleado = this.empleadoLogueado.idEmpleado;
+          }
+          // NUEVO: Autocompletar fecha de egreso con la fecha local
+          const hoy = new Date();
+          const offset = hoy.getTimezoneOffset();
+          const fechaLocal = new Date(hoy.getTime() - (offset*60*1000));
+          this.docSalida.fechaEgreso = fechaLocal.toISOString().split('T')[0];
         }
 
         this.cdr.detectChanges();
@@ -158,7 +165,7 @@ export class EgresosFormComponent implements OnInit {
   }
 
   get soloLecturaDetalle(): boolean {
-    return this.modoVista || this.modoEdicion;
+    return this.modoVista;
   }
 
   get empleadoMostrado(): Empleado | undefined {
@@ -319,14 +326,36 @@ export class EgresosFormComponent implements OnInit {
     this.nuevoDetalle.subtotal = +(cantidad * precio).toFixed(2);
   }
 
+  recalcularFila(detalle: any): void {
+    if (detalle.cantidad < 1) detalle.cantidad = 1;
+    // Si queremos limitar a stock, podemos hacerlo aquí, pero lo mejor es dejar que el backend lo bloquee,
+    // o simplemente no bloquear en el frontend.
+    detalle.subtotal = +(detalle.cantidad * detalle.precioUnitario).toFixed(2);
+    this.cdr.detectChanges();
+  }
+
   get nuevoDetalleInvalido(): boolean {
     const baseInvalida = !this.nuevoDetalle.idProducto || !this.nuevoDetalle.cantidad || this.nuevoDetalle.cantidad <= 0;
     if (baseInvalida) return true;
+
+    // NUEVO: Validación de stock
+    if (this.excedeStock()) return true;
 
     if (this.mostrarMerma && !this.nuevoDetalle.motivoMerma) return true;
     if (this.mostrarUsoInterno && !this.nuevoDetalle.idAreaUsoInterno) return true;
 
     return false;
+  }
+
+  // NUEVO: Métodos para validar stock en UI
+  excedeStock(): boolean {
+    const producto = this.productosDisponibles.find(p => p.idproducto === this.nuevoDetalle.idProducto);
+    return producto ? this.nuevoDetalle.cantidad > producto.stockActual : false;
+  }
+
+  getStockActual(): number {
+    const producto = this.productosDisponibles.find(p => p.idproducto === this.nuevoDetalle.idProducto);
+    return producto ? producto.stockActual : 0;
   }
 
   agregarDetalle(): void {
@@ -367,10 +396,18 @@ export class EgresosFormComponent implements OnInit {
 
     const errores = this.validarCamposObligatorios();
 
+    // Validar stock de los detalles
+    this.detalles.forEach(d => {
+      const p = this.productosDisponibles.find(prod => prod.idproducto === d.idProducto);
+      if (p && d.cantidad > p.stockActual) {
+        errores.push(`Stock insuficiente para ${p.nombre} (Actual: ${p.stockActual}, Solicitado: ${d.cantidad})`);
+      }
+    });
+
     if (errores.length > 0) {
       this.mostrarAlerta(
-        'Faltan datos por completar',
-        'Por favor revisa los siguientes campos:\n• ' + errores.join('\n• '),
+        'Faltan datos o hay errores',
+        'Por favor revisa lo siguiente:\n• ' + errores.join('\n• '),
         'error'
       );
       return;
@@ -399,7 +436,8 @@ export class EgresosFormComponent implements OnInit {
         error: (err) => {
           this.guardando = false;
           console.error(err);
-          this.mostrarAlerta('Ocurrió un error', 'No se pudo actualizar el egreso. Inténtalo de nuevo.', 'error');
+          const mensajeError = err.error?.mensaje || err.error?.message || 'No se pudo actualizar el egreso. Inténtalo de nuevo.';
+          this.mostrarAlerta('Ocurrió un error', mensajeError, 'error');
         }
       });
       return;
@@ -459,9 +497,10 @@ export class EgresosFormComponent implements OnInit {
           error: (err) => {
             this.guardando = false;
             console.error('Error al guardar el detalle', err);
+            const mensajeError = err.error?.mensaje || err.error?.message || 'El egreso se registró, pero hubo un problema al guardar algunos productos.';
             this.mostrarAlerta(
               'Egreso creado con errores',
-              'El egreso se registró, pero hubo un problema al guardar algunos productos.',
+              mensajeError,
               'error'
             );
           }
@@ -470,7 +509,8 @@ export class EgresosFormComponent implements OnInit {
       error: (err) => {
         this.guardando = false;
         console.error(err);
-        this.mostrarAlerta('Ocurrió un error', 'No se pudo registrar el egreso. Inténtalo de nuevo.', 'error');
+        const mensajeError = err.error?.mensaje || err.error?.message || 'No se pudo registrar el egreso. Inténtalo de nuevo.';
+        this.mostrarAlerta('Ocurrió un error', mensajeError, 'error');
       }
     });
 }
