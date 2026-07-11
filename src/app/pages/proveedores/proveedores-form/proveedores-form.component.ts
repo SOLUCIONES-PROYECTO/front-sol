@@ -18,7 +18,7 @@ export class ProveedoresFormComponent implements OnInit {
   modoVista = false;
   idProveedor: number | null = null;
 
-  // — Chips de etiquetas —
+  // Etiquetas 
   etiquetasArray: string[] = [];
   nuevaEtiqueta = '';
 
@@ -78,7 +78,6 @@ export class ProveedoresFormComponent implements OnInit {
     this.proveedorService.obtenerProveedor(id).subscribe({
       next: (data) => {
         this.proveedor = data;
-        this.busquedaDireccion = data.direccion;
 
         // Reconstruir chips desde el string guardado
         this.etiquetasArray = data.etiquetas

@@ -13,7 +13,7 @@ import { forkJoin } from 'rxjs';
 export class ProductosComponent implements OnInit {
 
   columns = [
-    {key: 'imagen', label:'', type:'image'},
+    { key: 'imagen', label:'', type:'image'},
     { key: 'producto', label: 'Producto' },
     { key: 'codigo', label: 'Código' },
     { key: 'categoria', label: 'Categoria' },

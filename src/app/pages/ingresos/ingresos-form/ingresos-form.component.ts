@@ -50,6 +50,7 @@ export class IngresosFormComponent implements OnInit {
   ordenSeleccionada: any = [];
   detalles: DetalleEntrada[] = [];
   showModalProducto = false;
+  detalleEditandoIndex: number | null = null;
 
   empleados: Empleado[] = [];
   empleadoLogueado: Empleado | undefined;
@@ -221,11 +222,13 @@ export class IngresosFormComponent implements OnInit {
     }
 
     this.resetNuevoDetalle();
+    this.detalleEditandoIndex = null;
     this.showModalProducto = true;
     this.cdr.detectChanges();
   }
 
   cerrarModalProducto(): void {
+    this.detalleEditandoIndex = null;
     this.showModalProducto = false;
     this.cdr.detectChanges();
   }
@@ -242,6 +245,41 @@ export class IngresosFormComponent implements OnInit {
       precioCompra: 0,
       subtotal: 0
     };
+  }
+
+    editarDetalle(index: number): void {
+    const detalle = this.detalles[index];
+    if (!detalle) return;
+
+    const producto = this.productosDelProveedor.find(p => p.idproducto === detalle.idProducto);
+
+    this.nuevoDetalle = {
+      categoria: producto?.categoria || '',
+      idProducto: detalle.idProducto,
+      codigo: detalle.idProducto,
+      unidadMedida: producto?.unidadMedida || '',
+      loteProducto: detalle.loteProducto,
+      fechaVencimiento: this.formatInputDate(detalle.fechaVencimiento),
+      cantidad: detalle.cantidad,
+      precioCompra: detalle.precioUnitario,
+      subtotal: detalle.subtotal
+    };
+
+    this.detalleEditandoIndex = index;
+    this.showModalProducto = true;
+    this.cdr.detectChanges();
+  }
+
+  private formatInputDate(value: string | Date): string {
+    const date = typeof value === 'string' ? new Date(value) : value;
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+
+  get confirmTextModal(): string {
+    return this.detalleEditandoIndex !== null ? 'Actualizar' : 'Agregar';
   }
 
   // — Cascada dentro del modal —
@@ -298,22 +336,31 @@ export class IngresosFormComponent implements OnInit {
 
   agregarDetalle(): void {
     if (this.nuevoDetalleInvalido) return;
+    const fecha = new Date(this.nuevoDetalle.fechaVencimiento);
+    if (isNaN(fecha.getTime())) return;
 
     const producto = this.productosDelProveedor.find(
       p => p.idproducto === this.nuevoDetalle.idProducto
     );
 
     const detalle = new DetalleEntrada({
+      ...new DetalleEntrada(),
       idProducto: this.nuevoDetalle.idProducto,
       nombreProducto: producto?.nombre ?? '',
       loteProducto: this.nuevoDetalle.loteProducto,
-      fechaVencimiento: new Date(this.nuevoDetalle.fechaVencimiento),
+      fechaVencimiento: fecha,
       cantidad: this.nuevoDetalle.cantidad,
       precioUnitario: this.nuevoDetalle.precioCompra,
       subtotal: this.nuevoDetalle.subtotal
     });
 
-    this.detalles.push(detalle);
+    if (this.detalleEditandoIndex !== null) {
+      this.detalles[this.detalleEditandoIndex] = detalle;
+    } else {
+      this.detalles.push(detalle);
+    }
+
+    this.detalleEditandoIndex = null;
     this.showModalProducto = false;
     this.cdr.detectChanges();
   }

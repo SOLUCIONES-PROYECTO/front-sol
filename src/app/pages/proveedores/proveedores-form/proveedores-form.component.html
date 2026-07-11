@@ -46,9 +46,10 @@
           }
         </div>
 
-        <!-- Dirección con autocompletado OSM -->
+        <!-- Dirección manual -->
         <div class="flex flex-col gap-1.5 relative">
           <label class="text-sm font-medium text-gray-600">Dirección</label>
+
           <div class="relative">
             <input type="text"
               [(ngModel)]="busquedaDireccion"
@@ -56,7 +57,7 @@
               (input)="onDireccionInput(); aplicarTexto($event, 'direccion', 120)"
               (blur)="cerrarSugerencias()"
               [disabled]="modoVista"
-              placeholder="Busca tu dirección..."
+              placeholder="Ingrese dirección..."
               class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
 
             <div *ngIf="buscandoDireccion"
@@ -80,7 +81,7 @@
           </div>
         </div>
 
-        <!-- Campos autocompletados por OSM -->
+        <!-- Información de ubicación -->
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Departamento</label>
           <input type="text" [(ngModel)]="proveedor.departamento" maxlength="60" [disabled]="modoVista" (input)="aplicarTexto($event, 'departamento', 60)"
