@@ -6,4 +6,5 @@ export const ACCESOS_POR_CARGO: Record<string, string[]> = {
   'Almacen':         ['Jefe de Compras', 'Almacenero', 'Vendedor', 'Administrador'],
   'OrdenDeCompra':   ['Jefe de Compras', 'Administrador'],
   'AjustesGlobales': ['Administrador'],
+  'Tutoriales':      ['Jefe de Compras', 'Almacenero', 'Vendedor', 'Administrador'],
 };

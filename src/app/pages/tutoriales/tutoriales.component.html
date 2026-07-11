@@ -1,0 +1,34 @@
+<div class="bg-[#F5F5F7] min-h-screen p-6">
+
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold text-[#1F090A]">Tutoriales</h1>
+    <p class="text-gray-400 text-sm mt-1">Videos de ayuda para tu rol: {{ cargoActual }}</p>
+  </div>
+
+  <div *ngIf="tutoriales.length === 0" class="text-center text-gray-400 py-20">
+    Aún no hay tutoriales disponibles para tu cargo.
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div *ngFor="let t of tutoriales" class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+
+      <div class="aspect-video w-full">
+        <iframe
+          class="w-full h-full"
+          [src]="t.urlSegura"
+          title="{{ t.titulo }}"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+
+      <div class="p-4">
+        <h3 class="text-sm font-bold text-[#1F090A]">{{ t.titulo }}</h3>
+        <p class="text-xs text-gray-400 mt-1">{{ t.descripcion }}</p>
+      </div>
+
+    </div>
+  </div>
+
+</div>

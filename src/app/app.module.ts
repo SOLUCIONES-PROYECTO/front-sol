@@ -12,7 +12,6 @@ import { AuthInterceptor } from './core/security/auth.interceptor';
 import {ErrorInterceptor} from './core/security/error.interceptor';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
-
 import {
   LucideAngularModule,
   Menu,
@@ -69,6 +68,7 @@ import {
   AlertCircle,
   CheckCircle,
   TriangleAlert,
+  PlayCircle,
 } from 'lucide-angular';
 
 @NgModule({
@@ -136,7 +136,8 @@ import {
         CircleAlert,
         AlertCircle,
         CheckCircle,
-        TriangleAlert
+        TriangleAlert,
+        PlayCircle
       }),
   ],
   providers: [

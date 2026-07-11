@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardLayoutComponent } from './layout/dashboard-layout/dashboard-layout.component';
-import { AuthGuard } from './core/security/auth.guard'; 
+import { AuthGuard } from './core/security/auth.guard';
 import { CargoGuard } from './core/security/cargo.guard';
+import {TutorialesComponent} from "./pages/tutoriales/tutoriales.component";
 
 const routes: Routes = [
   {
@@ -94,6 +95,12 @@ const routes: Routes = [
           import('./pages/ajustes-globales/ajustes-globales.module').then(
             (m) => m.AjustesGlobalesModule
           ),
+      },
+      {
+        path: 'tutoriales',
+        component: TutorialesComponent,
+        canActivate: [CargoGuard],
+        data: { seccion: 'Tutoriales' }
       },
     ],
   },
