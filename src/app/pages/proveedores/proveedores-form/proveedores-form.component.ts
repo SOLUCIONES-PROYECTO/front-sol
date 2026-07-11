@@ -18,15 +18,9 @@ export class ProveedoresFormComponent implements OnInit {
   modoVista = false;
   idProveedor: number | null = null;
 
-  // — Chips de etiquetas —
+  // Etiquetas 
   etiquetasArray: string[] = [];
   nuevaEtiqueta = '';
-
-  // — OSM Autocompletado —
-  busquedaDireccion = '';
-  sugerencias: any[] = [];
-  buscandoDireccion = false;
-  private debounceTimer: any;
 
   constructor(
     private router: Router,
@@ -59,7 +53,6 @@ export class ProveedoresFormComponent implements OnInit {
     this.proveedorService.obtenerProveedor(id).subscribe({
       next: (data) => {
         this.proveedor = data;
-        this.busquedaDireccion = data.direccion;
 
         // Reconstruir chips desde el string guardado
         this.etiquetasArray = data.etiquetas
@@ -70,66 +63,6 @@ export class ProveedoresFormComponent implements OnInit {
       },
       error: (err) => console.error(err)
     });
-  }
-
-  // — OSM: buscar dirección con debounce —
-  onDireccionInput(): void {
-    clearTimeout(this.debounceTimer);
-
-    if (this.busquedaDireccion.length < 3) {
-      this.sugerencias = [];
-      return;
-    }
-
-    this.buscandoDireccion = true;
-
-    this.debounceTimer = setTimeout(() => {
-      this.buscarEnOSM(this.busquedaDireccion);
-    }, 400); // espera 400ms después de que el usuario deje de escribir
-  }
-
-  private buscarEnOSM(texto: string): void {
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(texto)}&countrycodes=pe&format=json&addressdetails=1&limit=5`;
-
-    fetch(url, {
-      headers: { 'Accept-Language': 'es' }
-    })
-      .then(res => res.json())
-      .then((resultados: any[]) => {
-        this.sugerencias = resultados;
-        this.buscandoDireccion = false;
-        this.cdr.detectChanges();
-      })
-      .catch(() => {
-        this.buscandoDireccion = false;
-        this.sugerencias = [];
-        this.cdr.detectChanges();
-      });
-  }
-
-  seleccionarDireccion(sugerencia: any): void {
-    const addr = sugerencia.address || {};
-
-    this.busquedaDireccion = sugerencia.display_name;
-    this.proveedor.direccion = sugerencia.display_name;
-
-    // Autocompletar campos — OSM puede tener distintos nombres según la zona
-    this.proveedor.departamento = addr.state ?? addr.region ?? '';
-    this.proveedor.ciudad = addr.city ?? addr.town ?? addr.municipality ?? addr.county ?? '';
-    this.proveedor.distrito = addr.suburb ?? addr.village ?? addr.neighbourhood ?? addr.district ?? '';
-    this.proveedor.codigoPostal = addr.postcode ?? '';
-    // codigoUbigeo queda editable manualmente — OSM no lo tiene
-
-    this.sugerencias = [];
-    this.cdr.detectChanges();
-  }
-
-  cerrarSugerencias(): void {
-    // Pequeño delay para que el click en una sugerencia alcance a ejecutarse antes de cerrar
-    setTimeout(() => {
-      this.sugerencias = [];
-      this.cdr.detectChanges();
-    }, 200);
   }
 
   // — Chips de etiquetas —

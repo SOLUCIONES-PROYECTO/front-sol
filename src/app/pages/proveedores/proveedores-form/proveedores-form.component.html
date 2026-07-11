@@ -37,37 +37,21 @@
             class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
         </div>
 
-        <!-- Dirección con autocompletado OSM -->
+        <!-- Dirección manual -->
         <div class="flex flex-col gap-1.5 relative">
           <label class="text-sm font-medium text-gray-600">Dirección</label>
+
           <div class="relative">
             <input type="text"
-              [(ngModel)]="busquedaDireccion"
-              (input)="onDireccionInput()"
-              (blur)="cerrarSugerencias()"
+              [(ngModel)]="proveedor.direccion"
+              autocomplete="off"
               [disabled]="modoVista"
-              placeholder="Busca tu dirección..."
+              placeholder="Ingrese dirección..."
               class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
-
-            <div *ngIf="buscandoDireccion"
-              class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">
-              Buscando...
-            </div>
-          </div>
-
-          <!-- Sugerencias OSM -->
-          <div *ngIf="sugerencias.length > 0"
-            class="absolute top-full left-0 right-0 z-50 bg-white border border-gray-200 rounded-xl shadow-lg mt-1 overflow-hidden">
-            <button *ngFor="let s of sugerencias"
-              type="button"
-              (click)="seleccionarDireccion(s)"
-              class="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-[var(--color-primary-100)] transition border-b border-gray-50 last:border-0">
-              {{ s.display_name }}
-            </button>
           </div>
         </div>
 
-        <!-- Campos autocompletados por OSM -->
+        <!-- Información de ubicación -->
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Departamento</label>
           <input type="text" [(ngModel)]="proveedor.departamento" [disabled]="modoVista"
