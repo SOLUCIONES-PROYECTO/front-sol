@@ -15,14 +15,15 @@ import { Router } from '@angular/router';
 })
 export class AlmacenComponent implements OnInit {
 
-  columns = [
-    { key: 'producto', label: 'Producto' },
-    { key: 'categoria', label: 'Categoría' },
-    { key: 'stockActual', label: 'Stock Actual' },
-    { key: 'stockMinimo', label: 'Stock Mínimo' },
-    { key: 'fechaVencimiento', label: 'Fecha de Vencimiento' },
-    { key: 'estado', label: 'Disponibilidad', type: 'badge' },
-  ];
+columns = [
+  { key: 'imagen', label: '', type: 'image' },
+  { key: 'producto', label: 'Producto' },
+  { key: 'categoria', label: 'Categoría' },
+  { key: 'stockActual', label: 'Stock Actual' },
+  { key: 'stockMinimo', label: 'Stock Mínimo' },
+  { key: 'fechaVencimiento', label: 'Fecha de Vencimiento' },
+  { key: 'estado', label: 'Disponibilidad', type: 'badge' },
+];
 
   data: any[] = [];
   dataOriginal: any[] = [];
@@ -64,12 +65,16 @@ export class AlmacenComponent implements OnInit {
         const vencimientoPorProducto = this.obtenerFechaMasProximaPorProducto(detalles);
 
         this.data = productos.map((p: Producto) => ({
-          id: p.idproducto,          // ← NUEVO: necesario para navegar al detalle
+          id: p.idproducto,
+          imagen: p.imagen,
           producto: p.nombre,
           categoria: p.categoria,
           stockActual: p.stockActual,
           stockMinimo: p.stockMinimo,
-          estado: p.estado,
+          estado: this.obtenerDisponibilidad(
+          p.stockActual,
+          vencimientoPorProducto.get(p.idproducto)
+          ),
           fechaVencimiento: this.formatearFecha(
             vencimientoPorProducto.get(p.idproducto)
           ),
@@ -90,6 +95,23 @@ export class AlmacenComponent implements OnInit {
 
   onVer(item: any): void {
     this.router.navigate(['/almacen/ver', item.id]);
+  }
+
+  //Disponibilidad
+  private obtenerDisponibilidad(
+  stockActual: number,
+  fechaVencimiento?: Date
+  ): string {
+
+    if (stockActual === 0) {
+      return 'Agotado';
+    }
+
+    if (fechaVencimiento && fechaVencimiento < new Date()) {
+      return 'Vencido';
+    }
+
+    return 'Disponible';
   }
 
   // Por cada producto, busca el lote con la fecha de vencimiento MÁS PRÓXIMA (FEFO)
