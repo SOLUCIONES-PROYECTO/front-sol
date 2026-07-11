@@ -110,7 +110,6 @@ export class IngresosFormComponent implements OnInit {
         this.estadosPago = resultado.estadosPago;
         this.estadosIngreso = resultado.estadosIngreso.filter(e => e.nombre !== 'Eliminado');
         this.ordenesCompra = resultado.ordenesCompra;
-        console.log('Órdenes:', JSON.stringify(this.ordenesCompra));
         this.empleados = resultado.empleados;
 
         this.empleadoLogueado = this.empleados.find(
@@ -184,6 +183,7 @@ export class IngresosFormComponent implements OnInit {
     return this.modoVista || this.modoEdicion;
   }
 
+  // — Filtros en cascada: proveedor (header) → categoría → producto —
 
   get productosDelProveedor(): Producto[] {
     if (!this.docEntrada.idProveedor) return [];
@@ -203,17 +203,8 @@ export class IngresosFormComponent implements OnInit {
       p => p.categoria === this.nuevoDetalle.categoria
     );
   }
-  get tipoIngresoSeleccionadoNombre(): string {
-  const tipo = this.tiposDocEntrada.find(
-    t => t.idTipoDocEntrada === this.docEntrada.idTipoDocEntrada
-  );
-  return (tipo?.nombre ?? '').trim();
-  }
 
-  get esTipoNea(): boolean {
-    return this.tipoIngresoSeleccionadoNombre.toUpperCase() === 'NEA';
-  }
-
+  // — Modal: abrir / cerrar / resetear —
 
   abrirModalProducto(): void {
     if (!this.docEntrada.idProveedor) {
@@ -256,6 +247,43 @@ export class IngresosFormComponent implements OnInit {
     };
   }
 
+    editarDetalle(index: number): void {
+    const detalle = this.detalles[index];
+    if (!detalle) return;
+
+    const producto = this.productosDelProveedor.find(p => p.idproducto === detalle.idProducto);
+
+    this.nuevoDetalle = {
+      categoria: producto?.categoria || '',
+      idProducto: detalle.idProducto,
+      codigo: detalle.idProducto,
+      unidadMedida: producto?.unidadMedida || '',
+      loteProducto: detalle.loteProducto,
+      fechaVencimiento: this.formatInputDate(detalle.fechaVencimiento),
+      cantidad: detalle.cantidad,
+      precioCompra: detalle.precioUnitario,
+      subtotal: detalle.subtotal
+    };
+
+    this.detalleEditandoIndex = index;
+    this.showModalProducto = true;
+    this.cdr.detectChanges();
+  }
+
+  private formatInputDate(value: string | Date): string {
+    const date = typeof value === 'string' ? new Date(value) : value;
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+
+  get confirmTextModal(): string {
+    return this.detalleEditandoIndex !== null ? 'Actualizar' : 'Agregar';
+  }
+
+  // — Cascada dentro del modal —
+
   onCategoriaChange(): void {
     this.nuevoDetalle.idProducto = 0;
     this.nuevoDetalle.codigo = 0;
@@ -273,36 +301,15 @@ export class IngresosFormComponent implements OnInit {
       this.nuevoDetalle.codigo = producto.idproducto;
       this.nuevoDetalle.unidadMedida = producto.unidadMedida;
       this.nuevoDetalle.precioCompra = producto.precioCompra;
-
-      if (this.esTipoNea) {
-        this.nuevoDetalle.loteProducto = 'No Aplica';
-      } else {
-        const ordenesAprobadas = this.ordenesCompra.filter(
-          o => o.idProveedor === this.docEntrada.idProveedor && o.estadoOc === 'Aprobada'
+      if (this.ordenSeleccionada?.detalles) {
+        const detalleOrden = this.ordenSeleccionada.detalles.find(
+          (d: any) => d.idProducto === this.nuevoDetalle.idProducto
         );
-
-        let loteEncontrado = '';
-        for (const orden of ordenesAprobadas) {
-          const detalle = orden.detalles?.find(
-            (d: any) => d.idProducto === this.nuevoDetalle.idProducto
-          );
-          if (detalle?.loteEsperado) {
-            loteEncontrado = detalle.loteEsperado;
-            break;
-          }
-        }
-
-        this.nuevoDetalle.loteProducto = loteEncontrado;
+        this.nuevoDetalle.loteProducto = detalleOrden?.loteEsperado || '';
       }
     }
 
     this.recalcularSubtotal();
-  }
-
-  onTipoIngresoChange(): void {
-    if (this.nuevoDetalle.idProducto) {
-      this.onProductoChange();
-    }
   }
 
   onOrdenCompraChange(idOrden: number): void {
@@ -325,6 +332,7 @@ export class IngresosFormComponent implements OnInit {
     );
   }
 
+  // — Confirmar / eliminar línea del detalle —
 
   agregarDetalle(): void {
     if (this.nuevoDetalleInvalido) return;
@@ -407,8 +415,7 @@ export class IngresosFormComponent implements OnInit {
       return;
     }
 
-  this.docEntradaService.crearIngreso(this.docEntrada).subscribe({
-    next: (docCreado) => {
+    this.docEntrada.precioTotal = this.totalIngresoDetalle;
 
     if (!this.modoEdicion && !this.docEntrada.idEmpleado) {
       this.mostrarAlerta(
@@ -473,6 +480,7 @@ export class IngresosFormComponent implements OnInit {
     });
   }
 
+  // — Modal de alerta (validación / éxito) —
   showAlertModal = false;
   alertTitle = '';
   alertMessage = '';

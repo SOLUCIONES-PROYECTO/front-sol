@@ -128,7 +128,7 @@ export class EgresosFormComponent implements OnInit {
     }).subscribe({
       next: (resultado) => {
         this.productosDisponibles = resultado.productos;
-        this.tiposDocSalida = resultado.tiposDocSalida;
+        this.tiposDocSalida = resultado.tiposDocSalida.filter(t => this.tiposPermitidos.includes(t.nombre));
         this.metodosPago = resultado.metodosPago;
         this.areasUsoInterno = resultado.areasUsoInterno;
         this.empleados = resultado.empleados;
@@ -234,6 +234,7 @@ export class EgresosFormComponent implements OnInit {
     this.router.navigate(['/egresos']);
   }
 
+  // — Tipo de egreso seleccionado: nombre exacto, para condicionar secciones —
   get tipoSeleccionadoNombre(): string {
     const tipo = this.tiposDocSalida.find(t => t.idTipoDocSalida === this.docSalida.idTipoDocSalida);
     return tipo?.nombre ?? '';
@@ -251,6 +252,7 @@ export class EgresosFormComponent implements OnInit {
     return this.tipoSeleccionadoNombre === 'Uso interno';
   }
 
+  // — Filtros del modal —
   get categoriasDisponibles(): string[] {
     return [...new Set(this.productosDisponibles.map(p => p.categoria))];
   }
@@ -273,6 +275,7 @@ export class EgresosFormComponent implements OnInit {
     }
   }
 
+  // — Modal —
   abrirModalProducto(): void {
     if (!this.docSalida.idTipoDocSalida) {
       alert('Selecciona primero el tipo de egreso.');
