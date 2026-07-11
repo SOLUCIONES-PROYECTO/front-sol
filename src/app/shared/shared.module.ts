@@ -14,6 +14,7 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 import { ModalFormComponent } from './components/modal-form/modal-form.component';
 import { AlertModalComponent } from './components/alert-modal/alert-modal.component';
+
 @NgModule({
   declarations: [
     CrudTableComponent,

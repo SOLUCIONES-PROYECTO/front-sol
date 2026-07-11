@@ -91,13 +91,16 @@ confirmarContrasena = '';
     this.empleadoService.buscar(id).subscribe({
       next: (data) => {
         this.empleado = data;
+        this.cdr.detectChanges();
 
         this.personaService.buscar(data.idPersona).subscribe({
           next: (persona) => {
             this.persona = persona;
             this.cdr.detectChanges();
           },
-          error: (err) => console.error(err)
+          error: (err) => {console.error(err);
+          this.cdr.detectChanges();
+          }
         });
       },
       error: (err) => console.error(err)
