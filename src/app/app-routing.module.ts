@@ -18,7 +18,7 @@ const routes: Routes = [
   {
     path: '',
     component: DashboardLayoutComponent,
-    canActivate: [AuthGuard],
+    
     children: [
       {
         path: 'dashboard',
@@ -29,7 +29,7 @@ const routes: Routes = [
       },
       {
         path: 'almacen',
-        canActivate: [CargoGuard],
+        
         data: { seccion: 'Almacen' },
         loadChildren: () =>
           import('./pages/almacen/almacen.module').then(
@@ -38,7 +38,7 @@ const routes: Routes = [
       },
       {
         path: 'ingresos',
-        canActivate: [CargoGuard],
+        
         data: { seccion: 'Ingresos' },
         loadChildren: () =>
           import('./pages/ingresos/ingresos.module').then(
@@ -47,7 +47,6 @@ const routes: Routes = [
       },
       {
         path: 'egresos',
-        canActivate: [CargoGuard],
         data: { seccion: 'Egresos' },
         loadChildren: () =>
           import('./pages/egresos/egresos.module').then(
@@ -56,7 +55,6 @@ const routes: Routes = [
       },
       {
         path: 'orden-de-compra',
-        canActivate: [CargoGuard],
         data: { seccion: 'OrdenDeCompra' },
         loadChildren: () =>
           import('./pages/orden-de-compra/orden-de-compra.module').then(
@@ -65,7 +63,7 @@ const routes: Routes = [
       },
       {
         path: 'productos',
-        canActivate: [CargoGuard],
+        
         data: { seccion: 'Productos' },
         loadChildren: () =>
           import('./pages/productos/productos.module').then(
@@ -74,7 +72,7 @@ const routes: Routes = [
       },
       {
         path: 'proveedores',
-        canActivate: [CargoGuard],
+        
         data: { seccion: 'Proveedores' },
         loadChildren: () =>
           import('./pages/proveedores/proveedores.module').then(
@@ -83,7 +81,7 @@ const routes: Routes = [
       },
       {
         path: 'ajustes-globales',
-        canActivate: [CargoGuard],
+       
         data: { seccion: 'AjustesGlobales' },
         loadChildren: () =>
           import('./pages/ajustes-globales/ajustes-globales.module').then(
