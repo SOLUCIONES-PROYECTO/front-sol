@@ -52,7 +52,7 @@ export class ProveedoresFormComponent implements OnInit {
     private route: ActivatedRoute,
     private proveedorService: ProveedorService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
 
@@ -256,7 +256,8 @@ export class ProveedoresFormComponent implements OnInit {
       },
       error: (err) => {
         console.error(err);
-        this.mostrarAlerta('Ocurrió un error', 'No se pudo guardar el proveedor. Inténtalo de nuevo.', 'error');
+        const mensaje = err?.error?.mensaje ?? 'No se pudo guardar el proveedor. Inténtalo de nuevo.';
+        this.mostrarAlerta('Ocurrió un error', mensaje, 'error');
       }
     });
   }
