@@ -109,6 +109,7 @@ export class IngresosFormComponent implements OnInit {
         this.estadosPago = resultado.estadosPago;
         this.estadosIngreso = resultado.estadosIngreso;
         this.ordenesCompra = resultado.ordenesCompra;
+        console.log('Órdenes:', JSON.stringify(this.ordenesCompra));
         this.empleados = resultado.empleados;
 
     this.empleadoLogueado = this.empleados.find(
@@ -170,7 +171,6 @@ export class IngresosFormComponent implements OnInit {
     return this.modoVista || this.modoEdicion;
   }
 
-  // — Filtros en cascada: proveedor (header) → categoría → producto —
 
   get productosDelProveedor(): Producto[] {
     if (!this.docEntrada.idProveedor) return [];
@@ -190,8 +190,17 @@ export class IngresosFormComponent implements OnInit {
       p => p.categoria === this.nuevoDetalle.categoria
     );
   }
+  get tipoIngresoSeleccionadoNombre(): string {
+  const tipo = this.tiposDocEntrada.find(
+    t => t.idTipoDocEntrada === this.docEntrada.idTipoDocEntrada
+  );
+  return (tipo?.nombre ?? '').trim();
+  }
 
-  // — Modal: abrir / cerrar / resetear —
+  get esTipoNea(): boolean {
+    return this.tipoIngresoSeleccionadoNombre.toUpperCase() === 'NEA';
+  }
+
 
   abrirModalProducto(): void {
     if (!this.docEntrada.idProveedor) {
@@ -232,8 +241,6 @@ export class IngresosFormComponent implements OnInit {
     };
   }
 
-  // — Cascada dentro del modal —
-
   onCategoriaChange(): void {
     this.nuevoDetalle.idProducto = 0;
     this.nuevoDetalle.codigo = 0;
@@ -251,15 +258,36 @@ export class IngresosFormComponent implements OnInit {
       this.nuevoDetalle.codigo = producto.idproducto;
       this.nuevoDetalle.unidadMedida = producto.unidadMedida;
       this.nuevoDetalle.precioCompra = producto.precioCompra;
-      if (this.ordenSeleccionada?.detalles) {
-        const detalleOrden = this.ordenSeleccionada.detalles.find(
-          (d: any) => d.idProducto === this.nuevoDetalle.idProducto
-      );
-      this.nuevoDetalle.loteProducto = detalleOrden?.loteEsperado || '';
-    }
+
+      if (this.esTipoNea) {
+        this.nuevoDetalle.loteProducto = 'No Aplica';
+      } else {
+        const ordenesAprobadas = this.ordenesCompra.filter(
+          o => o.idProveedor === this.docEntrada.idProveedor && o.estadoOc === 'Aprobada'
+        );
+
+        let loteEncontrado = '';
+        for (const orden of ordenesAprobadas) {
+          const detalle = orden.detalles?.find(
+            (d: any) => d.idProducto === this.nuevoDetalle.idProducto
+          );
+          if (detalle?.loteEsperado) {
+            loteEncontrado = detalle.loteEsperado;
+            break;
+          }
+        }
+
+        this.nuevoDetalle.loteProducto = loteEncontrado;
+      }
     }
 
     this.recalcularSubtotal();
+  }
+
+  onTipoIngresoChange(): void {
+    if (this.nuevoDetalle.idProducto) {
+      this.onProductoChange();
+    }
   }
 
   onOrdenCompraChange(idOrden: number): void {
@@ -282,7 +310,6 @@ export class IngresosFormComponent implements OnInit {
     );
   }
 
-  // — Confirmar / eliminar línea del detalle —
 
   agregarDetalle(): void {
     if (this.nuevoDetalleInvalido) return;
@@ -380,7 +407,6 @@ guardar(): void {
     return;
   }
 
-  // Modo "nuevo": primero el header, luego cada línea de detalle
   this.docEntradaService.crearIngreso(this.docEntrada).subscribe({
     next: (docCreado) => {
 
@@ -415,7 +441,6 @@ guardar(): void {
   });
 }
 
-  // — Modal de alerta (validación / éxito) —
   showAlertModal = false;
   alertTitle = '';
   alertMessage = '';

@@ -33,6 +33,7 @@
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Tipo de ingreso</label>
           <select [(ngModel)]="docEntrada.idTipoDocEntrada" [disabled]="modoVista"
+            (ngModelChange)="onTipoIngresoChange()"
             class="w-full bg-white border border-gray-200 p-2.5 rounded-lg appearance-none disabled:opacity-60 disabled:cursor-not-allowed">
             <option [ngValue]="0">Selecciona</option>
             <option *ngFor="let t of tiposDocEntrada" [ngValue]="t.idTipoDocEntrada">{{ t.nombre }}</option>
@@ -232,13 +233,12 @@
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">N° de Lote</label>
-          <input type="text" [(ngModel)]="nuevoDetalle.loteProducto"
-            [disabled]="!!ordenSeleccionada && !!nuevoDetalle.loteProducto"
-            class="w-full border border-gray-200 p-2.5 rounded-lg disabled:opacity-60" />
-            <p *ngIf="ordenSeleccionada && nuevoDetalle.loteProducto" class="text-xs text-gray-400 mt-1">
-                Asignado desde la orden {{ ordenSeleccionada?.numeroOrden }}
-            </p>
-          </div>
+          <input type="text" [value]="nuevoDetalle.loteProducto"
+            disabled
+            class="w-full bg-gray-50 border-none p-2.5 rounded-lg text-gray-600" />
+          <p *ngIf="!nuevoDetalle.loteProducto" class="text-xs text-red-400 mt-1">
+          </p>
+        </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Fecha de Vencimiento</label>
