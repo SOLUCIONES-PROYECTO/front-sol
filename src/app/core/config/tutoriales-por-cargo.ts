@@ -6,7 +6,7 @@ export interface Tutorial {
 
 export const TUTORIALES_POR_CARGO: Record<string, Tutorial[]> = {
 
-  'Administrador': [
+  'Admin': [
     {
       titulo: 'Login y registro',
       descripcion: 'Iniciar Sesion.',
