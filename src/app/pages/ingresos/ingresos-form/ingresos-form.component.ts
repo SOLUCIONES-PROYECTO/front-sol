@@ -455,6 +455,12 @@ export class IngresosFormComponent implements OnInit {
 
         forkJoin(peticionesDetalle).subscribe({
           next: () => {
+            this.detalles.forEach(d => {
+              const producto = this.productosDisponibles.find(p => p.idproducto === d.idProducto);
+              if (producto) {
+                producto.stockActual = (producto.stockActual || 0) + d.cantidad;
+              }
+            });
             this.mostrarAlerta('Ingreso registrado', 'El ingreso y sus productos se guardaron correctamente.', 'success');
           },
           error: (err) => {

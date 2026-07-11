@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, HostListener, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth/auth.service';
 
 @Component({
@@ -21,7 +22,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private elementRef: ElementRef,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -61,6 +63,14 @@ export class NavBarComponent implements OnInit, OnDestroy {
   logout(): void {
     this.authService.logout();
     this.menuAbierto = false;
+  }
+
+  irAMenuPrincipal(): void {
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['/dashboard']);
+    } else {
+      this.router.navigate(['/auth/login']);
+    }
   }
 
   @HostListener('document:click', ['$event'])

@@ -115,25 +115,7 @@
     </nav>
 
     <div class="mt-auto">
-
-      <p class="text-xs uppercase text-primary-200 mb-4 px-3 tracking-wide">
-        Ajustes
-      </p>
-
       <nav class="space-y-2">
-
-        <a routerLink="/perfil" routerLinkActive="bg-white text-primary-600"
-          class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600">
-
-          <lucide-icon name="user" class="w-5 h-5">
-          </lucide-icon>
-
-          <span class="text-sm font-medium">
-            Ajustes Personales
-          </span>
-
-        </a>
-
         <a *ngIf="puedeVer('AjustesGlobales')" routerLink="/ajustes-globales" routerLinkActive="bg-white text-primary-600"
           class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600">
 
@@ -145,9 +127,7 @@
           </span>
 
         </a>
-
       </nav>
-
     </div>
 
   </div>

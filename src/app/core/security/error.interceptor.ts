@@ -33,9 +33,9 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   private sesionExpirada(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('usuarioSistema');
-    localStorage.removeItem('cargo');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('usuarioSistema');
+    sessionStorage.removeItem('cargo');
 
     this.router.navigate(['/auth/login']);
   }
