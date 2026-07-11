@@ -1,13 +1,9 @@
 <div class="min-h-screen bg-primary-100 flex items-center justify-center py-10 px-6">
   <div class="w-full max-w-6xl overflow-hidden rounded-2xl shadow-2xl grid lg:grid-cols-5 min-h-[860px] bg-white">
 
-    <!-- ============================================================ -->
-    <!-- PANEL IZQUIERDO                                              -->
-    <!-- ============================================================ -->
+    <aside
+      class="hidden lg:flex lg:col-span-2 flex-col justify-between bg-primary-700 text-white p-12 relative overflow-hidden">
 
-    <aside class="hidden lg:flex lg:col-span-2 flex-col justify-between bg-primary-700 text-white p-12 relative overflow-hidden">
-
-      <!-- Textura sutil de fondo -->
       <div class="absolute inset-0 opacity-5"
         style="background-image: repeating-linear-gradient(45deg, white 0, white 1px, transparent 0, transparent 50%); background-size: 12px 12px;">
       </div>
@@ -22,10 +18,8 @@
           </p>
         </div>
 
-        <!-- Divisor -->
         <div class="mt-10 border-t border-white/10"></div>
 
-        <!-- Beneficios -->
         <ul class="mt-8 space-y-5">
 
           <li class="flex items-center gap-3">
@@ -60,7 +54,6 @@
 
       </div>
 
-      <!-- Footer del panel -->
       <div class="relative z-10 border-t border-white/10 pt-8">
         <p class="text-xs text-primary-300 leading-relaxed">
           Cada colaborador registrado recibirá acceso personalizado al sistema de gestión.
@@ -68,10 +61,6 @@
       </div>
 
     </aside>
-
-    <!-- ============================================================ -->
-    <!-- PANEL DERECHO                                                -->
-    <!-- ============================================================ -->
 
     <main class="lg:col-span-3 overflow-y-auto">
       <div class="px-12 py-10">
@@ -93,19 +82,9 @@
 
         </div>
 
-        <!-- ======================================================== -->
-        <!-- FORMULARIO                                                -->
-        <!-- ======================================================== -->
-
         <form [formGroup]="registerFormPresenter.Form" (ngSubmit)="registrarUsuario()" class="space-y-8">
-
-          <!-- ====================================================== -->
-          <!-- SECCIÓN 1 · INFORMACIÓN PERSONAL                       -->
-          <!-- ====================================================== -->
-
           <section>
 
-            <!-- Título de sección -->
             <div class="flex items-center gap-3 mb-6">
               <div class="w-8 h-8 rounded-lg bg-primary-100 flex items-center justify-center flex-shrink-0">
                 <lucide-icon name="circle-user-round" class="w-4 h-4 text-primary-600"></lucide-icon>
@@ -118,126 +97,106 @@
 
             <div class="grid grid-cols-2 gap-5">
 
-              <!-- NOMBRES -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1.5">
                   Nombres <span class="text-red-500">*</span>
                 </label>
                 <div class="relative">
-                  <lucide-icon name="user" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
-                  <input
-                    type="text"
-                    formControlName="nombres"
-                    maxlength="50"
-                    (input)="aplicarTexto($event, 'nombres', 50)"
-                    placeholder="Ingrese los nombres"
-                    class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
-                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
-                  >
+                  <lucide-icon name="user"
+                    class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input type="text" formControlName="nombres" maxlength="50"
+                    (input)="aplicarTexto($event, 'nombres', 50)" placeholder="Ingrese los nombres" class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
                 </div>
-                @if(registerFormPresenter.Form.get('nombres')?.touched && registerFormPresenter.Form.get('nombres')?.invalid) {
-                  <p class="mt-1.5 text-xs text-red-500">
-                    @if(registerFormPresenter.Form.get('nombres')?.errors?.['required']) { Los nombres son obligatorios. }
-                    @if(registerFormPresenter.Form.get('nombres')?.errors?.['minlength']) { Mínimo 3 caracteres. }
-                    @if(registerFormPresenter.Form.get('nombres')?.errors?.['maxlength']) { Máximo 50 caracteres. }
-                  </p>
+                @if(registerFormPresenter.Form.get('nombres')?.touched &&
+                registerFormPresenter.Form.get('nombres')?.invalid) {
+                <p class="mt-1.5 text-xs text-red-500">
+                  @if(registerFormPresenter.Form.get('nombres')?.errors?.['required']) { Los nombres son obligatorios. }
+                  @if(registerFormPresenter.Form.get('nombres')?.errors?.['minlength']) { Mínimo 3 caracteres. }
+                  @if(registerFormPresenter.Form.get('nombres')?.errors?.['maxlength']) { Máximo 50 caracteres. }
+                </p>
                 }
                 <p class="mt-1 text-xs text-gray-500">Solo texto. Máximo 50 caracteres.</p>
               </div>
 
-              <!-- APELLIDOS -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1.5">
                   Apellidos <span class="text-red-500">*</span>
                 </label>
                 <div class="relative">
-                  <lucide-icon name="user-pen" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
-                  <input
-                    type="text"
-                    formControlName="apellidos"
-                    maxlength="50"
-                    (input)="aplicarTexto($event, 'apellidos', 50)"
-                    placeholder="Ingrese los apellidos"
-                    class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
-                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
-                  >
+                  <lucide-icon name="user-pen"
+                    class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input type="text" formControlName="apellidos" maxlength="50"
+                    (input)="aplicarTexto($event, 'apellidos', 50)" placeholder="Ingrese los apellidos" class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
                 </div>
-                @if(registerFormPresenter.Form.get('apellidos')?.touched && registerFormPresenter.Form.get('apellidos')?.invalid) {
-                  <p class="mt-1.5 text-xs text-red-500">
-                    @if(registerFormPresenter.Form.get('apellidos')?.errors?.['required']) { Los apellidos son obligatorios. }
-                    @if(registerFormPresenter.Form.get('apellidos')?.errors?.['minlength']) { Mínimo 3 caracteres. }
-                    @if(registerFormPresenter.Form.get('apellidos')?.errors?.['maxlength']) { Máximo 50 caracteres. }
-                  </p>
+                @if(registerFormPresenter.Form.get('apellidos')?.touched &&
+                registerFormPresenter.Form.get('apellidos')?.invalid) {
+                <p class="mt-1.5 text-xs text-red-500">
+                  @if(registerFormPresenter.Form.get('apellidos')?.errors?.['required']) { Los apellidos son
+                  obligatorios. }
+                  @if(registerFormPresenter.Form.get('apellidos')?.errors?.['minlength']) { Mínimo 3 caracteres. }
+                  @if(registerFormPresenter.Form.get('apellidos')?.errors?.['maxlength']) { Máximo 50 caracteres. }
+                </p>
                 }
                 <p class="mt-1 text-xs text-gray-500">Solo texto. Máximo 50 caracteres.</p>
               </div>
 
-              <!-- DNI -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1.5">
                   DNI <span class="text-red-500">*</span>
                 </label>
                 <div class="relative">
-                  <lucide-icon name="credit-card" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
-                  <input
-                    type="text"
-                    inputmode="numeric"
-                    maxlength="8"
-                    formControlName="dni"
-                    (input)="soloNumeros($event, 'dni', 8)"
-                    placeholder="12345678"
-                    class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
-                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
-                  >
+                  <lucide-icon name="credit-card"
+                    class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input type="text" inputmode="numeric" maxlength="8" formControlName="dni"
+                    (input)="soloNumeros($event, 'dni', 8)" placeholder="12345678" class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
                 </div>
                 @if(registerFormPresenter.Form.get('dni')?.touched && registerFormPresenter.Form.get('dni')?.invalid) {
-                  <p class="mt-1.5 text-xs text-red-500">Ingrese un DNI válido de 8 dígitos.</p>
+                <p class="mt-1.5 text-xs text-red-500">Ingrese un DNI válido de 8 dígitos.</p>
                 }
                 @if(errorDni) {
-                  <p class="mt-1 text-xs text-red-500">Solo se permiten 8 dígitos.</p>
+                <p class="mt-1 text-xs text-red-500">Solo se permiten 8 dígitos.</p>
                 }
               </div>
 
-              <!-- FECHA DE NACIMIENTO -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1.5">
                   Fecha de nacimiento <span class="text-red-500">*</span>
                 </label>
                 <div class="relative">
-                  <lucide-icon name="calendar-days" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
-                  <input
-                    type="date"
-                    formControlName="fechaNacimiento"
-                    class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
-                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
-                  >
+                  <lucide-icon name="calendar-days"
+                    class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input type="date" formControlName="fechaNacimiento" class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
                 </div>
-                @if(registerFormPresenter.Form.get('fechaNacimiento')?.touched && registerFormPresenter.Form.get('fechaNacimiento')?.invalid) {
-                  <p class="mt-1.5 text-xs text-red-500">La fecha de nacimiento es obligatoria.</p>
+                @if(registerFormPresenter.Form.get('fechaNacimiento')?.touched &&
+                registerFormPresenter.Form.get('fechaNacimiento')?.invalid) {
+                <p class="mt-1.5 text-xs text-red-500">La fecha de nacimiento es obligatoria.</p>
                 }
               </div>
 
-              <!-- GÉNERO -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1.5">
                   Género <span class="text-red-500">*</span>
                 </label>
                 <div class="relative">
-                  <lucide-icon name="users-round" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
-                  <select
-                    formControlName="genero"
-                    class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all appearance-none
-                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100 bg-white"
-                  >
+                  <lucide-icon name="users-round"
+                    class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <select formControlName="genero" class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all appearance-none
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100 bg-white">
                     <option value="">Seleccione una opción</option>
                     <option value="Masculino">Masculino</option>
                     <option value="Femenino">Femenino</option>
                     <option value="Otro">Otro</option>
                   </select>
-                  <lucide-icon name="chevron-down" class="absolute right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <lucide-icon name="chevron-down"
+                    class="absolute right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
                 </div>
-                @if(registerFormPresenter.Form.get('genero')?.touched && registerFormPresenter.Form.get('genero')?.invalid) {
-                  <p class="mt-1.5 text-xs text-red-500">Seleccione el género.</p>
+                @if(registerFormPresenter.Form.get('genero')?.touched &&
+                registerFormPresenter.Form.get('genero')?.invalid) {
+                <p class="mt-1.5 text-xs text-red-500">Seleccione el género.</p>
                 }
               </div>
 
@@ -245,12 +204,7 @@
 
           </section>
 
-          <!-- Divisor -->
           <div class="border-t border-gray-100"></div>
-
-          <!-- ====================================================== -->
-          <!-- SECCIÓN 2 · CONTACTO                                   -->
-          <!-- ====================================================== -->
 
           <section>
 
@@ -266,87 +220,71 @@
 
             <div class="grid grid-cols-2 gap-5">
 
-              <!-- CORREO -->
               <div class="col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-1.5">
                   Correo electrónico <span class="text-red-500">*</span>
                 </label>
                 <div class="relative">
-                  <lucide-icon name="mail" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
-                  <input
-                    type="email"
-                    formControlName="correo"
-                    placeholder="colaborador@bodegayessy.com"
-                    class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
-                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
-                  >
+                  <lucide-icon name="mail"
+                    class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input type="email" formControlName="correo" placeholder="colaborador@bodegayessy.com" class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
                 </div>
-                @if(registerFormPresenter.Form.get('correo')?.touched && registerFormPresenter.Form.get('correo')?.invalid) {
-                  <p class="mt-1.5 text-xs text-red-500">
-                    @if(registerFormPresenter.Form.get('correo')?.errors?.['required']) { El correo es obligatorio. }
-                    @if(registerFormPresenter.Form.get('correo')?.errors?.['email']) { Ingrese un correo válido. }
-                  </p>
+                @if(registerFormPresenter.Form.get('correo')?.touched &&
+                registerFormPresenter.Form.get('correo')?.invalid) {
+                <p class="mt-1.5 text-xs text-red-500">
+                  @if(registerFormPresenter.Form.get('correo')?.errors?.['required']) { El correo es obligatorio. }
+                  @if(registerFormPresenter.Form.get('correo')?.errors?.['email']) { Ingrese un correo válido. }
+                </p>
                 }
               </div>
 
-              <!-- TELÉFONO -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1.5">
                   Teléfono <span class="text-red-500">*</span>
                 </label>
                 <div class="relative">
-                  <lucide-icon name="phone" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
-                  <input
-                    type="text"
-                    inputmode="numeric"
-                    maxlength="9"
-                    formControlName="telefono"
-                    (input)="soloNumeros($event, 'telefono', 9)"
-                    placeholder="987654321"
-                    class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
-                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
-                  >
+                  <lucide-icon name="phone"
+                    class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input type="text" inputmode="numeric" maxlength="9" formControlName="telefono"
+                    (input)="soloNumeros($event, 'telefono', 9)" placeholder="987654321" class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
                 </div>
-                @if(registerFormPresenter.Form.get('telefono')?.touched && registerFormPresenter.Form.get('telefono')?.invalid) {
-                  <p class="mt-1.5 text-xs text-red-500">Ingrese un teléfono válido de 9 dígitos.</p>
+                @if(registerFormPresenter.Form.get('telefono')?.touched &&
+                registerFormPresenter.Form.get('telefono')?.invalid) {
+                <p class="mt-1.5 text-xs text-red-500">Ingrese un teléfono válido de 9 dígitos.</p>
                 }
                 @if(errorTelefono) {
-                  <p class="mt-1 text-xs text-red-500">Solo se permiten 9 dígitos.</p>
+                <p class="mt-1 text-xs text-red-500">Solo se permiten 9 dígitos.</p>
                 }
               </div>
 
-              <!-- DIRECCIÓN -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1.5">
                   Dirección <span class="text-red-500">*</span>
                 </label>
                 <div class="relative">
-                  <lucide-icon name="map-pin" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
-                  <input
-                    type="text"
-                    formControlName="direccion"
-                    maxlength="100"
-                    (input)="aplicarTexto($event, 'direccion', 100)"
-                    placeholder="Av. Principal 123"
-                    class="w-full rounded-lg border border-gray-200 pl-10 pr-10 py-2.5 text-sm outline-none transition-all
-                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
-                  >
-                  <button
-                    type="button"
+                  <lucide-icon name="map-pin"
+                    class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input type="text" formControlName="direccion" maxlength="100"
+                    (input)="aplicarTexto($event, 'direccion', 100)" placeholder="Av. Principal 123" class="w-full rounded-lg border border-gray-200 pl-10 pr-10 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
+                  <button type="button"
                     class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary-600 transition"
-                    title="Búsqueda automática próximamente"
-                  >
+                    title="Búsqueda automática próximamente">
                     <lucide-icon name="search" class="w-4 h-4"></lucide-icon>
                   </button>
                 </div>
-                @if(registerFormPresenter.Form.get('direccion')?.touched && registerFormPresenter.Form.get('direccion')?.invalid) {
-                  <p class="mt-1.5 text-xs text-red-500">
-                    @if(registerFormPresenter.Form.get('direccion')?.errors?.['required']) { La dirección es obligatoria. }
-                    @if(registerFormPresenter.Form.get('direccion')?.errors?.['maxlength']) { Máximo 100 caracteres. }
-                  </p>
+                @if(registerFormPresenter.Form.get('direccion')?.touched &&
+                registerFormPresenter.Form.get('direccion')?.invalid) {
+                <p class="mt-1.5 text-xs text-red-500">
+                  @if(registerFormPresenter.Form.get('direccion')?.errors?.['required']) { La dirección es obligatoria.
+                  }
+                  @if(registerFormPresenter.Form.get('direccion')?.errors?.['maxlength']) { Máximo 100 caracteres. }
+                </p>
                 }
                 @if(errorDireccion) {
-                  <p class="mt-1 text-xs text-red-500">Se excedió el máximo de 100 caracteres.</p>
+                <p class="mt-1 text-xs text-red-500">Se excedió el máximo de 100 caracteres.</p>
                 }
               </div>
 
@@ -354,14 +292,9 @@
 
           </section>
 
-          <!-- Divisor -->
           <div class="border-t border-gray-100"></div>
 
-          <!-- ====================================================== -->
-          <!-- SECCIÓN 3 · ROL EN LA EMPRESA                          -->
-          <!-- ====================================================== -->
           <section>
-
             <div class="flex items-center gap-3 mb-6">
               <div class="w-8 h-8 rounded-lg bg-primary-100 flex items-center justify-center flex-shrink-0">
                 <lucide-icon name="briefcase" class="w-4 h-4 text-primary-600"></lucide-icon>
@@ -374,47 +307,49 @@
 
             <div class="grid grid-cols-2 gap-5">
 
-              <!-- CARGO -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1.5">
                   Cargo <span class="text-red-500">*</span>
                 </label>
                 <div class="relative">
-                  <lucide-icon name="badge" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
-                  <select formControlName="cargo"
-                    class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all appearance-none
+                  <lucide-icon name="badge"
+                    class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <select formControlName="cargo" class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all appearance-none
                       focus:border-primary-400 focus:ring-2 focus:ring-primary-100 bg-white">
                     <option value="">Selecciona un cargo</option>
                     @for(c of cargos; track c.idCargo) {
-                      <option [value]="c.nombre">{{ c.nombre }}</option>
+                    <option [value]="c.nombre">{{ c.nombre }}</option>
                     }
                   </select>
-                  <lucide-icon name="chevron-down" class="absolute right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <lucide-icon name="chevron-down"
+                    class="absolute right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
                 </div>
-                @if(registerFormPresenter.Form.get('cargo')?.touched && registerFormPresenter.Form.get('cargo')?.invalid) {
-                  <p class="mt-1.5 text-xs text-red-500">Selecciona un cargo.</p>
+                @if(registerFormPresenter.Form.get('cargo')?.touched &&
+                registerFormPresenter.Form.get('cargo')?.invalid) {
+                <p class="mt-1.5 text-xs text-red-500">Selecciona un cargo.</p>
                 }
               </div>
 
-              <!-- ÁREA -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1.5">
                   Área <span class="text-red-500">*</span>
                 </label>
                 <div class="relative">
-                  <lucide-icon name="layers" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
-                  <select formControlName="area"
-                    class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all appearance-none
+                  <lucide-icon name="layers"
+                    class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <select formControlName="area" class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all appearance-none
                       focus:border-primary-400 focus:ring-2 focus:ring-primary-100 bg-white">
                     <option value="">Selecciona un área</option>
                     @for(a of areas; track a.idArea) {
-                      <option [value]="a.nombre">{{ a.nombre }}</option>
+                    <option [value]="a.nombre">{{ a.nombre }}</option>
                     }
                   </select>
-                  <lucide-icon name="chevron-down" class="absolute right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <lucide-icon name="chevron-down"
+                    class="absolute right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
                 </div>
-                @if(registerFormPresenter.Form.get('area')?.touched && registerFormPresenter.Form.get('area')?.invalid) {
-                  <p class="mt-1.5 text-xs text-red-500">Selecciona un área.</p>
+                @if(registerFormPresenter.Form.get('area')?.touched && registerFormPresenter.Form.get('area')?.invalid)
+                {
+                <p class="mt-1.5 text-xs text-red-500">Selecciona un área.</p>
                 }
               </div>
 
@@ -422,12 +357,7 @@
 
           </section>
 
-          <!-- Divisor -->
           <div class="border-t border-gray-100"></div>
-          <!-- ====================================================== -->
-          <!-- SECCIÓN 4 · ACCESO AL SISTEMA                          -->
-          <!-- ====================================================== -->
-
           <section>
 
             <div class="flex items-center gap-3 mb-6">
@@ -441,56 +371,48 @@
             </div>
 
             <div class="grid grid-cols-2 gap-5">
-
-              <!-- USUARIO DEL SISTEMA -->
               <div class="col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-1.5">
                   Usuario del sistema <span class="text-red-500">*</span>
                 </label>
                 <div class="relative">
-                  <lucide-icon name="at-sign" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
-                  <input
-                    type="text"
-                    formControlName="usuarioSistema"
-                    placeholder="Ej: maria.garcia"
-                    class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
-                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
-                  >
+                  <lucide-icon name="at-sign"
+                    class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input type="text" formControlName="usuarioSistema" placeholder="Ej: maria.garcia" class="w-full rounded-lg border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
                 </div>
-                @if(registerFormPresenter.Form.get('usuarioSistema')?.touched && registerFormPresenter.Form.get('usuarioSistema')?.invalid) {
-                  <p class="mt-1.5 text-xs text-red-500">
-                    @if(registerFormPresenter.Form.get('usuarioSistema')?.errors?.['required']) { El usuario es obligatorio. }
-                    @if(registerFormPresenter.Form.get('usuarioSistema')?.errors?.['minlength']) { Mínimo 4 caracteres. }
-                    @if(registerFormPresenter.Form.get('usuarioSistema')?.errors?.['pattern']) { Solo letras, números, puntos y guiones bajos. }
-                  </p>
+                @if(registerFormPresenter.Form.get('usuarioSistema')?.touched &&
+                registerFormPresenter.Form.get('usuarioSistema')?.invalid) {
+                <p class="mt-1.5 text-xs text-red-500">
+                  @if(registerFormPresenter.Form.get('usuarioSistema')?.errors?.['required']) { El usuario es
+                  obligatorio. }
+                  @if(registerFormPresenter.Form.get('usuarioSistema')?.errors?.['minlength']) { Mínimo 4 caracteres. }
+                  @if(registerFormPresenter.Form.get('usuarioSistema')?.errors?.['pattern']) { Solo letras, números,
+                  puntos y guiones bajos. }
+                </p>
                 }
               </div>
 
-              <!-- CONTRASEÑA -->
               <div class="col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-1.5">
                   Contraseña <span class="text-red-500">*</span>
                 </label>
                 <div class="relative">
-                  <lucide-icon name="lock" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
-                  <input
-                    [type]="showPassword ? 'text' : 'password'"
-                    formControlName="password"
-                    placeholder="Crea una contraseña segura"
-                    class="w-full rounded-lg border border-gray-200 pl-10 pr-10 py-2.5 text-sm outline-none transition-all
-                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
-                  >
-                  <button type="button" (click)="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary-600 transition">
+                  <lucide-icon name="lock"
+                    class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input [type]="showPassword ? 'text' : 'password'" formControlName="password"
+                    placeholder="Crea una contraseña segura" class="w-full rounded-lg border border-gray-200 pl-10 pr-10 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
+                  <button type="button" (click)="togglePassword()"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary-600 transition">
                     <lucide-icon [name]="showPassword ? 'eye-off' : 'eye'" class="w-4 h-4"></lucide-icon>
                   </button>
                 </div>
 
-                <!-- Barra de fortaleza -->
                 <div class="mt-3">
                   <div class="flex items-center justify-between mb-1.5">
                     <span class="text-xs text-gray-500">Seguridad de la contraseña</span>
-                    <span class="text-xs font-medium"
-                      [ngClass]="{
+                    <span class="text-xs font-medium" [ngClass]="{
                         'text-red-500':    passwordStrength <= 1,
                         'text-orange-500': passwordStrength == 2,
                         'text-yellow-600': passwordStrength == 3,
@@ -519,88 +441,86 @@
                   </div>
                 </div>
 
-                <!-- Requisitos -->
                 <div class="mt-4 grid grid-cols-2 gap-y-2 gap-x-4">
 
                   <div class="flex items-center gap-2">
-                    <lucide-icon
-                      [name]="passwordRequirements.length ? 'check-circle-2' : 'circle'"
+                    <lucide-icon [name]="passwordRequirements.length ? 'check-circle-2' : 'circle'"
                       class="w-3.5 h-3.5 flex-shrink-0"
                       [ngClass]="passwordRequirements.length ? 'text-green-500' : 'text-gray-300'">
                     </lucide-icon>
-                    <span class="text-xs" [ngClass]="passwordRequirements.length ? 'text-gray-600' : 'text-gray-400'">8 caracteres mínimo</span>
+                    <span class="text-xs" [ngClass]="passwordRequirements.length ? 'text-gray-600' : 'text-gray-400'">8
+                      caracteres mínimo</span>
                   </div>
 
                   <div class="flex items-center gap-2">
-                    <lucide-icon
-                      [name]="passwordRequirements.uppercase ? 'check-circle-2' : 'circle'"
+                    <lucide-icon [name]="passwordRequirements.uppercase ? 'check-circle-2' : 'circle'"
                       class="w-3.5 h-3.5 flex-shrink-0"
                       [ngClass]="passwordRequirements.uppercase ? 'text-green-500' : 'text-gray-300'">
                     </lucide-icon>
-                    <span class="text-xs" [ngClass]="passwordRequirements.uppercase ? 'text-gray-600' : 'text-gray-400'">Una mayúscula</span>
+                    <span class="text-xs"
+                      [ngClass]="passwordRequirements.uppercase ? 'text-gray-600' : 'text-gray-400'">Una
+                      mayúscula</span>
                   </div>
 
                   <div class="flex items-center gap-2">
-                    <lucide-icon
-                      [name]="passwordRequirements.lowercase ? 'check-circle-2' : 'circle'"
+                    <lucide-icon [name]="passwordRequirements.lowercase ? 'check-circle-2' : 'circle'"
                       class="w-3.5 h-3.5 flex-shrink-0"
                       [ngClass]="passwordRequirements.lowercase ? 'text-green-500' : 'text-gray-300'">
                     </lucide-icon>
-                    <span class="text-xs" [ngClass]="passwordRequirements.lowercase ? 'text-gray-600' : 'text-gray-400'">Una minúscula</span>
+                    <span class="text-xs"
+                      [ngClass]="passwordRequirements.lowercase ? 'text-gray-600' : 'text-gray-400'">Una
+                      minúscula</span>
                   </div>
 
                   <div class="flex items-center gap-2">
-                    <lucide-icon
-                      [name]="passwordRequirements.number ? 'check-circle-2' : 'circle'"
+                    <lucide-icon [name]="passwordRequirements.number ? 'check-circle-2' : 'circle'"
                       class="w-3.5 h-3.5 flex-shrink-0"
                       [ngClass]="passwordRequirements.number ? 'text-green-500' : 'text-gray-300'">
                     </lucide-icon>
-                    <span class="text-xs" [ngClass]="passwordRequirements.number ? 'text-gray-600' : 'text-gray-400'">Un número</span>
+                    <span class="text-xs" [ngClass]="passwordRequirements.number ? 'text-gray-600' : 'text-gray-400'">Un
+                      número</span>
                   </div>
 
                   <div class="flex items-center gap-2 col-span-2">
-                    <lucide-icon
-                      [name]="passwordRequirements.symbol ? 'check-circle-2' : 'circle'"
+                    <lucide-icon [name]="passwordRequirements.symbol ? 'check-circle-2' : 'circle'"
                       class="w-3.5 h-3.5 flex-shrink-0"
                       [ngClass]="passwordRequirements.symbol ? 'text-green-500' : 'text-gray-300'">
                     </lucide-icon>
-                    <span class="text-xs" [ngClass]="passwordRequirements.symbol ? 'text-gray-600' : 'text-gray-400'">Un símbolo (@$!%*?&._#)</span>
+                    <span class="text-xs" [ngClass]="passwordRequirements.symbol ? 'text-gray-600' : 'text-gray-400'">Un
+                      símbolo (@$!%*?&._#)</span>
                   </div>
 
                 </div>
 
               </div>
 
-              <!-- CONFIRMAR CONTRASEÑA -->
               <div class="col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-1.5">
                   Confirmar contraseña <span class="text-red-500">*</span>
                 </label>
                 <div class="relative">
-                  <lucide-icon name="lock-keyhole" class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
-                  <input
-                    [type]="showConfirmPassword ? 'text' : 'password'"
-                    formControlName="confirmarPassword"
-                    placeholder="Repite la contraseña"
-                    class="w-full rounded-lg border border-gray-200 pl-10 pr-10 py-2.5 text-sm outline-none transition-all
-                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
-                  >
-                  <button type="button" (click)="toggleConfirmPassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary-600 transition">
+                  <lucide-icon name="lock-keyhole"
+                    class="absolute left-1.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></lucide-icon>
+                  <input [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmarPassword"
+                    placeholder="Repite la contraseña" class="w-full rounded-lg border border-gray-200 pl-10 pr-10 py-2.5 text-sm outline-none transition-all
+                      focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
+                  <button type="button" (click)="toggleConfirmPassword()"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary-600 transition">
                     <lucide-icon [name]="showConfirmPassword ? 'eye-off' : 'eye'" class="w-4 h-4"></lucide-icon>
                   </button>
                 </div>
                 @if(confirmPasswordControl?.touched) {
-                  @if(passwordsMatch) {
-                    <p class="mt-1.5 text-xs text-green-600 flex items-center gap-1">
-                      <lucide-icon name="check-circle-2" class="w-3.5 h-3.5"></lucide-icon>
-                      Las contraseñas coinciden
-                    </p>
-                  } @else {
-                    <p class="mt-1.5 text-xs text-red-500 flex items-center gap-1">
-                      <lucide-icon name="x-circle" class="w-3.5 h-3.5"></lucide-icon>
-                      Las contraseñas no coinciden
-                    </p>
-                  }
+                @if(passwordsMatch) {
+                <p class="mt-1.5 text-xs text-green-600 flex items-center gap-1">
+                  <lucide-icon name="check-circle-2" class="w-3.5 h-3.5"></lucide-icon>
+                  Las contraseñas coinciden
+                </p>
+                } @else {
+                <p class="mt-1.5 text-xs text-red-500 flex items-center gap-1">
+                  <lucide-icon name="x-circle" class="w-3.5 h-3.5"></lucide-icon>
+                  Las contraseñas no coinciden
+                </p>
+                }
                 }
               </div>
 
@@ -608,24 +528,16 @@
 
           </section>
 
-          <!-- ====================================================== -->
-          <!-- BOTÓN DE ENVÍO                                         -->
-          <!-- ====================================================== -->
-
           <div class="pt-2 pb-4">
-            <button
-              type="submit"
-              [disabled]="isLoading"
-              class="w-full rounded-lg bg-primary-700 hover:bg-primary-600 active:bg-primary-700 text-white font-semibold py-3 text-sm
+            <button type="submit" [disabled]="isLoading" class="w-full rounded-lg bg-primary-700 hover:bg-primary-600 active:bg-primary-700 text-white font-semibold py-3 text-sm
                 transition-all duration-200 flex items-center justify-center gap-2
-                disabled:opacity-60 disabled:cursor-not-allowed"
-            >
+                disabled:opacity-60 disabled:cursor-not-allowed">
               @if(isLoading) {
-                <lucide-icon name="loader-circle" class="w-4 h-4 animate-spin"></lucide-icon>
-                Registrando colaborador...
+              <lucide-icon name="loader-circle" class="w-4 h-4 animate-spin"></lucide-icon>
+              Registrando colaborador...
               } @else {
-                <lucide-icon name="user-check" class="w-4 h-4"></lucide-icon>
-                Registrar colaborador
+              <lucide-icon name="user-check" class="w-4 h-4"></lucide-icon>
+              Registrar colaborador
               }
             </button>
           </div>
@@ -633,7 +545,11 @@
         </form>
 
       </div>
+
     </main>
+    <app-alert-modal [visible]="alertVisible" [title]="alertTitle" [message]="alertMessage" [type]="alertType"
+      (close)="onAlertClose()">
+    </app-alert-modal>
 
   </div>
 </div>

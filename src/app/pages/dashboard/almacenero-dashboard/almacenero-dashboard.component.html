@@ -1,0 +1,72 @@
+<div class="bg-[#F5F5F7] min-h-screen p-6">
+
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold text-[#1F090A]">Dashboard de Almacén</h1>
+    <p class="text-gray-400 text-sm mt-1">Vencimientos urgentes, stock e ingresos recientes</p>
+  </div>
+
+  <div *ngIf="cargando" class="text-center text-gray-400 py-20">
+    Cargando datos del dashboard...
+  </div>
+
+  <ng-container *ngIf="!cargando">
+
+    <!-- Vencimientos urgentes -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-6">
+      <h3 class="text-base font-bold text-[#1F090A] mb-4">Vencimientos urgentes (7 / 15 / 30 días)</h3>
+
+      <div *ngIf="vencimientos.length === 0" class="text-sm text-gray-400 italic">
+        No hay productos próximos a vencer.
+      </div>
+
+      <div *ngIf="vencimientos.length > 0" class="max-h-96 overflow-y-auto">
+        <div *ngFor="let v of vencimientos"
+          class="flex items-center justify-between py-3 border-b border-gray-50 last:border-0">
+          <div>
+            <p class="text-sm font-medium text-[#1F090A]">{{ v.nombreProducto }}</p>
+            <p class="text-xs text-gray-400">{{ v.categoria }} · Stock: {{ v.stockActual }} · Vence: {{ formatearFecha(v.fechaVencimiento) }}</p>
+          </div>
+          <span class="text-xs font-semibold px-2 py-1 rounded-full" [ngClass]="getUrgenciaBadgeClass(v.urgencia)">
+            {{ getUrgenciaLabel(v.urgencia) }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+      <!-- Stock bajo -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <h3 class="text-sm font-bold text-[#1F090A] mb-4 flex items-center gap-2">
+          <lucide-icon name="trash" class="w-4 h-4 text-red-500"></lucide-icon>
+          Stock bajo
+        </h3>
+        <div *ngIf="productosStockBajo.length === 0" class="text-sm text-gray-400 italic">
+          Ningún producto con stock bajo por ahora.
+        </div>
+        <div *ngFor="let p of productosStockBajo" class="flex justify-between items-center py-2 border-b border-gray-50 last:border-0">
+          <span class="text-sm text-gray-700">{{ p.nombreProducto }}</span>
+          <span class="text-xs font-semibold text-red-500">{{ p.stockActual }} / {{ p.stockMinimo }}</span>
+        </div>
+      </div>
+
+      <!-- Últimos ingresos -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <h3 class="text-sm font-bold text-[#1F090A] mb-4">Últimos ingresos</h3>
+        <div *ngIf="ultimosIngresos.length === 0" class="text-sm text-gray-400 italic">
+          No hay ingresos registrados.
+        </div>
+        <div *ngFor="let i of ultimosIngresos" class="flex justify-between items-center py-2 border-b border-gray-50 last:border-0">
+          <div>
+            <p class="text-sm text-gray-700">{{ i.numeroDocumento }}</p>
+            <p class="text-xs text-gray-400">{{ i.proveedor }} · {{ formatearFecha(i.fechaIngreso) }}</p>
+          </div>
+          <span class="text-xs font-semibold text-[#1F090A]">{{ formatearMoneda(i.precioTotal) }}</span>
+        </div>
+      </div>
+
+    </div>
+
+  </ng-container>
+
+</div>

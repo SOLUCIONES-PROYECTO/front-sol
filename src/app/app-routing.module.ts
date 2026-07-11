@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardLayoutComponent } from './layout/dashboard-layout/dashboard-layout.component';
-import { AuthGuard } from './core/security/auth.guard'; // ajusta la ruta real
-import { CargoGuard } from './core/security/cargo.guard'; // ajusta la ruta real
+import { AuthGuard } from './core/security/auth.guard'; 
+import { CargoGuard } from './core/security/cargo.guard';
 
 const routes: Routes = [
   {

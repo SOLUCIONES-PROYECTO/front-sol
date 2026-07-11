@@ -10,7 +10,8 @@ import { ProductoMasVendido } from '../../class/models/dashboard/productomasvend
 import { ProductoSinMovimiento } from '../../class/models/dashboard/productosinmovimiento';
 import { TendenciaProducto } from '../../class/models/dashboard/tendenciaproducto';
 import { ProductoStockBajo } from '../../class/models/dashboard/productostockbajo';
-
+import { ProductoVencimiento } from '../../class/models/dashboard/productovencimiento';
+import { ValorEnRiesgo } from '../../class/models/dashboard/valorenriesgo';
 @Injectable({
   providedIn: 'root'
 })
@@ -59,6 +60,18 @@ export class DashboardService {
   stockBajo(): Observable<ProductoStockBajo[]> {
     return this.http.get<unknown[]>(`${this.baseUrl}/stock-bajo`).pipe(
       map(data => data.map(item => ProductoStockBajo.fromJson(item)))
+    );
+  }
+
+  vencimientos(): Observable<ProductoVencimiento[]> {
+    return this.http.get<unknown[]>(`${this.baseUrl}/vencimientos`).pipe(
+      map(data => data.map(item => ProductoVencimiento.fromJson(item)))
+    );
+  }
+
+  valorEnRiesgo(): Observable<ValorEnRiesgo> {
+    return this.http.get<unknown>(`${this.baseUrl}/valor-en-riesgo`).pipe(
+      map(data => ValorEnRiesgo.fromJson(data))
     );
   }
 }

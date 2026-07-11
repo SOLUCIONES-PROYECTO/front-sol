@@ -7,6 +7,9 @@ import { DashboardLayoutComponent } from './layout/dashboard-layout/dashboard-la
 import { SharedModule } from './shared/shared.module';
 
 import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './core/security/auth.interceptor';
+import {ErrorInterceptor} from './core/security/error.interceptor';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 
@@ -65,6 +68,7 @@ import {
   CircleAlert,
   AlertCircle,
   CheckCircle,
+  TriangleAlert,
 } from 'lucide-angular';
 
 @NgModule({
@@ -131,11 +135,14 @@ import {
         LogIn,
         CircleAlert,
         AlertCircle,
-        CheckCircle
+        CheckCircle,
+        TriangleAlert
       }),
   ],
   providers: [
-    provideCharts(withDefaultRegisterables())
+    provideCharts(withDefaultRegisterables()),
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

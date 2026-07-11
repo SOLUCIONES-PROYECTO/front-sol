@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { RegisterFormPresenter } from './register-form.presenter';
 import { RegisterFacade } from '../../../shared/patterns/facade/models/register-facade';
 import { AuthApiService } from '../services/auth-api.service';
@@ -35,17 +36,27 @@ export class RegisterComponent implements OnInit {
   errorDni = false;
   errorTelefono = false;
 
+  alertVisible = false;
+  alertTitle = '';
+  alertMessage = '';
+  alertType: 'error' | 'success' = 'error';
+
   constructor(
     public registerFormPresenter: RegisterFormPresenter,
     private registerFacade: RegisterFacade,
     private authApiService: AuthApiService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
     this.registerFormPresenter.createForm();
 
     this.authApiService.getAreas().subscribe(data => this.areas = data);
-    this.authApiService.getCargos().subscribe(data => this.cargos = data);
+
+    this.authApiService.getCargos().subscribe(data => {
+      this.cargos = data.filter(c => c.nombre !== 'Administrador');
+    });
 
     this.registerFormPresenter.Form
       .get('password')
@@ -150,10 +161,34 @@ export class RegisterComponent implements OnInit {
       this.registerFormPresenter.MarkAllAsTouched();
       return;
     }
+
     this.isLoading = true;
-    this.registerFacade.registrarUsuario(
-      this.registerFormPresenter.Value
-    );
+
+    this.registerFacade.registrarUsuario(this.registerFormPresenter.Value).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.alertTitle = 'Registro exitoso';
+        this.alertMessage = 'El colaborador fue registrado correctamente.';
+        this.alertType = 'success';
+        this.alertVisible = true;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.alertTitle = 'No se pudo registrar';
+        this.alertMessage = err?.error?.mensaje ?? 'Ocurrió un error inesperado. Intenta de nuevo.';
+        this.alertType = 'error';
+        this.alertVisible = true;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  onAlertClose(): void {
+    this.alertVisible = false;
+    if (this.alertType === 'success') {
+      this.router.navigate(['/auth/login']);
+    }
   }
 
   get passwordsMatch(): boolean {
