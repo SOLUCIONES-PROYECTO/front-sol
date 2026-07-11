@@ -29,14 +29,6 @@
       <h3 class="text-lg font-bold mb-4 text-[#1F090A]">Ubicación</h3>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
 
-        <!-- Código de Ubigeo — manual siempre -->
-        <div class="flex flex-col gap-1.5">
-          <label class="text-sm font-medium text-gray-600">Código de Ubigeo</label>
-          <input type="text" [(ngModel)]="proveedor.codigoUbigeo" [disabled]="modoVista"
-            placeholder="Ej. 150101"
-            class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
-        </div>
-
         <!-- Dirección manual -->
         <div class="flex flex-col gap-1.5 relative">
           <label class="text-sm font-medium text-gray-600">Dirección</label>
@@ -46,34 +38,53 @@
               [(ngModel)]="proveedor.direccion"
               autocomplete="off"
               [disabled]="modoVista"
+              (input)="onDireccionInput()"
+              (focus)="onDireccionInput()"
+              (blur)="cerrarSugerencias()"
               placeholder="Ingrese dirección..."
               class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
+
+            <div *ngIf="mostrarSugerencias && sugerenciasDireccion.length" class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-auto">
+              <button type="button"
+                *ngFor="let sugerencia of sugerenciasDireccion"
+                (mousedown)="seleccionarDireccion(sugerencia)"
+                class="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 border-b border-gray-100 last:border-b-0">
+                {{ sugerencia.display_name }}
+              </button>
+            </div>
           </div>
         </div>
 
         <!-- Información de ubicación -->
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Departamento</label>
-          <input type="text" [(ngModel)]="proveedor.departamento" [disabled]="modoVista"
+          <input type="text" [(ngModel)]="proveedor.departamento" disabled
             class="w-full bg-gray-50 border border-gray-100 p-2.5 rounded-lg text-gray-500 disabled:cursor-not-allowed" />
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Ciudad</label>
-          <input type="text" [(ngModel)]="proveedor.ciudad" [disabled]="modoVista"
+          <input type="text" [(ngModel)]="proveedor.ciudad" disabled
             class="w-full bg-gray-50 border border-gray-100 p-2.5 rounded-lg text-gray-500 disabled:cursor-not-allowed" />
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Distrito</label>
-          <input type="text" [(ngModel)]="proveedor.distrito" [disabled]="modoVista"
+          <input type="text" [(ngModel)]="proveedor.distrito" disabled
             class="w-full bg-gray-50 border border-gray-100 p-2.5 rounded-lg text-gray-500 disabled:cursor-not-allowed" />
         </div>
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-600">Código Postal</label>
-          <input type="text" [(ngModel)]="proveedor.codigoPostal" [disabled]="modoVista"
+          <input type="text" [(ngModel)]="proveedor.codigoPostal" disabled
             class="w-full bg-gray-50 border border-gray-100 p-2.5 rounded-lg text-gray-500 disabled:cursor-not-allowed" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-gray-600">Código de Ubigeo</label>
+          <input type="text" [(ngModel)]="proveedor.codigoUbigeo" [disabled]="modoVista"
+            placeholder="Ej. 150101"
+            class="w-full bg-[#F3F4F9] border-none p-2.5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed" />
         </div>
 
         <div class="flex flex-col gap-1.5 md:col-span-2">

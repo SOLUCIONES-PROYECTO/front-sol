@@ -17,6 +17,7 @@ export class DetalleEntrada {
   fechaVencimiento: Date;
 
   precioUnitario: number;
+  codigoLote: string;
 
   constructor(detalleEntrada: Partial<DetalleEntrada> = {}) {
 
@@ -37,6 +38,7 @@ export class DetalleEntrada {
       detalleEntrada.fechaVencimiento ?? new Date();
 
     this.precioUnitario = detalleEntrada.precioUnitario ?? 0;
+    this.codigoLote = detalleEntrada.codigoLote ?? detalleEntrada.loteProducto ?? '';
 
   }
 
@@ -58,6 +60,7 @@ export class DetalleEntrada {
       subtotal: casted['subtotal'] as number,
 
       loteProducto: casted['loteProducto'] as string,
+      codigoLote: (casted['codigoLote'] as string) ?? (casted['loteProducto'] as string),
 
       fechaVencimiento: casted['fechaVencimiento']
         ? new Date(casted['fechaVencimiento'] as string)
@@ -80,6 +83,7 @@ export class DetalleEntrada {
       subtotal: detalleEntrada.subtotal,
 
       loteProducto: detalleEntrada.loteProducto,
+      codigoLote: detalleEntrada.codigoLote,
 
       fechaVencimiento: detalleEntrada.fechaVencimiento
         .toISOString()

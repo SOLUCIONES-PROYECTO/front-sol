@@ -64,21 +64,31 @@ columns = [
 
         const vencimientoPorProducto = this.obtenerFechaMasProximaPorProducto(detalles);
 
-        this.data = productos.map((p: Producto) => ({
-          id: p.idproducto,
-          imagen: p.imagen,
-          producto: p.nombre,
-          categoria: p.categoria,
-          stockActual: p.stockActual,
-          stockMinimo: p.stockMinimo,
-          estado: this.obtenerDisponibilidad(
-          p.stockActual,
-          vencimientoPorProducto.get(p.idproducto)
-          ),
-          fechaVencimiento: this.formatearFecha(
-            vencimientoPorProducto.get(p.idproducto)
-          ),
-        }));
+        this.data = productos
+          .map((p: Producto) => {
+            const fechaVencimiento = vencimientoPorProducto.get(p.idproducto);
+
+            return {
+              id: p.idproducto,
+              imagen: p.imagen,
+              producto: p.nombre,
+              categoria: p.categoria,
+              stockActual: p.stockActual,
+              stockMinimo: p.stockMinimo,
+              estado: this.obtenerDisponibilidad(
+                p.stockActual,
+                fechaVencimiento
+              ),
+              fechaVencimiento: this.formatearFecha(fechaVencimiento),
+              fechaVencimientoDate: fechaVencimiento ?? null,
+            };
+          })
+          .sort((a, b) => {
+            const fechaA = a.fechaVencimientoDate?.getTime() ?? Number.MAX_SAFE_INTEGER;
+            const fechaB = b.fechaVencimientoDate?.getTime() ?? Number.MAX_SAFE_INTEGER;
+
+            return fechaA - fechaB;
+          });
 
         this.dataOriginal = [...this.data];
 
@@ -99,8 +109,8 @@ columns = [
 
   //Disponibilidad
   private obtenerDisponibilidad(
-  stockActual: number,
-  fechaVencimiento?: Date
+    stockActual: number,
+    fechaVencimiento?: Date | null
   ): string {
 
     if (stockActual === 0) {
@@ -121,25 +131,45 @@ columns = [
 
     const mapa = new Map<number, Date>();
 
-    detalles.forEach(d => {
-      const actual = mapa.get(d.idProducto);
+    detalles.forEach((detalle) => {
+      const fechaVencimiento = this.normalizarFecha(detalle.fechaVencimiento);
 
-      if (!actual || d.fechaVencimiento < actual) {
-        mapa.set(d.idProducto, d.fechaVencimiento);
+      if (!fechaVencimiento) {
+        return;
+      }
+
+      const actual = mapa.get(detalle.idProducto);
+
+      if (!actual || fechaVencimiento < actual) {
+        mapa.set(detalle.idProducto, fechaVencimiento);
       }
     });
 
     return mapa;
   }
 
-  private formatearFecha(fecha: Date | undefined): string {
-    if (!fecha) return '—'; // producto sin entradas registradas
+  private normalizarFecha(fecha: Date | string | null | undefined): Date | null {
+    if (!fecha) {
+      return null;
+    }
+
+    const fechaParseada = fecha instanceof Date ? fecha : new Date(fecha);
+
+    return Number.isNaN(fechaParseada.getTime()) ? null : fechaParseada;
+  }
+
+  private formatearFecha(fecha: Date | string | null | undefined): string {
+    const fechaNormalizada = this.normalizarFecha(fecha);
+
+    if (!fechaNormalizada) {
+      return '—';
+    }
 
     return new Intl.DateTimeFormat('es-PE', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric'
-    }).format(fecha);
+    }).format(fechaNormalizada);
   }
 
   buscar(texto: string): void {

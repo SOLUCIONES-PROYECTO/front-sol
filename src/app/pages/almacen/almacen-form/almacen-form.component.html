@@ -50,9 +50,29 @@
         </div>
 
         <div class="flex flex-col gap-2">
-          <label class="text-sm font-medium text-gray-500">Fecha de vencimiento más próxima</label>
+          <label class="text-sm font-medium text-gray-500">Fecha de vencimiento del lote seleccionado</label>
           <input type="text" [value]="fechaVencimientoFormateada" disabled
             class="w-full bg-white border border-gray-200 p-3 rounded-lg text-gray-600" />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-medium text-gray-500">Lote</label>
+
+          <select
+            [value]="loteSeleccionado ? getValorLote(loteSeleccionado) : ''"
+            (change)="seleccionarLotePorValor($any($event.target).value)"
+            class="w-full bg-white border border-gray-200 p-3 rounded-lg">
+
+            <option value="" *ngIf="!lotesDelProducto.length">
+              Sin lotes registrados
+            </option>
+
+            <option
+              *ngFor="let lote of lotesDelProducto"
+              [value]="getValorLote(lote)">
+              {{ getEtiquetaLote(lote) }}
+            </option>
+          </select>
         </div>
 
         <div class="flex flex-col gap-2 md:col-span-3">

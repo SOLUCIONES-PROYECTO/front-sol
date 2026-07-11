@@ -19,6 +19,7 @@ export class AlmacenFormComponent implements OnInit {
 
   fechaVencimientoMasProxima: Date | null = null;
   lotesDelProducto: DetalleEntrada[] = [];
+  loteSeleccionado: DetalleEntrada | null = null;
 
   constructor(
     private router: Router,
@@ -51,31 +52,57 @@ export class AlmacenFormComponent implements OnInit {
   cargarLotes(idProducto: number): void {
     this.detalleEntradaService.listar().subscribe({
       next: (todos) => {
-        this.lotesDelProducto = todos.filter(d => d.idProducto === idProducto);
-        this.fechaVencimientoMasProxima = this.obtenerFechaMasProxima(this.lotesDelProducto);
+        this.lotesDelProducto = todos
+          .filter((detalle) => detalle.idProducto === idProducto)
+          .sort((a, b) => {
+            const fechaA = this.normalizarFecha(a.fechaVencimiento)?.getTime() ?? Number.MAX_SAFE_INTEGER;
+            const fechaB = this.normalizarFecha(b.fechaVencimiento)?.getTime() ?? Number.MAX_SAFE_INTEGER;
+
+            return fechaA - fechaB;
+          });
+
+        this.loteSeleccionado = this.lotesDelProducto[0] || null;
+        this.fechaVencimientoMasProxima = this.obtenerFechaVencimiento(this.loteSeleccionado);
         this.cdr.detectChanges();
       },
       error: (err) => console.error(err)
     });
   }
 
-  private obtenerFechaMasProxima(lotes: DetalleEntrada[]): Date | null {
-    if (lotes.length === 0) return null;
+  private normalizarFecha(fecha: Date | string | null | undefined): Date | null {
+    if (!fecha) {
+      return null;
+    }
 
-    return lotes.reduce((masProxima, lote) =>
-      lote.fechaVencimiento < masProxima ? lote.fechaVencimiento : masProxima,
-      lotes[0].fechaVencimiento
-    );
+    const fechaParseada = fecha instanceof Date ? fecha : new Date(fecha);
+
+    return Number.isNaN(fechaParseada.getTime()) ? null : fechaParseada;
   }
 
-  get fechaVencimientoFormateada(): string {
-    if (!this.fechaVencimientoMasProxima) return 'Sin lotes registrados';
+  private obtenerFechaVencimiento(lote: DetalleEntrada | null): Date | null {
+    if (!lote) {
+      return null;
+    }
+
+    return this.normalizarFecha(lote.fechaVencimiento);
+  }
+
+  formatearFecha(fecha: Date | string | null | undefined): string {
+    const fechaNormalizada = this.normalizarFecha(fecha);
+
+    if (!fechaNormalizada) {
+      return 'Sin fecha de vencimiento';
+    }
 
     return new Intl.DateTimeFormat('es-PE', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric'
-    }).format(this.fechaVencimientoMasProxima);
+    }).format(fechaNormalizada);
+  }
+
+  get fechaVencimientoFormateada(): string {
+    return this.formatearFecha(this.fechaVencimientoMasProxima);
   }
 
   get disponibilidad(): string {
@@ -87,6 +114,40 @@ export class AlmacenFormComponent implements OnInit {
   get estaVencido(): boolean {
     if (!this.fechaVencimientoMasProxima) return false;
     return this.fechaVencimientoMasProxima < new Date();
+  }
+
+  cambiarLote(): void {
+    if (!this.loteSeleccionado) {
+      this.fechaVencimientoMasProxima = null;
+      this.cdr.detectChanges();
+      return;
+    }
+
+    this.fechaVencimientoMasProxima = this.obtenerFechaVencimiento(this.loteSeleccionado);
+    this.cdr.detectChanges();
+  }
+
+  seleccionarLotePorValor(valor: string): void {
+    if (!valor) {
+      this.loteSeleccionado = null;
+      this.cambiarLote();
+      return;
+    }
+
+    this.loteSeleccionado = this.lotesDelProducto.find(
+      (lote) => lote.idDetalleEntrada.toString() === valor
+    ) ?? null;
+
+    this.cambiarLote();
+  }
+
+  getValorLote(lote: DetalleEntrada): string {
+    return lote.idDetalleEntrada?.toString() ?? '';
+  }
+
+  getEtiquetaLote(lote: DetalleEntrada): string {
+    const codigo = lote.codigoLote || lote.loteProducto || 'Sin código de lote';
+    return `${codigo} - ${this.formatearFecha(lote.fechaVencimiento)}`;
   }
 
   Regresar(): void {

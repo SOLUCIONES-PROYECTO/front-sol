@@ -22,6 +22,9 @@ export class ProveedoresFormComponent implements OnInit {
   etiquetasArray: string[] = [];
   nuevaEtiqueta = '';
 
+  sugerenciasDireccion: any[] = [];
+  mostrarSugerencias = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -63,6 +66,61 @@ export class ProveedoresFormComponent implements OnInit {
       },
       error: (err) => console.error(err)
     });
+  }
+
+  onDireccionInput(): void {
+    const texto = this.proveedor.direccion?.trim() || '';
+
+    if (texto.length < 3) {
+      this.sugerenciasDireccion = [];
+      this.mostrarSugerencias = false;
+      return;
+    }
+
+    this.buscarEnOSM(texto);
+  }
+
+  buscarEnOSM(texto: string): void {
+    const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&addressdetails=1&accept-language=es&q=${encodeURIComponent(texto)}`;
+
+    fetch(url, {
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+      .then((respuesta) => respuesta.json())
+      .then((data) => {
+        this.sugerenciasDireccion = Array.isArray(data) ? data : [];
+        this.mostrarSugerencias = this.sugerenciasDireccion.length > 0;
+        this.cdr.detectChanges();
+      })
+      .catch(() => {
+        this.sugerenciasDireccion = [];
+        this.mostrarSugerencias = false;
+        this.cdr.detectChanges();
+      });
+  }
+
+  seleccionarDireccion(sugerencia: any): void {
+    const direccion = sugerencia?.address || {};
+
+    this.proveedor.departamento = direccion.state || direccion.region || '';
+    this.proveedor.ciudad = direccion.city || direccion.town || direccion.village || direccion.county || '';
+    this.proveedor.distrito = direccion.suburb || direccion.city_district || direccion.neighbourhood || direccion.district || '';
+    this.proveedor.codigoPostal = direccion.postcode || '';
+    this.proveedor.direccion = sugerencia?.display_name || this.proveedor.direccion;
+
+    this.sugerenciasDireccion = [];
+    this.mostrarSugerencias = false;
+    this.cdr.detectChanges();
+  }
+
+  cerrarSugerencias(): void {
+    setTimeout(() => {
+      this.sugerenciasDireccion = [];
+      this.mostrarSugerencias = false;
+      this.cdr.detectChanges();
+    }, 150);
   }
 
   // — Chips de etiquetas —
